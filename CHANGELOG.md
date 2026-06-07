@@ -2,6 +2,23 @@
 
 All notable changes to EvaulxMC are documented here.
 
+## Unreleased (branch `port/modern-1.21`)
+
+### Platform
+- Ported from Spigot 1.8.8 to **Paper 1.21** (Java 21). All legacy `Material`/`Enchantment` names
+  modernized in code and `config.yml`; action bars rewritten to Adventure; `api-version: '1.21'`.
+  See `docs/PORTING_1.21.md` for the full status (note: the disguise NMS layer still needs a 1.21
+  rewrite and the whole branch needs live-server QA).
+
+### Added — new features
+- **Warps:** `/warp`, `/warps`, `/setwarp`, `/delwarp` with tab-completion, persisted to
+  `data/warps.json`. Permissions `evaulx.warp` (use) and `evaulx.warp.admin` (manage).
+- **Homes:** `/home`, `/homes`, `/sethome`, `/delhome` with per-rank limits (`evaulx.homes.<n>`,
+  `evaulx.homes.unlimited`, `homes.default-limit`), persisted to `data/homes.json`.
+- **AFK:** `/afk [reason]`, automatic AFK after `afk.auto-minutes` of inactivity, configurable
+  enter/leave broadcasts, `evaulx.afk.exempt` to opt out of auto-AFK.
+- `/warp` and `/home` set your `/back` location before teleporting.
+
 ## 1.0.1 — 2026-06-07
 
 ### Added

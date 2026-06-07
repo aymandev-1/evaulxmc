@@ -186,3 +186,10 @@ All permission nodes as declared in `plugin.yml`. **Default** is the node's defa
 | `evaulx.buildmode.others` | op | Toggle build mode for other players |
 | `evaulx.lobbyprotection` | op | Manage lobby protection |
 | `evaulx.protection.bypass` | op | Bypass lobby protection |
+| `evaulx.warp` | **true** | Use and list warps |
+| `evaulx.warp.admin` | op | Create and delete warps |
+| `evaulx.home` | **true** | Set, delete and teleport to your homes |
+| `evaulx.homes.<n>` | — | Grant a rank `n` homes (e.g. `evaulx.homes.5`) |
+| `evaulx.homes.unlimited` | op | Bypass the home limit |
+| `evaulx.afk` | **true** | Toggle your AFK status |
+| `evaulx.afk.exempt` | op | Never be marked AFK automatically |

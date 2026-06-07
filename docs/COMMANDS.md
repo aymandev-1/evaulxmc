@@ -165,6 +165,24 @@ Diagnostics: `/disguise test <skin> [rank]`, `/disguise status`, `/disguise refr
 | `/buildmode` | `build`, `bm` | Toggle lobby build bypass mode |
 | `/lobbyprotect` | `lobbyprotection`, `protectlobby`, `lp` | Manage and enforce lobby protection |
 
+### Warps, homes & AFK
+
+| Command | Aliases | Description |
+|---------|---------|-------------|
+| `/warp <name>` | | Teleport to a warp |
+| `/warps` | `warplist` | List warps |
+| `/setwarp <name>` | | Create or update a warp (admin) |
+| `/delwarp <name>` | `deletewarp`, `removewarp` | Delete a warp (admin) |
+| `/home [name]` | | Teleport to one of your homes |
+| `/homes` | `homelist` | List your homes |
+| `/sethome [name]` | | Set a home (default name `home`) |
+| `/delhome <name>` | `deletehome`, `removehome` | Delete one of your homes |
+| `/afk [reason]` | `away` | Toggle your AFK status |
+
+Home limits: everyone gets `homes.default-limit` (config); grant a rank `evaulx.homes.<n>` for `n`
+homes, or `evaulx.homes.unlimited` to remove the cap. `/warp` and `/home` set your `/back` location.
+AFK is also triggered automatically after `afk.auto-minutes` of inactivity (config).
+
 ### `/tag` quick reference
 ```text
 /tag list
