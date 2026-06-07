@@ -1,7 +1,0 @@
-# Example module fallback resource (will be moved to plugins/EvaulxMC/custom/modules/example.yml on first run)
-name: ExampleModule
-enabled: true
-description: "An example module that will be placed in custom/modules/example.yml"
-settings:
-  announce-on-join: true
-  welcome-message: "&aHello from ExampleModule, %player%!"

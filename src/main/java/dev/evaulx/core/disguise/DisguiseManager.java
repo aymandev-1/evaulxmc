@@ -607,9 +607,9 @@ public class DisguiseManager {
             inventory.setItem(slots[i], createSkinItem(skin));
         }
 
-        inventory.setItem(getNextPageSlot(), createNamedItem(Material.EYE_OF_ENDER, "&aNext Page",
+        inventory.setItem(getNextPageSlot(), createNamedItem(Material.ENDER_EYE, "&aNext Page",
                 "&7Click to go to the next skin page."));
-        inventory.setItem(getPreviousPageSlot(), createNamedItem(Material.EYE_OF_ENDER, "&cPrevious Page",
+        inventory.setItem(getPreviousPageSlot(), createNamedItem(Material.ENDER_EYE, "&cPrevious Page",
                 "&7Click to go back a skin page."));
 
         player.openInventory(inventory);
@@ -633,7 +633,7 @@ public class DisguiseManager {
         Inventory inventory = Bukkit.createInventory(null, 54, getNameTitle());
         fillBorder(inventory);
         inventory.setItem(plugin.getConfig().getInt("disguise.gui.name.custom-slot", 21),
-                createConfiguredItem("disguise.gui.name.custom-item", Material.SIGN, "&cPick your name",
+                createConfiguredItem("disguise.gui.name.custom-item", Material.OAK_SIGN, "&cPick your name",
                         Arrays.asList("&7Click to write your own disguise name.", "&7You will type the name in chat."), null));
         inventory.setItem(plugin.getConfig().getInt("disguise.gui.name.random-slot", 23),
                 createConfiguredItem("disguise.gui.name.random-item", Material.BOOK, "&cRandom Name",
@@ -677,9 +677,9 @@ public class DisguiseManager {
             inventory.setItem(slots[i], createActiveDisguiseItem(disguised.get(index)));
         }
 
-        inventory.setItem(getNextPageSlot(), createNamedItem(Material.EYE_OF_ENDER, "&aNext Page",
+        inventory.setItem(getNextPageSlot(), createNamedItem(Material.ENDER_EYE, "&aNext Page",
                 "&7Click to go to the next disguise page."));
-        inventory.setItem(getPreviousPageSlot(), createNamedItem(Material.EYE_OF_ENDER, "&cPrevious Page",
+        inventory.setItem(getPreviousPageSlot(), createNamedItem(Material.ENDER_EYE, "&cPrevious Page",
                 "&7Click to go back a disguise page."));
 
         player.openInventory(inventory);
@@ -1106,7 +1106,7 @@ public class DisguiseManager {
             return;
         }
 
-        if (item.getType() != Material.SKULL_ITEM) return;
+        if (item.getType() != Material.PLAYER_HEAD) return;
         String skin = CC.strip(item.getItemMeta().getDisplayName()).trim();
         if (cleanName(skin) == null) return;
 
@@ -1493,7 +1493,7 @@ public class DisguiseManager {
     }
 
     private void fillBorder(Inventory inventory) {
-        Material material = parseMaterial(plugin.getConfig().getString("disguise.gui.border.material", "STAINED_GLASS_PANE"), Material.STAINED_GLASS_PANE);
+        Material material = parseMaterial(plugin.getConfig().getString("disguise.gui.border.material", "STAINED_GLASS_PANE"), Material.GRAY_STAINED_GLASS_PANE);
         short data = (short) plugin.getConfig().getInt("disguise.gui.border.data", 15);
         String name = plugin.getConfig().getString("disguise.gui.border.name", " ");
         ItemStack filler = createNamedItem(new ItemStack(material, 1, data), name);
@@ -1505,7 +1505,7 @@ public class DisguiseManager {
     }
 
     private ItemStack createSkinItem(String skin) {
-        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwner(skin);
         Map<String, String> placeholders = plugin.getMessageManager().placeholders("{skin}", skin);
@@ -1517,7 +1517,7 @@ public class DisguiseManager {
     }
 
     private ItemStack createRankItem(dev.evaulx.core.models.Rank rank, int order) {
-        Material material = parseMaterial(plugin.getConfig().getString("disguise.gui.rank.material", "STAINED_CLAY"), Material.STAINED_CLAY);
+        Material material = parseMaterial(plugin.getConfig().getString("disguise.gui.rank.material", "STAINED_CLAY"), Material.GRAY_TERRACOTTA);
         ItemStack item = new ItemStack(material, 1, colorData(rank.getColor()));
         ItemMeta meta = item.getItemMeta();
         Map<String, String> placeholders = plugin.getMessageManager().placeholders(
@@ -1543,7 +1543,7 @@ public class DisguiseManager {
         String skin = profile == null ? "" : profile.getDisguiseSkin();
         String rank = profile == null ? "" : profile.getDisguiseRank();
 
-        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwner(disguiseName == null ? target.getName() : disguiseName);
         meta.setDisplayName(CC.color("&c" + nullToNone(disguiseName)));

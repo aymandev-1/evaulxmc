@@ -4,6 +4,7 @@ main: dev.evaulx.core.EvaulxCore
 description: Core Manager for your Minecraft Server
 author: EvaulxMC
 website: https://evaulx.dev
+api-version: '1.21'
 
 softdepend:
   - PlaceholderAPI

@@ -1118,9 +1118,9 @@ public class StaffRequestManager {
 
     public enum StaffModeItem {
         TELEPORT_COMPASS("teleport-compass", Material.COMPASS, 0, "&cTeleport Compass"),
-        RANDOM_TELEPORT("random-teleport", Material.WATCH, 1, "&cRandom Teleport"),
+        RANDOM_TELEPORT("random-teleport", Material.CLOCK, 1, "&cRandom Teleport"),
         INSPECT_PLAYER("inspect-player", Material.BLAZE_ROD, 3, "&cInspect Player"),
-        TOGGLE_VANISH("toggle-vanish", Material.EYE_OF_ENDER, 5, "&cToggle Vanish"),
+        TOGGLE_VANISH("toggle-vanish", Material.ENDER_EYE, 5, "&cToggle Vanish"),
         REPORTS("reports", Material.BOOK, 7, "&cReports");
 
         private final String key;

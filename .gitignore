@@ -1,0 +1,7 @@
+target/
+*.iml
+.idea/
+BuildTools.jar
+BuildTools.log.txt
+PortableGit-*/
+*.log

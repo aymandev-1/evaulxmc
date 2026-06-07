@@ -417,6 +417,8 @@ public class LobbyProtectionListener implements Listener {
         String name = material.name();
         if (name.endsWith("_DOOR") || name.endsWith("_DOOR_BLOCK")
                 || name.endsWith("_FENCE_GATE")
+                || name.endsWith("_TRAPDOOR")
+                || name.endsWith("_BED")
                 || name.contains("BUTTON")
                 || name.contains("PRESSURE_PLATE")) {
             return true;
@@ -425,28 +427,23 @@ public class LobbyProtectionListener implements Listener {
         switch (material) {
             case ANVIL:
             case BEACON:
-            case BED_BLOCK:
             case BREWING_STAND:
-            case BURNING_FURNACE:
-            case CAKE_BLOCK:
+            case CAKE:
             case CHEST:
             case DAYLIGHT_DETECTOR:
-            case DIODE_BLOCK_OFF:
-            case DIODE_BLOCK_ON:
+            case REPEATER:
             case DISPENSER:
             case DROPPER:
-            case ENCHANTMENT_TABLE:
+            case ENCHANTING_TABLE:
             case ENDER_CHEST:
             case FURNACE:
             case HOPPER:
             case JUKEBOX:
             case LEVER:
             case NOTE_BLOCK:
-            case REDSTONE_COMPARATOR_OFF:
-            case REDSTONE_COMPARATOR_ON:
+            case COMPARATOR:
             case TRAPPED_CHEST:
-            case TRAP_DOOR:
-            case WORKBENCH:
+            case CRAFTING_TABLE:
                 return true;
             default:
                 return false;

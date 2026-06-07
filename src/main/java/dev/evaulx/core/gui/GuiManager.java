@@ -113,13 +113,13 @@ public class GuiManager implements Listener {
                 Arrays.asList("&7Current world: &f" + world,
                         "&7Mode: &f" + protectionMode(),
                         "&7This world: " + enabledText(isProtectedWorld(world)))));
-        inventory.setItem(10, item(Material.REDSTONE_TORCH_ON, "&cToggle Protection",
+        inventory.setItem(10, item(Material.REDSTONE_TORCH, "&cToggle Protection",
                 Arrays.asList("&7Current: " + enabledText(plugin.getConfig().getBoolean("lobby-protection.enabled", true)),
                         "&aClick &7to switch the master protection state.")));
         inventory.setItem(11, item(Material.ANVIL, "&cEnforce Current World",
                 Arrays.asList("&7Enables protection and turns on strict options.",
                         "&7World: &f" + world)));
-        inventory.setItem(12, item(Material.GRASS, "&cProtect Current World",
+        inventory.setItem(12, item(Material.GRASS_BLOCK, "&cProtect Current World",
                 Collections.singletonList("&7Adds &f" + world + " &7to protected worlds.")));
         inventory.setItem(13, item(Material.DIRT, "&cUnprotect Current World",
                 Collections.singletonList("&7Removes &f" + world + " &7from protected worlds.")));
@@ -133,7 +133,7 @@ public class GuiManager implements Listener {
 
         inventory.setItem(20, toggleItem(Material.IRON_SWORD, "Damage", "prevent-damage"));
         inventory.setItem(21, toggleItem(Material.TNT, "Explosions", "prevent-explosions"));
-        inventory.setItem(22, toggleItem(Material.MONSTER_EGG, "Mobs", "no-mobs"));
+        inventory.setItem(22, toggleItem(Material.ZOMBIE_SPAWN_EGG, "Mobs", "no-mobs"));
         inventory.setItem(23, toggleItem(Material.CHEST, "Drops/Pickup", "prevent-item-drops"));
         inventory.setItem(24, toggleItem(Material.LEVER, "Interactions", "prevent-block-interact"));
         inventory.setItem(25, toggleItem(Material.WATER_BUCKET, "Liquid/Growth", "prevent-liquid-flow"));
@@ -171,9 +171,9 @@ public class GuiManager implements Listener {
         inventory.setItem(11, item(Material.PAPER, "&cHelpOP", Collections.singletonList("&7Open help request queue.")));
         inventory.setItem(12, item(Material.GOLD_INGOT, "&6Pending Grants", Collections.singletonList("&7View grant requests.")));
         inventory.setItem(13, item(Material.PACKED_ICE, "&cFrozen Players", Collections.singletonList("&7Count: &f" + plugin.getStaffRequestManager().getFrozenCount())));
-        inventory.setItem(14, item(Material.WATCH, "&cRecent Actions", Collections.singletonList("&7Latest staff actions.")));
+        inventory.setItem(14, item(Material.CLOCK, "&cRecent Actions", Collections.singletonList("&7Latest staff actions.")));
         inventory.setItem(15, item(Material.BOOK, "&cStaff Sessions", Collections.singletonList("&7View tracked staff time.")));
-        inventory.setItem(16, item(Material.REDSTONE_TORCH_ON, "&cMaintenance", Collections.singletonList("&7Open maintenance controls.")));
+        inventory.setItem(16, item(Material.REDSTONE_TORCH, "&cMaintenance", Collections.singletonList("&7Open maintenance controls.")));
 
         int slot = 27;
         for (StaffAction action : plugin.getStaffRequestManager().getRecentActions(18)) {
@@ -192,7 +192,7 @@ public class GuiManager implements Listener {
         Inventory inventory = Bukkit.createInventory(null, 27, maintenanceTitle());
         boolean enabled = plugin.getConfig().getBoolean("maintenance.enabled", false);
         String reason = plugin.getConfig().getString("maintenance.reason", "Server maintenance");
-        inventory.setItem(4, item(Material.REDSTONE_TORCH_ON, "&cMaintenance",
+        inventory.setItem(4, item(Material.REDSTONE_TORCH, "&cMaintenance",
                 Arrays.asList("&7Enabled: " + enabledText(enabled),
                         "&7Reason: &f" + reason,
                         "&7Allowed players: &f" + plugin.getConfig().getStringList("maintenance.allowed-players").size())));
@@ -200,7 +200,7 @@ public class GuiManager implements Listener {
                 enabled ? "&cDisable Maintenance" : "&aEnable Maintenance",
                 Collections.singletonList("&7Click to switch the current mode.")));
         inventory.setItem(12, item(Material.PAPER, "&cStatus", Collections.singletonList("&7Print maintenance status to chat.")));
-        inventory.setItem(14, item(Material.SKULL_ITEM, "&cAllowed Players",
+        inventory.setItem(14, item(Material.PLAYER_HEAD, "&cAllowed Players",
                 Collections.singletonList("&7Use /maintenance allow <player> to add.")));
         inventory.setItem(16, item(Material.BOOK, "&cStaff Sessions", Collections.singletonList("&7Open session tracking.")));
         inventory.setItem(22, item(Material.ARROW, "&cBack", Collections.singletonList("&7Return to staff dashboard.")));
@@ -262,7 +262,7 @@ public class GuiManager implements Listener {
         }
 
         Inventory inventory = Bukkit.createInventory(null, 54, playerProfileTitle().replace("{player}", safeName(target.getName())));
-        inventory.setItem(4, item(Material.SKULL_ITEM, "&f" + safeName(target.getName()),
+        inventory.setItem(4, item(Material.PLAYER_HEAD, "&f" + safeName(target.getName()),
                 Arrays.asList("&7UUID: &f" + target.getUniqueId(),
                         "&7Online: &f" + target.isOnline(),
                         "&7IP: &f" + (profile.getIp() == null ? "unknown" : profile.getIp()))));
@@ -273,11 +273,11 @@ public class GuiManager implements Listener {
                 Collections.singletonList("&7Stored: &f" + plugin.getGrantManager().getGrants(target.getUniqueId()).size())));
         inventory.setItem(12, item(Material.BOOK, "&cPunishments",
                 Collections.singletonList("&7Stored: &f" + plugin.getPunishmentManager().getHistory(target.getUniqueId()).size())));
-        inventory.setItem(13, item(Material.EMPTY_MAP, "&cNotes",
+        inventory.setItem(13, item(Material.MAP, "&cNotes",
                 Collections.singletonList("&7Stored: &f" + plugin.getNoteManager().getNoteCount(target.getUniqueId()))));
         inventory.setItem(14, item(Material.NETHER_STAR, "&dTag",
                 Collections.singletonList("&7Current: " + (profile.getTag().isEmpty() ? "&fnone" : profile.getTag()))));
-        inventory.setItem(15, item(Material.EYE_OF_ENDER, "&cStaff State",
+        inventory.setItem(15, item(Material.ENDER_EYE, "&cStaff State",
                 Arrays.asList("&7Vanished: &f" + profile.isVanished(),
                         "&7Staff mode: &f" + profile.isStaffMode(),
                         "&7God: &f" + profile.isGodMode(),
@@ -285,8 +285,8 @@ public class GuiManager implements Listener {
         inventory.setItem(16, item(Material.ICE, "&cFreeze",
                 Collections.singletonList("&7Frozen: &f" + (target.isOnline() && plugin.getStaffRequestManager().isFrozen(target.getPlayer())))));
         inventory.setItem(28, item(Material.GOLD_INGOT, "&6Grant Rank", Collections.singletonList("&7Open grant GUI.")));
-        inventory.setItem(29, item(Material.EMPTY_MAP, "&cNotes", Collections.singletonList("&7Open notes.")));
-        inventory.setItem(30, item(Material.WATCH, "&cMod Logs", Collections.singletonList("&7Open mod logs.")));
+        inventory.setItem(29, item(Material.MAP, "&cNotes", Collections.singletonList("&7Open notes.")));
+        inventory.setItem(30, item(Material.CLOCK, "&cMod Logs", Collections.singletonList("&7Open mod logs.")));
         inventory.setItem(49, item(Material.BARRIER, "&cClose", Collections.singletonList("&7Close this profile.")));
         viewer.openInventory(inventory);
     }
@@ -341,7 +341,7 @@ public class GuiManager implements Listener {
         for (Player target : Bukkit.getOnlinePlayers()) {
             if (slot >= 45) break;
             if (target.equals(player) && action == PlayerAction.FREEZE) continue;
-            inventory.setItem(slot++, item(Material.SKULL_ITEM, "&f" + target.getName(),
+            inventory.setItem(slot++, item(Material.PLAYER_HEAD, "&f" + target.getName(),
                     Arrays.asList("&7Click to " + action.getLabel() + ".")));
         }
 
@@ -409,7 +409,7 @@ public class GuiManager implements Listener {
             String duration = durations.get(i);
             int slot = durationSlots[i];
             slots.put(slot, duration);
-            inventory.setItem(slot, item(Material.WATCH, "&c" + duration,
+            inventory.setItem(slot, item(Material.CLOCK, "&c" + duration,
                     Arrays.asList("&7Rank: &f" + rankName,
                             "&7Target: &f" + safeName(targetName),
                             "",
@@ -494,7 +494,7 @@ public class GuiManager implements Listener {
             lore.add(unlocked ? "&aLeft-click &7to equip." : "&cLocked: &f" + requiredTagPermission(tag));
             lore.add("&eRight-click &7to preview.");
             pageSlots.put(slots[i], tag);
-            inventory.setItem(slots[i], item(unlocked ? Material.NAME_TAG : Material.INK_SACK,
+            inventory.setItem(slots[i], item(unlocked ? Material.NAME_TAG : Material.INK_SAC,
                     tag.display + (unlocked ? "" : " &8(Locked)"), lore));
         }
         tagSlots.put(player.getUniqueId(), pageSlots);
@@ -576,7 +576,7 @@ public class GuiManager implements Listener {
                 Collections.singletonList("&7Current: &f" + rank.isDefault())));
         inventory.setItem(11, item(Material.IRON_SWORD, "&cStaff",
                 Collections.singletonList("&7Current: &f" + rank.isStaff())));
-        inventory.setItem(12, item(Material.INK_SACK, "&cHidden",
+        inventory.setItem(12, item(Material.INK_SAC, "&cHidden",
                 Collections.singletonList("&7Current: &f" + rank.isHidden())));
         inventory.setItem(13, item(Material.PAPER, "&cCategory",
                 Arrays.asList("&7Current: &f" + plugin.getRankManager().getRankCategory(rank),
@@ -593,7 +593,7 @@ public class GuiManager implements Listener {
     public void onClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) return;
 
-        String title = event.getInventory().getTitle();
+        String title = event.getView().getTitle();
         Player player = (Player) event.getWhoClicked();
         if (title.equals(staffTitle())) {
             event.setCancelled(true);
@@ -1003,9 +1003,9 @@ public class GuiManager implements Listener {
         Inventory inventory = Bukkit.createInventory(null, 27, rankCategoryTitle().replace("{rank}", rank.getName()));
         Map<Integer, String> slots = new HashMap<>();
         addRankCategoryItem(inventory, slots, 10, "Staff", Material.IRON_SWORD, "&cStaff", rank);
-        addRankCategoryItem(inventory, slots, 11, "Media", Material.REDSTONE_TORCH_ON, "&cMedia", rank);
+        addRankCategoryItem(inventory, slots, 11, "Media", Material.REDSTONE_TORCH, "&cMedia", rank);
         addRankCategoryItem(inventory, slots, 12, "Store", Material.EMERALD, "&cStore", rank);
-        addRankCategoryItem(inventory, slots, 13, "Hidden", Material.INK_SACK, "&cHidden", rank);
+        addRankCategoryItem(inventory, slots, 13, "Hidden", Material.INK_SAC, "&cHidden", rank);
         addRankCategoryItem(inventory, slots, 14, "Default", Material.PAPER, "&cDefault", rank);
         inventory.setItem(22, item(Material.ARROW, "&cBack", Collections.singletonList("&7Return to rank editor.")));
         rankCategorySlots.put(viewer.getUniqueId(), slots);
@@ -1055,7 +1055,7 @@ public class GuiManager implements Listener {
         String id = name.substring(1).split(" ")[0];
         if (event.isRightClick()) Bukkit.dispatchCommand(player, "reports close " + id + " Handled from GUI");
         else Bukkit.dispatchCommand(player, "reports claim " + id);
-        openReports(player, event.getInventory().getTitle().equals(helpOpTitle()));
+        openReports(player, event.getView().getTitle().equals(helpOpTitle()));
     }
 
     private void handlePunishClick(Player player, int slot) {

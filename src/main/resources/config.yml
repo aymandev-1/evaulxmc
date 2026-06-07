@@ -493,7 +493,7 @@ disguise:
     next-page-slot: 19
     previous-page-slot: 25
     border:
-      material: STAINED_GLASS_PANE
+      material: BLACK_STAINED_GLASS_PANE
       data: 15
       name: " "
     skin:
@@ -503,7 +503,7 @@ disguise:
         - "&7Player Name: &f{skin}"
         - "&7Click to select this skin."
     rank:
-      material: STAINED_CLAY
+      material: GRAY_TERRACOTTA
       name: "{rank_display}"
       lore:
         - "&7Rank: &f{rank}"
@@ -515,7 +515,7 @@ disguise:
       custom-slot: 21
       random-slot: 23
       custom-item:
-        material: SIGN
+        material: OAK_SIGN
         name: "&cPick your name"
         lore:
           - "&7Click to write your own disguise name."
@@ -588,7 +588,7 @@ staff-tools:
       random-teleport:
         enabled: true
         slot: 1
-        material: WATCH
+        material: CLOCK
         name: "&cRandom Teleport"
         lore: []
       inspect-player:
@@ -600,7 +600,7 @@ staff-tools:
       toggle-vanish:
         enabled: true
         slot: 5
-        material: EYE_OF_ENDER
+        material: ENDER_EYE
         name: "&cToggle Vanish"
         lore: []
       reports:
@@ -672,7 +672,7 @@ gui:
         name: "&cInspect"
       vanish:
         slot: 21
-        material: EYE_OF_ENDER
+        material: ENDER_EYE
         name: "&cToggle Vanish"
       staffmode:
         slot: 22
@@ -680,11 +680,11 @@ gui:
         name: "&cStaff Mode"
       notes:
         slot: 15
-        material: EMPTY_MAP
+        material: MAP
         name: "&cNotes"
       modlogs:
         slot: 16
-        material: WATCH
+        material: CLOCK
         name: "&cMod Logs"
       ranks:
         slot: 23
@@ -704,7 +704,7 @@ gui:
         name: "&cStaff Dashboard"
       maintenance:
         slot: 29
-        material: REDSTONE_TORCH_ON
+        material: REDSTONE_TORCH
         name: "&cMaintenance"
       sessions:
         slot: 30
@@ -842,7 +842,7 @@ punishment-presets:
     third: "ban {player} cheating - repeated offences"
   chat:
     display-name: "&6Chat Offence"
-    material: BOOK_AND_QUILL
+    material: WRITABLE_BOOK
     lore:
       - "&7Applies the next chat punishment."
     first: "tempmute {player} 1h chat - first offence"
