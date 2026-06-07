@@ -11,13 +11,8 @@ All notable changes to EvaulxMC are documented here.
   rewrite and the whole branch needs live-server QA).
 
 ### Added — new features
-- **Warps:** `/warp`, `/warps`, `/setwarp`, `/delwarp` with tab-completion, persisted to
-  `data/warps.json`. Permissions `evaulx.warp` (use) and `evaulx.warp.admin` (manage).
-- **Homes:** `/home`, `/homes`, `/sethome`, `/delhome` with per-rank limits (`evaulx.homes.<n>`,
-  `evaulx.homes.unlimited`, `homes.default-limit`), persisted to `data/homes.json`.
 - **AFK:** `/afk [reason]`, automatic AFK after `afk.auto-minutes` of inactivity, configurable
   enter/leave broadcasts, `evaulx.afk.exempt` to opt out of auto-AFK.
-- `/warp` and `/home` set your `/back` location before teleporting.
 
 ## 1.0.1 — 2026-06-07
 

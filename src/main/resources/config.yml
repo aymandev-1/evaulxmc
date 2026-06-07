@@ -362,12 +362,6 @@ first-join:
   message: ""
   commands: []
 
-# Player homes (/home, /sethome, /delhome, /homes).
-# default-limit applies to everyone without an evaulx.homes.<number> permission.
-# Give a rank evaulx.homes.5 for 5 homes, or evaulx.homes.unlimited for no cap.
-homes:
-  default-limit: 3
-
 # AFK system (/afk). auto-minutes: idle minutes before auto-AFK (0 disables).
 afk:
   auto-minutes: 5

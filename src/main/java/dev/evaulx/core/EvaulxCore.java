@@ -47,8 +47,6 @@ public class EvaulxCore extends JavaPlugin {
     private PlayerLookupManager playerLookupManager;
     private GrantTemplateManager grantTemplateManager;
     private GuiManager guiManager;
-    private WarpManager warpManager;
-    private HomesManager homesManager;
     private AfkManager afkManager;
     private RedisSyncManager redisSyncManager;
     private EvaulxMCHubHook hubHook;
@@ -95,10 +93,6 @@ public class EvaulxCore extends JavaPlugin {
         this.noteManager = new NoteManager(this);
         this.noteManager.load();
         this.punishmentPresetManager = new PunishmentPresetManager(this);
-        this.warpManager = new WarpManager(this);
-        this.warpManager.load();
-        this.homesManager = new HomesManager(this);
-        this.homesManager.load();
         this.afkManager = new AfkManager(this);
         this.guiManager = new GuiManager(this);
         this.hubHook = new EvaulxMCHubHook(this);
@@ -364,26 +358,6 @@ public class EvaulxCore extends JavaPlugin {
         getCommand("lobbyprotect").setExecutor(lobbyProtectionCommand);
         getCommand("lobbyprotect").setTabCompleter(lobbyProtectionCommand);
 
-        // Warps
-        WarpCommand warpCommand = new WarpCommand(this);
-        getCommand("warp").setExecutor(warpCommand);
-        getCommand("warp").setTabCompleter(warpCommand);
-        getCommand("setwarp").setExecutor(new SetWarpCommand(this));
-        DelWarpCommand delWarpCommand = new DelWarpCommand(this);
-        getCommand("delwarp").setExecutor(delWarpCommand);
-        getCommand("delwarp").setTabCompleter(delWarpCommand);
-        getCommand("warps").setExecutor(new WarpsCommand(this));
-
-        // Homes
-        HomeCommand homeCommand = new HomeCommand(this);
-        getCommand("home").setExecutor(homeCommand);
-        getCommand("home").setTabCompleter(homeCommand);
-        getCommand("sethome").setExecutor(new SetHomeCommand(this));
-        DelHomeCommand delHomeCommand = new DelHomeCommand(this);
-        getCommand("delhome").setExecutor(delHomeCommand);
-        getCommand("delhome").setTabCompleter(delHomeCommand);
-        getCommand("homes").setExecutor(new HomesCommand(this));
-
         // AFK
         getCommand("afk").setExecutor(new AfkCommand(this));
     }
@@ -434,8 +408,6 @@ public class EvaulxCore extends JavaPlugin {
     public NoteManager getNoteManager() { return noteManager; }
     public PunishmentPresetManager getPunishmentPresetManager() { return punishmentPresetManager; }
     public GuiManager getGuiManager() { return guiManager; }
-    public WarpManager getWarpManager() { return warpManager; }
-    public HomesManager getHomesManager() { return homesManager; }
     public AfkManager getAfkManager() { return afkManager; }
     public RedisSyncManager getRedisSyncManager() { return redisSyncManager; }
     public EvaulxMCHubHook getHubHook() { return hubHook; }

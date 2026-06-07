@@ -269,26 +269,6 @@ commands:
   lobbyprotect:
     description: Manage and enforce lobby protection
     aliases: [lobbyprotection, protectlobby, lp]
-  warp:
-    description: Teleport to a warp
-  setwarp:
-    description: Create or update a warp
-  delwarp:
-    description: Delete a warp
-    aliases: [deletewarp, removewarp]
-  warps:
-    description: List warps
-    aliases: [warplist]
-  home:
-    description: Teleport to one of your homes
-  sethome:
-    description: Set a home at your location
-  delhome:
-    description: Delete one of your homes
-    aliases: [deletehome, removehome]
-  homes:
-    description: List your homes
-    aliases: [homelist]
   afk:
     description: Toggle your AFK status
     aliases: [away]
@@ -349,10 +329,6 @@ permissions:
       evaulx.list: true
       evaulx.lobbyprotection: true
       evaulx.lookup: true
-      evaulx.warp: true
-      evaulx.warp.admin: true
-      evaulx.home: true
-      evaulx.homes.unlimited: true
       evaulx.afk: true
       evaulx.maintenance: true
       evaulx.maintenance.bypass: true
@@ -784,18 +760,6 @@ permissions:
     default: op
   evaulx.lobbyprotection:
     description: Manage lobby protection
-    default: op
-  evaulx.warp:
-    description: Use and list warps
-    default: true
-  evaulx.warp.admin:
-    description: Create and delete warps
-    default: op
-  evaulx.home:
-    description: Set, delete and teleport to your homes
-    default: true
-  evaulx.homes.unlimited:
-    description: Bypass the home limit
     default: op
   evaulx.afk:
     description: Toggle your AFK status

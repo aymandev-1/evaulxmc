@@ -84,9 +84,6 @@ public class ConfigMigrationManager {
                 changed |= setIfMissing("discord.player-head.enabled", true);
                 changed |= setIfMissing("discord.player-head.url", "https://mc-heads.net/avatar/{id}/100");
             }
-            if (current < 16) {
-                changed |= setIfMissing("homes.default-limit", 3);
-            }
             if (current < 17) {
                 changed |= setIfMissing("afk.auto-minutes", 5);
                 changed |= setIfMissing("afk.broadcast", true);
