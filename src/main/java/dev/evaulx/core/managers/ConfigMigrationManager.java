@@ -4,7 +4,7 @@ import dev.evaulx.core.EvaulxCore;
 
 public class ConfigMigrationManager {
 
-    private static final int CONFIG_VERSION = 15;
+    private static final int CONFIG_VERSION = 17;
 
     private final EvaulxCore plugin;
 
@@ -83,6 +83,15 @@ public class ConfigMigrationManager {
             if (current < 15) {
                 changed |= setIfMissing("discord.player-head.enabled", true);
                 changed |= setIfMissing("discord.player-head.url", "https://mc-heads.net/avatar/{id}/100");
+            }
+            if (current < 16) {
+                changed |= setIfMissing("homes.default-limit", 3);
+            }
+            if (current < 17) {
+                changed |= setIfMissing("afk.auto-minutes", 5);
+                changed |= setIfMissing("afk.broadcast", true);
+                changed |= setIfMissing("afk.enter-message", "&7* &f{player} &7is now AFK{reason}.");
+                changed |= setIfMissing("afk.leave-message", "&7* &f{player} &7is no longer AFK.");
             }
             plugin.getConfig().set("config-version", CONFIG_VERSION);
             changed = true;

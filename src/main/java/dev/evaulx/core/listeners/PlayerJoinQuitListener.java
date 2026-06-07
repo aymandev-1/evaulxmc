@@ -23,6 +23,7 @@ public class PlayerJoinQuitListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         boolean firstJoin = !player.hasPlayedBefore();
+        plugin.getAfkManager().handleJoin(player);
         TaskUtil.async(() -> {
             PlayerProfile profile = plugin.getPlayerManager().loadProfile(player);
             profile.setIp(player.getAddress().getAddress().getHostAddress());
@@ -94,6 +95,7 @@ public class PlayerJoinQuitListener implements Listener {
             plugin.getDiscordManager().sendFrozenLogout(player.getName());
         }
         sendStaffServerAlert(player, false);
+        plugin.getAfkManager().handleQuit(player);
         plugin.getStaffRequestManager().endStaffSession(player);
         plugin.getPlayerLookupManager().remember(player.getUniqueId(), player.getName());
 

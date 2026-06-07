@@ -1,6 +1,6 @@
 # EvaulxMC Configuration
 # Core Manager for your Minecraft Server
-config-version: 15
+config-version: 17
 
 # Database type: MONGODB, MYSQL, FLATFILE
 database:
@@ -361,6 +361,19 @@ first-join:
   tag: ""
   message: ""
   commands: []
+
+# Player homes (/home, /sethome, /delhome, /homes).
+# default-limit applies to everyone without an evaulx.homes.<number> permission.
+# Give a rank evaulx.homes.5 for 5 homes, or evaulx.homes.unlimited for no cap.
+homes:
+  default-limit: 3
+
+# AFK system (/afk). auto-minutes: idle minutes before auto-AFK (0 disables).
+afk:
+  auto-minutes: 5
+  broadcast: true
+  enter-message: "&7* &f{player} &7is now AFK{reason}."
+  leave-message: "&7* &f{player} &7is no longer AFK."
 
 # Disguise settings
 disguise:
