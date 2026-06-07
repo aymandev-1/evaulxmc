@@ -1,0 +1,119 @@
+# Default messages for EvaulxMC (place overrides in plugins/EvaulxMC/messages.yml)
+# Customize messages per-server or per-gamemode by creating files under plugins/EvaulxMC/custom/messages/
+
+prefix: "&7[&cEvaulx&7] &r"
+no-permission: "&cYou do not have permission to perform this action."
+players-only: "&cOnly players can use this command."
+player-not-found: "&cPlayer not found."
+player-not-online: "&cPlayer not online."
+profile-loading: "&cThat player's profile is still loading."
+config-reloaded: "&aConfiguration reloaded."
+join-message: "&aWelcome to the server, %player%!"
+leave-message: "&cGoodbye, %player%!"
+
+state:
+  enabled: "&aON"
+  disabled: "&cOFF"
+  enabled-word: "&aenabled"
+  disabled-word: "&cdisabled"
+
+staffmode:
+  usage: "&cUsage: /staffmode [player] [on|off]"
+  enabled: "&aStaff mode enabled&7. You are now in creative mode."
+  disabled: "&7Staff mode &cdisabled&7."
+  already: "&7Staff mode is already {state} &7for &f{target}&7."
+  set-other: "&7Set staff mode for &f{target} &7to {state}&7."
+
+staffrecover:
+  no-snapshot: "&cNo staff mode recovery snapshot exists for &f{target}&c."
+  failed: "&cCould not restore staff mode snapshot for &f{target}&c."
+  restored: "&7Recovered staff mode inventory/state for &f{target}&7."
+  restored-target: "&7Your staff mode inventory/state was recovered by &f{staff}&7."
+
+commandspy:
+  enabled: "&7Command spy &aenabled&7."
+  disabled: "&7Command spy &cdisabled&7."
+
+vanish:
+  usage: "&cUsage: /vanish [player] [on|off]"
+  enabled: "&7You are now &cvanished&7."
+  disabled: "&7You are now &fvisible&7."
+  already: "&7Vanish is already {state} &7for &f{target}&7."
+  set-other: "&7Set vanish for &f{target} &7to {state}&7."
+  staff-notify: "&8[&cStaff&8] &f{player} &7is now {state}&7."
+
+disguise:
+  disabled: "&cDisguises are currently disabled."
+  usage: "&cUsage: /{command} <name|random|skin|rank|off|reload|clearskincache|debug|test|refresh|status|menu> [skin] [rank]"
+  skin-usage: "&cUsage: /{command} skin <skin>"
+  rank-usage: "&cUsage: /{command} rank <rank|none>"
+  debug-usage: "&cUsage: /{command} debug <player>"
+  refresh-usage: "&cUsage: /{command} refresh <player>"
+  test-usage: "&cUsage: /{command} test <skin> [rank]"
+  invalid-name: "&cDisguise name must be 3-16 letters, numbers, or underscores."
+  duplicate-name: "&cThat disguise name is already in use."
+  blacklisted-name: "&cThat disguise name is blocked."
+  restricted-name: "&cYou can only use names from your disguise name pool."
+  restricted-skin: "&cYou can only use skins from your disguise skin pool."
+  restricted-rank: "&cYou cannot disguise with that rank."
+  cooldown: "&cPlease wait {seconds}s before changing your disguise again."
+  rank-not-found: "&cRank not found."
+  skin-permission: "&cYou do not have permission to choose disguise skins."
+  rank-permission: "&cYou do not have permission to choose disguise ranks."
+  enabled: "&8[&cDisguise&8] &fYou are now disguised as &c{name}&f."
+  disabled-self: "&8[&cDisguise&8] &fYou are no longer disguised."
+  not-disguised: "&cYou are not disguised."
+  reloaded: "&aDisguise settings reloaded."
+  skin-cache-cleared: "&aDisguise skin cache cleared. &7Removed &f{count}&7 cached skin(s)."
+  skin-loading: "&7Loading skin &f{skin}&7..."
+  skin-loaded: "&aSkin loaded: &f{skin}&a."
+  skin-failed: "&cCould not load skin &f{skin}&c. Use a real Minecraft username."
+  skin-changed: "&aUpdated disguise skin to &f{skin}&a."
+  rank-changed: "&aUpdated disguise rank to &f{rank}&a."
+  refreshed: "&aRefreshed disguise for &f{target}&a."
+  staff-alert: "&8[&cStaff&8] &f{player} &7used &f/{command} &7as &c{name} &7skin &f{skin} &7rank &f{rank}&7 on &f{server}&7."
+  staff-undisguise-alert: "&8[&cStaff&8] &f{player} &7removed their disguise on &f{server}&7."
+  name-cancelled: "&cDisguise name selection cancelled."
+  name-prompt: "&7Type your disguise name in chat, or type &ccancel&7."
+  name-invalid: "&cName must be 3-16 letters, numbers, or underscores. Type another name or 'cancel'."
+  selection-expired: "&cYour disguise selection expired. Use /disguise again."
+  forced-undisguise: "&7Removed &f{target}&7's disguise."
+  force-not-disguised: "&cThat player is not disguised."
+  realname-not-found: "&cNo online disguised player matched &f{query}&c."
+
+staff-alerts:
+  join-local: "&b[&bS] &f{player} &7joined this server."
+  leave-local: "&b[&bS] &f{player} &7left this server."
+  join-network: "&8[&cNetwork&8] &f{player} &7joined &f{server}&7."
+  leave-network: "&8[&cNetwork&8] &f{player} &7left &f{server}&7."
+
+staff-tools:
+  no-target-block: "&cNo target block found."
+  teleport-compass: "&7Teleported to target block."
+  no-random-target: "&cNo non-staff players online."
+  random-teleport: "&7Randomly teleported to &f{target}&7."
+  inspect: "&7Opened &f{target}&7's inventory."
+  frozen-reminder: "&cYou are frozen. &7Reason: &f{reason}"
+
+action-bars:
+  enabled: true
+  staffmode:
+    enabled: "&aStaff mode enabled &8┃ &fGamemode: &cCREATIVE"
+    disabled: "&cStaff mode disabled"
+  vanish:
+    enabled: "&cVanish enabled &8┃ &fHidden from players"
+    disabled: "&aVanish disabled &8┃ &fYou are visible"
+  disguise:
+    enabled: "&cDisguised as &f{name}"
+    disabled: "&cDisguise removed"
+    skin-loaded: "&aSkin loaded┃ &f{skin}"
+    skin-failed: "&cSkin failed┃ &f{skin}"
+  status:
+    enabled: true
+    interval-ticks: 40
+    only-when-active: true
+    format: "&cStaff Mode: {staffmode} &8┃ &cVanish: {vanish} &8┃ &cNick: &f{nick}"
+
+# Example of gamemode-specific message key
+gamemode:
+  default: "&eYou are now in %gamemode% mode."

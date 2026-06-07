@@ -1,0 +1,18 @@
+# Server core default settings. Customize per-server by copying this into plugins/EvaulxMC/custom/configs/ and editing.
+
+# General
+server-name: "My Server"
+allow-multiple-gamemodes: true
+default-gamemode: SURVIVAL
+
+# Modules to load by default (module filenames without extension)
+enabled-modules:
+  - example
+
+# Permissions prefix applied by core
+permission-prefix: "evaulxcore"
+
+# Notes:
+# - Create files under plugins/EvaulxMC/custom/gamemodes/ with gamemode-specific settings.
+# - Create files under plugins/EvaulxMC/custom/modules/ to add per-module configs.
+# - Messages can be overridden in plugins/EvaulxMC/custom/messages/

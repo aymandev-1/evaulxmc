@@ -1,0 +1,863 @@
+# EvaulxMC Configuration
+# Core Manager for your Minecraft Server
+config-version: 15
+
+# Database type: MONGODB, MYSQL, FLATFILE
+database:
+  type: FLATFILE
+
+  mongodb:
+    host: localhost
+    port: 27017
+    database: evaulxmc
+    username: ""
+    password: ""
+    auth-database: admin
+
+  mysql:
+    host: localhost
+    port: 3306
+    database: evaulxmc
+    username: root
+    password: ""
+    pool-size: 10
+
+  flatfile:
+    # Relative paths are stored inside plugins/EvaulxMC only.
+    path: data
+
+# Redis configuration (for multi-server sync)
+redis:
+  enabled: false
+  ip: localhost
+  port: 6379
+
+# Third-party compatibility hooks.
+hooks:
+  vault:
+    enabled: true
+  luckperms:
+    import-on-startup: false
+
+# Server settings
+server:
+  name: "EvaulxMC"
+  network: false
+  server-id: "hub"
+  proxy: false
+
+# EvaulxMCHub hook
+# This keeps nametag/display refreshes owned by EvaulxMCHub when that plugin is installed.
+hub-hook:
+  enabled: true
+  plugin-name: "EvaulxMCHub"
+  # Optional fully-qualified service class if EvaulxMCHub registers a Bukkit service.
+  # Leave blank to auto-detect services containing "EvaulxMCHub" and "API" or "Service".
+  api-service-class: ""
+  handles-nametags: true
+  refresh-methods:
+    - "refreshPlayer"
+    - "updatePlayer"
+    - "refreshDisplay"
+  # Optional fallback command if your hub plugin has no public refresh API.
+  # Example: "evaulxmchub refresh {player}"
+  refresh-command: ""
+
+# Spawn location; set in-game with /setspawn
+spawn:
+  world: ""
+  x: 0
+  y: 0
+  z: 0
+  yaw: 0
+  pitch: 0
+
+# Chat settings
+chat:
+  format: "{tag}{prefix}{namecolor}{player}{suffix}&7: {message}"
+  range: -1  # -1 = global
+  filter-enabled: false
+  filtered-words:
+    - "badword1"
+    - "badword2"
+  anti-spam:
+    enabled: true
+    cooldown-seconds: 1.5
+    block-repeat: true
+    cooldown-message: "&cSlow down before chatting again."
+    repeat-message: "&cDo not repeat the same message."
+  caps:
+    enabled: true
+    min-length: 8
+    max-percent: 70
+  links:
+    block: false
+    allowed-domains:
+      - "evaulx.dev"
+    block-message: "&cLinks are not allowed in chat."
+  mentions:
+    enabled: true
+    color: "&c"
+
+# Cosmetic tags used by /tag.
+tags:
+  require-per-tag-permission: true
+  show-locked: true
+  custom-max-raw-length: 48
+  custom-max-visible-length: 16
+  gui:
+    title: "&8Tags {page}/{pages}"
+  catalog:
+    owner:
+      display: "&7[&4OP&7]"
+      category: "Staff"
+      rarity: "Exclusive"
+      description: "Server owner tag."
+      permission: "evaulx.tag.owner"
+      ranks: ["Owner"]
+      order: 10
+    admin:
+      display: "&c[Admin]"
+      category: "Staff"
+      rarity: "Staff"
+      description: "Administrator tag."
+      permission: "evaulx.tag.admin"
+      ranks: ["Admin", "Platform-Admin"]
+      order: 20
+    mod:
+      display: "&2[Mod]"
+      category: "Staff"
+      rarity: "Staff"
+      description: "Moderator tag."
+      permission: "evaulx.tag.mod"
+      ranks: ["Mod", "Senior-Mod"]
+      order: 30
+    helper:
+      display: "&9[Helper]"
+      category: "Staff"
+      rarity: "Staff"
+      description: "Helper tag."
+      permission: "evaulx.tag.helper"
+      ranks: []
+      order: 40
+    vip:
+      display: "&6[VIP]"
+      category: "Donator"
+      rarity: "Rare"
+      description: "VIP supporter tag."
+      permission: "evaulx.tag.vip"
+      ranks: ["VIP"]
+      order: 100
+    mvp:
+      display: "&e[MVP]"
+      category: "Donator"
+      rarity: "Epic"
+      description: "MVP supporter tag."
+      permission: "evaulx.tag.mvp"
+      ranks: []
+      order: 110
+    legend:
+      display: "&6[Legend]"
+      category: "Donator"
+      rarity: "Legendary"
+      description: "Top supporter tag."
+      permission: "evaulx.tag.legend"
+      ranks: ["Evaulx"]
+      order: 120
+    media:
+      display: "&d[Media]"
+      category: "Creator"
+      rarity: "Creator"
+      description: "Media creator tag."
+      permission: "evaulx.tag.media"
+      ranks: ["Youtuber", "Twitch"]
+      order: 200
+    streamer:
+      display: "&5[Streamer]"
+      category: "Creator"
+      rarity: "Creator"
+      description: "Live streamer tag."
+      permission: "evaulx.tag.streamer"
+      ranks: ["Twitch"]
+      order: 210
+    yt:
+      display: "&c[YT]"
+      category: "Creator"
+      rarity: "Creator"
+      description: "Video creator tag."
+      permission: "evaulx.tag.yt"
+      ranks: ["Youtuber"]
+      order: 220
+    builder:
+      display: "&a[Builder]"
+      category: "Community"
+      rarity: "Rare"
+      description: "Builder tag."
+      permission: "evaulx.tag.builder"
+      ranks: ["Builder"]
+      order: 300
+    partner:
+      display: "&3[Partner]"
+      category: "Community"
+      rarity: "Epic"
+      description: "Partner tag."
+      permission: "evaulx.tag.partner"
+      ranks: []
+      order: 310
+    veteran:
+      display: "&8[Veteran]"
+      category: "Community"
+      rarity: "Legacy"
+      description: "Long-time community member tag."
+      permission: "evaulx.tag.veteran"
+      ranks: []
+      order: 320
+    champion:
+      display: "&b[Champion]"
+      category: "Achievement"
+      rarity: "Epic"
+      description: "Tournament or event winner tag."
+      permission: "evaulx.tag.champion"
+      ranks: []
+      order: 400
+    grinder:
+      display: "&3[Grinder]"
+      category: "Achievement"
+      rarity: "Rare"
+      description: "Progression and playtime tag."
+      permission: "evaulx.tag.grinder"
+      ranks: []
+      order: 410
+    seasonal:
+      display: "&a[Seasonal]"
+      category: "Limited"
+      rarity: "Limited"
+      description: "Limited seasonal event tag."
+      permission: "evaulx.tag.seasonal"
+      ranks: []
+      order: 500
+  # Legacy/public list. These remain available to anyone with evaulx.tag.
+  available:
+    - "&7[Member]"
+    - "&f[Verified]"
+    - "&6[OG]"
+    - "&b[Beta]"
+    - "&e[Pro]"
+    - "&a[Chill]"
+    - "&d[Hype]"
+    - "&3[Grinder]"
+    - "&9[Event]"
+
+# Display, scoreboard team, and tab-list settings.
+nametags:
+  enabled: true
+  format: "{tag}{prefix}{namecolor}{player}{suffix}"
+  scoreboard:
+    enabled: true
+    prefix-format: "{tag}{prefix}{namecolor}"
+    suffix-format: "{suffix}"
+  tab-list:
+    enabled: true
+    format: "{prefix}{namecolor}{player}"
+    # Spigot 1.8 tab names are strict. Raise only if your server jar supports longer names.
+    max-visible-length: 16
+
+# Lobby protection. Empty worlds means every loaded world is protected.
+# Staff can toggle /buildmode or use evaulx.protection.bypass to build.
+lobby-protection:
+  enabled: true
+  worlds: []
+  regions:
+    enabled: true
+    entries: {}
+  notify-on-deny: true
+  deny-message: "&cYou cannot modify the lobby. Use &f/buildmode &cif you are staff."
+  deny-message-cooldown-ms: 1500
+  prevent-physical-interact: true
+  prevent-block-interact: true
+  prevent-dangerous-item-use: true
+  prevent-entity-interact: true
+  prevent-pistons: true
+  prevent-fire: true
+  prevent-spread: true
+  prevent-liquid-flow: true
+  prevent-growth: true
+  prevent-block-form: true
+  prevent-block-fade: true
+  prevent-leaf-decay: true
+  prevent-explosions: true
+  prevent-entity-block-change: true
+  no-mobs: true
+  no-mob-targeting: true
+  prevent-damage: true
+  prevent-projectiles: true
+  prevent-world-item-spawns: false
+  prevent-item-drops: true
+  prevent-item-pickup: true
+  prevent-hunger: true
+  prevent-portals: false
+  prevent-weather: true
+  void-rescue:
+    enabled: true
+    y-level: 0
+    message: "&cYou were returned to the lobby."
+
+# Optional approval queue for grants.
+grant-approvals:
+  enabled: false
+
+# Rank backup and rollback controls.
+rank-backups:
+  # Keep the newest N rank backups. Set to 0 to keep all backups.
+  keep: 25
+
+# Full plugin data exports created with /evaulxmc export.
+exports:
+  # Keep the newest N exports. Set to 0 to keep all exports.
+  keep: 10
+
+# Grant templates appear in the grant GUI and can be used with /grant template.
+grant-templates:
+  vip-30d:
+    display-name: "&aVIP 30 Days"
+    material: EMERALD
+    rank: VIP
+    duration: 30d
+    reason: "VIP package"
+    permission: "evaulx.grant.template.vip"
+    order: 10
+  media-perm:
+    display-name: "&cMedia Permanent"
+    material: REDSTONE
+    rank: Youtuber
+    duration: perm
+    reason: "Media creator approval"
+    permission: "evaulx.grant.template.media"
+    order: 20
+  staff-trial:
+    display-name: "&dStaff Trial"
+    material: BOOK
+    rank: Mod
+    duration: 7d
+    reason: "Staff trial"
+    permission: "evaulx.grant.template.staff"
+    order: 30
+
+# Maintenance mode blocks non-staff logins until disabled.
+maintenance:
+  enabled: false
+  reason: "Server maintenance"
+  bypass-permission: "evaulx.maintenance.bypass"
+  kick-online-players: true
+  allowed-players: []
+  kick-message: |
+    &cEvaulxMC is currently in maintenance.
+    &7Reason: &f{reason}
+
+# First join automation.
+first-join:
+  enabled: true
+  rank: "Default"
+  tag: ""
+  message: ""
+  commands: []
+
+# Disguise settings
+disguise:
+  enabled: true
+  # Safe mode keeps display names/nametags but disables reflected GameProfile and packet skin refreshes.
+  safe-mode: false
+  # Uses reflected 1.8 server packets when available, then falls back to Bukkit hide/show.
+  # This keeps disguises dependency-free and does not require LibsDisguises.
+  packet-refresh: true
+  # Re-sends the disguised profile to the player too, so their own skin/name refreshes without relogging.
+  self-refresh: true
+  # When true, /disguise will not apply unless Mojang returns a real skin for the requested skin name.
+  require-real-skin: false
+  # Persist active disguise fields in the player profile and re-apply them on join.
+  persist-on-relog: false
+  # If persistence is disabled, remove disguise state when a player quits.
+  auto-undisguise-on-quit: true
+  # Cached Mojang skins expire after this many minutes. Set to 0 to keep until restart/cache clear.
+  skin-cache-ttl-minutes: 1440
+  protocollib:
+    enabled: true
+  # Skin changes are most reliable when clients see the new GameProfile in tab before the entity respawns.
+  skin-load-delay-ticks: 6
+  entity-spawn-delay-ticks: 2
+  second-refresh-delay-ticks: 12
+  max-skins: 250
+  requires-permission: true
+  prevent-duplicate-names: true
+  prevent-online-player-names: true
+  staff-alerts: true
+  cooldown-seconds: 10
+  history:
+    enabled: true
+    max-entries: 500
+  rank-pools:
+    Default:
+      skins: []
+      random-names: []
+      allowed-ranks: ["Default"]
+    VIP:
+      skins: []
+      random-names: []
+      allowed-ranks: ["Default", "VIP"]
+    Evaulx:
+      skins: []
+      random-names: []
+      allowed-ranks: ["Default", "VIP", "Evaulx"]
+    Youtuber:
+      skins: []
+      random-names: []
+      allowed-ranks: ["Default", "VIP", "Evaulx", "Youtuber", "Twitch"]
+    Twitch:
+      skins: []
+      random-names: []
+      allowed-ranks: ["Default", "VIP", "Evaulx", "Youtuber", "Twitch"]
+    Builder:
+      skins: []
+      random-names: []
+      allowed-ranks: ["Default", "VIP", "Evaulx", "Builder"]
+    Mod:
+      skins: []
+      random-names: []
+      allowed-ranks: ["Default", "VIP", "Evaulx", "Youtuber", "Twitch", "Builder", "Mod"]
+    Senior-Mod:
+      skins: []
+      random-names: []
+      allowed-ranks: ["Default", "VIP", "Evaulx", "Youtuber", "Twitch", "Builder", "Mod", "Senior-Mod"]
+    Admin:
+      skins: []
+      random-names: []
+      allowed-ranks: ["*"]
+    Developer:
+      skins: []
+      random-names: []
+      allowed-ranks: ["*"]
+    Platform-Admin:
+      skins: []
+      random-names: []
+      allowed-ranks: ["*"]
+    Owner:
+      skins: []
+      random-names: []
+      allowed-ranks: ["*"]
+  restrictions:
+    enabled: true
+    # When enabled, non-admin players can only use names/skins from their rank pool or the global lists.
+    pool-only-names: false
+    pool-only-skins: false
+    # Empty means command permission controls access. Non-empty entries can be rank names, categories, category:<name>, or *.
+    allowed-ranks: []
+    require-rank-permission: false
+    rank-permission-pattern: "evaulx.disguise.rank.{rank}"
+  blacklist:
+    enabled: true
+    block-rank-names: true
+    block-staff-names: true
+    block-staff-rank-names: true
+    names:
+      - "Owner"
+      - "Admin"
+      - "Moderator"
+      - "Helper"
+      - "YouTube"
+      - "Youtuber"
+    reserved-names:
+      - "Console"
+      - "Server"
+      - "Mojang"
+      - "Minecraft"
+      - "Hypixel"
+      - "Mineplex"
+      - "Notch"
+      - "Herobrine"
+      - "Dream"
+      - "Technoblade"
+      - "TommyInnit"
+      - "PrestonPlayz"
+      - "Unspeakable"
+    blocked-contains: []
+    blocked-patterns:
+      - "(?i).*staff.*"
+      - "(?i).*admin.*"
+      - "(?i).*owner.*"
+  gui:
+    skin-title: "&8Skin Select"
+    rank-title: "&8Rank Select"
+    name-title: "&8Name Select"
+    active-title: "&8Active Disguises"
+    selection-slots: [11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33]
+    next-page-slot: 19
+    previous-page-slot: 25
+    border:
+      material: STAINED_GLASS_PANE
+      data: 15
+      name: " "
+    skin:
+      name: "&c{skin}"
+      lore:
+        - "&7Skin Name: &f{skin}"
+        - "&7Player Name: &f{skin}"
+        - "&7Click to select this skin."
+    rank:
+      material: STAINED_CLAY
+      name: "{rank_display}"
+      lore:
+        - "&7Rank: &f{rank}"
+        - "&7Rank Colour: {rank_color}{rank_color}"
+        - "&7Order: &f#{order}"
+        - "&7Weight: &f{weight}"
+        - "&7Click to select this rank."
+    name:
+      custom-slot: 21
+      random-slot: 23
+      custom-item:
+        material: SIGN
+        name: "&cPick your name"
+        lore:
+          - "&7Click to write your own disguise name."
+          - "&7You will type the name in chat."
+      random-item:
+        material: BOOK
+        name: "&cRandom Name"
+        lore:
+          - "&7Click to use a random disguise name."
+  skins:
+    - Steve
+    - Alex
+    - Notch
+    - jeb_
+    - Dinnerbone
+    - Grumm
+    - Dream
+    - Technoblade
+    - TommyInnit
+    - Sapnap
+    - GeorgeNotFound
+    - BadBoyHalo
+    - Skeppy
+    - CaptainSparklez
+    - PrestonPlayz
+    - Unspeakable
+  random-names:
+    - OakRunner
+    - StoneVale
+    - FrostByte
+    - SkyMason
+    - NovaCrafter
+    - RiverAsh
+    - IronVex
+    - PixelBloom
+    - CloudRift
+    - EmberFox
+
+# Staff tools
+staff-tools:
+  staff-permission: "evaulx.staff"
+  report-cooldown-seconds: 30
+  helpop-cooldown-seconds: 15
+  max-recent-requests: 50
+  clickable-alerts: true
+  staff-chat-format: "&b[&bS&b] {player}&8: &7{message}"
+  command-spy:
+    enabled: true
+    hide-staff-commands: true
+    blocked-commands:
+      - "login"
+      - "register"
+      - "changepassword"
+      - "password"
+    format: "&8[&cCommandSpy&8] &f{player}&8: &7/{command}"
+  freeze-message:
+    - "&cYou have been frozen by staff."
+    - "&7Do not log out. Reason: &f{reason}"
+  staffmode-items:
+    enabled: true
+    clear-inventory: true
+    prevent-item-moving: true
+    items:
+      teleport-compass:
+        enabled: true
+        slot: 0
+        material: COMPASS
+        name: "&cTeleport Compass"
+        lore: []
+      random-teleport:
+        enabled: true
+        slot: 1
+        material: WATCH
+        name: "&cRandom Teleport"
+        lore: []
+      inspect-player:
+        enabled: true
+        slot: 3
+        material: BLAZE_ROD
+        name: "&cInspect Player"
+        lore: []
+      toggle-vanish:
+        enabled: true
+        slot: 5
+        material: EYE_OF_ENDER
+        name: "&cToggle Vanish"
+        lore: []
+      reports:
+        enabled: true
+        slot: 7
+        material: BOOK
+        name: "&cReports"
+        lore: []
+  staffmode:
+    auto-vanish: true
+    disable-vanish-on-exit: false
+    recovery-snapshots: true
+    auto-enable-on-join:
+      enabled: false
+      ranks: []
+      permission: "evaulx.staffmode.autojoin"
+  staff-join-leave-alerts:
+    enabled: true
+    local: true
+    network: true
+  staff-list:
+    network: true
+  action-log:
+    enabled: true
+    max-recent: 200
+    write-jsonl: true
+  grants:
+    expiry-reminder-minutes: 60
+  sessions:
+    max-recent: 250
+
+# Staff notes
+notes:
+  join-alert-format: "&8[&eNotes&8] &f{player} &7joined with &e{count} &7staff note(s)."
+
+# Controls which profile toggles survive reconnects/restarts.
+profile-persistence:
+  vanish: true
+  god: true
+  social-spy: true
+  msg-toggle: true
+  staff-mode: false
+  disguise: false
+
+# GUI settings
+gui:
+  staff-panel:
+    title: "&8Staff Panel"
+    items:
+      reports:
+        slot: 10
+        material: BOOK
+        name: "&cReports"
+      helpop:
+        slot: 11
+        material: PAPER
+        name: "&cHelpOP"
+      punish:
+        slot: 12
+        material: DIAMOND_SWORD
+        name: "&cPunish"
+      freeze:
+        slot: 13
+        material: PACKED_ICE
+        name: "&cFreeze"
+      inspect:
+        slot: 14
+        material: CHEST
+        name: "&cInspect"
+      vanish:
+        slot: 21
+        material: EYE_OF_ENDER
+        name: "&cToggle Vanish"
+      staffmode:
+        slot: 22
+        material: COMPASS
+        name: "&cStaff Mode"
+      notes:
+        slot: 15
+        material: EMPTY_MAP
+        name: "&cNotes"
+      modlogs:
+        slot: 16
+        material: WATCH
+        name: "&cMod Logs"
+      ranks:
+        slot: 23
+        material: NAME_TAG
+        name: "&cRanks"
+      grants:
+        slot: 20
+        material: GOLD_INGOT
+        name: "&6Grant Rank"
+      lobby-protection:
+        slot: 24
+        material: IRON_DOOR
+        name: "&cLobby Protection"
+      dashboard:
+        slot: 25
+        material: NETHER_STAR
+        name: "&cStaff Dashboard"
+      maintenance:
+        slot: 29
+        material: REDSTONE_TORCH_ON
+        name: "&cMaintenance"
+      sessions:
+        slot: 30
+        material: BOOK
+        name: "&cStaff Sessions"
+      close:
+        slot: 31
+  player-picker:
+    title-prefix: "&8Pick: "
+  reports:
+    title: "&8Reports"
+  helpop:
+    title: "&8HelpOP"
+  punish:
+    title: "&8Punish: {player}"
+    title-prefix: "&8Punish: "
+  notes:
+    title: "&8Notes: {player}"
+    title-prefix: "&8Notes: "
+  ranks:
+    title: "&8Ranks"
+  rank-editor:
+    title: "&8Rank: {rank}"
+  rank-category:
+    title: "&8Rank Category: {rank}"
+  lobby-protection:
+    title: "&8Lobby Protection"
+  rank-preset-confirm:
+    title: "&8Reset Ranks?"
+  staff-dashboard:
+    title: "&8Staff Dashboard"
+  maintenance:
+    title: "&8Maintenance"
+  staff-sessions:
+    title: "&8Staff Sessions"
+  pending-grants:
+    title: "&8Pending Grants"
+  player-profile:
+    title: "&8Profile: {player}"
+  grants:
+    title: "&8Grant: {player}"
+    title-prefix: "&8Grant: "
+    duration-title: "&8Grant Time: {player}"
+    duration-title-prefix: "&8Grant Time: "
+    reason-title: "&8Grant Reason: {player}"
+    reason-title-prefix: "&8Grant Reason: "
+    default-duration: "perm"
+    duration-options:
+      - "perm"
+      - "1h"
+      - "1d"
+      - "7d"
+      - "30d"
+      - "90d"
+    reason-options:
+      - "Promotion"
+      - "Staff trial"
+      - "Donor package"
+      - "Event reward"
+      - "Correction"
+      - "Manual grant"
+
+# Tips (auto-announcements)
+tips:
+  enabled: true
+  interval: 300  # seconds
+  messages:
+    - "&cEvaulxMC &7┃&fUse &c/help &ffor a list of commands!"
+    - "&cEvaulxMC &7┃ &fUse &c/report &fto report a player!"
+    - "&cEvaulxMC &7┃ &fVisit our website at &cevaulx.dev"
+
+# Manual broadcast and announcement formats
+announcements:
+  broadcast-format: "&8[&6Broadcast&8] &f{message}"
+  announcement-format: "&8[&cAnnouncement&8] &f{message}"
+
+# Discord webhook
+discord:
+  enabled: false
+  username: "EvaulxMC"
+  # Shows the target player's Minecraft head as the embed thumbnail next to each action.
+  # {id} = UUID when known, otherwise the name. {uuid} and {name} are also available.
+  # mc-heads.net accepts both names and UUIDs; crafatar.com requires a UUID.
+  player-head:
+    enabled: true
+    url: "https://mc-heads.net/avatar/{id}/100"
+  webhooks:
+    punishments: ""
+    rank-changes: ""
+    helpop: ""
+    reports: ""
+    staff-chat: ""
+    staff-actions: ""
+    system: ""
+    security: ""
+
+# Join/Quit messages
+join-quit:
+  join-message: "&a+ &f{player}"
+  quit-message: "&c- &f{player}"
+  first-join-message: "&6[NEW] &f{player} &7joined for the first time!"
+  enabled: true
+
+# Punishment defaults
+punishments:
+  default-appeal-status: "not-submitted"
+  ban-message: |
+    &cYou have been banned.
+    &7Reason: &f{reason}
+    &7Duration: &f{duration}
+    &7ID: &f{id}
+    &7Appeal at: &fevaulx.dev/appeal
+  mute-message: "&cYou are muted. Reason: &f{reason} &cExpires: &f{duration} &7(ID: &f{id}&7)"
+  kick-message: |
+    &cYou have been kicked.
+    &7Reason: &f{reason}
+    &7ID: &f{id}
+  blacklist-message: |
+    &4You have been blacklisted.
+    &7Reason: &f{reason}
+    &7ID: &f{id}
+    &7This is permanent and cannot be appealed.
+  warn-threshold: 5
+  warn-threshold-action: "tempban {player} 1d Auto-banned for reaching warn limit"
+
+# Preset punishment ladder used by /punish
+punishment-presets:
+  cheating:
+    display-name: "&cCheating"
+    material: DIAMOND_SWORD
+    lore:
+      - "&7Applies the next cheating punishment."
+    first: "tempban {player} 7d cheating - first offence"
+    second: "tempban {player} 30d cheating - second offence"
+    third: "ban {player} cheating - repeated offences"
+  chat:
+    display-name: "&6Chat Offence"
+    material: BOOK_AND_QUILL
+    lore:
+      - "&7Applies the next chat punishment."
+    first: "tempmute {player} 1h chat - first offence"
+    second: "tempmute {player} 1d chat - second offence"
+    third: "mute {player} chat - repeated offences"
+  disrespect:
+    display-name: "&eDisrespect"
+    material: PAPER
+    lore:
+      - "&7Warn or mute disruptive players."
+    first: "warn {player} disrespect - first offence"
+    second: "tempmute {player} 6h disrespect - second offence"
+    third: "tempmute {player} 3d disrespect - repeated offences"
+
+# Permissions
+permissions:
+  default-rank: "default"
+  op-bypass: true

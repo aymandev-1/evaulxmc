@@ -1,0 +1,37 @@
+EvaulxMC — End User License Agreement (TEMPLATE)
+
+>>> This is a starting template. Review and adjust the terms to match your BuiltByBit
+>>> listing and your jurisdiction before publishing. It is not legal advice. <<<
+
+Copyright (c) 2026 EvaulxMC. All rights reserved.
+
+1. Grant of license
+   Upon purchase through the official BuiltByBit listing, the buyer ("Licensee") is granted a
+   non-exclusive, non-transferable license to use EvaulxMC ("the Software") on Minecraft servers
+   that the Licensee owns or operates.
+
+2. Permitted use
+   - Install and run the Software on the Licensee's own networks/servers.
+   - Modify configuration and message files for the Licensee's own use.
+
+3. Restrictions
+   - Do NOT redistribute, resell, sublicense, lease, or share the Software or its source, in whole
+     or in part, by any means.
+   - Do NOT publish the Software (or a derivative) to any marketplace, repository, or public host.
+   - Do NOT remove or alter authorship, branding, or this notice.
+   - One purchase covers the buying account/network as defined in the listing terms.
+
+4. Source code
+   Source code is provided only if explicitly stated in the listing. When provided, all
+   restrictions in section 3 still apply.
+
+5. Refunds, updates and support
+   Refund, update, and support terms are as stated in the BuiltByBit listing at time of purchase.
+
+6. Disclaimer of warranty
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. THE AUTHOR
+   IS NOT LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
+
+7. Termination
+   This license terminates automatically if the Licensee breaches any term. On termination the
+   Licensee must stop using and delete all copies of the Software.
