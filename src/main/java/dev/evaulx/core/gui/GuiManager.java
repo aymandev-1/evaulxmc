@@ -1073,6 +1073,122 @@ public class GuiManager implements Listener {
         player.openInventory(inv);
     }
 
+    // ---------------------------------------------------------------------
+    //  Admin & Owner control panels
+    // ---------------------------------------------------------------------
+
+    public void openAdminPanel(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 54, adminPanelTitle());
+        fillBorder(inv, MAT_RED_GLASS_PANE);
+
+        Runtime rt = Runtime.getRuntime();
+        long mb = 1024L * 1024L;
+        long usedMem = (rt.totalMemory() - rt.freeMemory()) / mb;
+        long maxMem = rt.maxMemory() / mb;
+
+        inv.setItem(4, item(Material.NETHER_STAR, "&c&lAdmin Control Panel",
+            Arrays.asList(
+                "&7Online: &f" + Bukkit.getOnlinePlayers().size() + " &8/ &f" + Bukkit.getMaxPlayers(),
+                "&7Staff online: &f" + onlineStaffCount(),
+                "&7Memory: &f" + usedMem + " &8/ &f" + maxMem + " MB",
+                "&7Maintenance: " + enabledText(plugin.getConfig().getBoolean("maintenance.enabled", false)))));
+
+        // Row 2 — rank & player administration (10-16)
+        inv.setItem(10, item(Material.NAME_TAG, "&6&lRank Manager",
+            Arrays.asList("&7Create, edit and inspect ranks.", "&aClick to open.")));
+        inv.setItem(11, badge(Material.GOLD_INGOT, "&6&lPending Grants",
+            plugin.getGrantManager().getPendingGrants().size(), "&7Review pending rank grants."));
+        inv.setItem(12, item(Material.EMERALD, "&a&lGrant Rank",
+            Arrays.asList("&7Grant a rank to any player.", "&aClick to open.")));
+        inv.setItem(13, item(MAT_PLAYER_HEAD, "&f&lPlayer Profile",
+            Arrays.asList("&7Inspect a player's full profile.", "&aClick to open.")));
+        inv.setItem(14, item(MAT_REDSTONE_TORCH,
+            (plugin.getConfig().getBoolean("maintenance.enabled", false) ? "&a" : "&c") + "&lMaintenance",
+            Arrays.asList("&7Manage maintenance mode.", "&aClick to open.")));
+        inv.setItem(15, item(Material.IRON_DOOR, "&e&lLobby Protection",
+            Arrays.asList("&7Configure lobby protection rules.", "&aClick to open.")));
+        inv.setItem(16, badge(Material.BOOK, "&c&lReports",
+            plugin.getStaffRequestManager().getReports().size(), "&7Open the report queue."));
+
+        // Row 3 — server diagnostics & actions (19-25)
+        inv.setItem(19, item(MAT_CLOCK, "&b&lServer Info",
+            Arrays.asList("&7View detailed server information.", "&aClick to run /serverinfo.")));
+        inv.setItem(20, item(Material.REDSTONE_BLOCK, "&d&lTPS",
+            Arrays.asList("&7View current server TPS.", "&aClick to run /tps.")));
+        inv.setItem(21, item(MAT_SPAWN_EGG, "&e&lEntity Report",
+            Arrays.asList("&7Per-world entity counts.", "&aClick to run /entitycount.")));
+        inv.setItem(22, item(MAT_FIRE_CHARGE, "&6&lClear Lag",
+            Arrays.asList("&7Remove ground items & stray entities.", "&aClick to run /clearlag.")));
+        inv.setItem(23, item(Material.IRON_FENCE, "&c&lLockdown",
+            Arrays.asList("&7Toggle server lockdown.", "&aClick to run /lockdown.")));
+        inv.setItem(24, item(Material.PAPER, "&f&lBroadcast",
+            Arrays.asList("&7Send a server-wide broadcast.", "&aClick for the command.")));
+        inv.setItem(25, item(Material.EMERALD_BLOCK, "&a&lStaff Dashboard",
+            Arrays.asList("&7Open the staff overview dashboard.", "&aClick to open.")));
+
+        if (player.hasPermission("evaulx.owner.panel")) {
+            inv.setItem(40, item(Material.BEACON, "&4&lOwner Panel",
+                Arrays.asList("&7Open the owner control panel.", "&aClick to open.")));
+        }
+
+        inv.setItem(49, item(Material.BARRIER, "&c&lClose", Collections.singletonList("&7Close this menu.")));
+        player.openInventory(inv);
+    }
+
+    public void openOwnerPanel(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 54, ownerPanelTitle());
+        fillBorder(inv, MAT_BLACK_GLASS_PANE);
+
+        inv.setItem(4, item(Material.BEACON, "&4&lOwner Control Panel",
+            Arrays.asList(
+                "&7Online: &f" + Bukkit.getOnlinePlayers().size() + " &8/ &f" + Bukkit.getMaxPlayers(),
+                "&7Staff online: &f" + onlineStaffCount(),
+                "&7Server: &f" + Bukkit.getServerName(),
+                "&7Version: &f" + Bukkit.getVersion())));
+
+        // Row 2 — broadcasts & alerts (10-16)
+        inv.setItem(10, item(MAT_RED_DYE, "&4&lOwner Alert",
+            Arrays.asList("&7Send a full-screen owner alert.", "&aClick for the command.")));
+        inv.setItem(11, item(Material.PAPER, "&c&lOwner Broadcast",
+            Arrays.asList("&7Send a styled owner broadcast.", "&aClick for the command.")));
+        inv.setItem(12, item(Material.BOOK, "&6&lForce Chat",
+            Arrays.asList("&7Force a message into chat as a player.", "&aClick for the command.")));
+        inv.setItem(13, item(Material.PACKED_ICE, "&b&lServer Freeze",
+            Arrays.asList("&7Freeze or unfreeze the whole server.", "&aClick to run /serverfreeze.")));
+        inv.setItem(14, item(Material.IRON_FENCE, "&c&lLockdown",
+            Arrays.asList("&7Toggle server lockdown.", "&aClick to run /lockdown.")));
+        inv.setItem(15, item(MAT_REDSTONE_TORCH,
+            (plugin.getConfig().getBoolean("maintenance.enabled", false) ? "&a" : "&c") + "&lMaintenance",
+            Arrays.asList("&7Manage maintenance mode.", "&aClick to open.")));
+        inv.setItem(16, item(Material.TNT, "&4&lScheduled Shutdown",
+            Arrays.asList("&7Schedule a graceful shutdown.", "&aClick for the command.")));
+
+        // Row 3 — administration (19-25)
+        inv.setItem(19, item(Material.NAME_TAG, "&6&lRank Manager",
+            Arrays.asList("&7Create, edit and inspect ranks.", "&aClick to open.")));
+        inv.setItem(20, badge(Material.GOLD_INGOT, "&6&lPending Grants",
+            plugin.getGrantManager().getPendingGrants().size(), "&7Review pending rank grants."));
+        inv.setItem(21, item(Material.EMERALD, "&a&lEconomy Admin",
+            Arrays.asList("&7Manage player coin balances.", "&aClick for the command.")));
+        inv.setItem(22, item(Material.EMERALD_BLOCK, "&a&lStaff Dashboard",
+            Arrays.asList("&7Open the staff overview dashboard.", "&aClick to open.")));
+        inv.setItem(23, item(Material.COMMAND, "&5&lReload Plugin",
+            Arrays.asList("&7Reload EvaulxMC configuration.", "&cUse with care.", "&aClick to run /reloadplugin.")));
+        inv.setItem(24, item(MAT_RED_CONCRETE, "&4&lKick All",
+            Arrays.asList("&7Kick every non-exempt player.", "&cUse with care.", "&aClick for the command.")));
+        inv.setItem(25, item(MAT_CLOCK, "&b&lServer Info",
+            Arrays.asList("&7View detailed server information.", "&aClick to run /serverinfo.")));
+
+        inv.setItem(49, item(Material.BARRIER, "&c&lClose", Collections.singletonList("&7Close this menu.")));
+        player.openInventory(inv);
+    }
+
+    /** Closes the menu and tells the player which command to type for actions that need arguments. */
+    private void promptCommand(Player player, String usage) {
+        player.closeInventory();
+        player.sendMessage(CC.color("&8[&cEvaulxMC&8] &7Type: &f" + usage));
+    }
+
     // =====================================================================
     //  CLICK DISPATCHER
     // =====================================================================
@@ -1109,6 +1225,12 @@ public class GuiManager implements Listener {
         }
         if (title.equals(staffDashboardTitle())) {
             event.setCancelled(true); handleStaffDashboardClick(player, event.getSlot()); return;
+        }
+        if (title.equals(adminPanelTitle())) {
+            event.setCancelled(true); handleAdminPanelClick(player, event.getSlot()); return;
+        }
+        if (title.equals(ownerPanelTitle())) {
+            event.setCancelled(true); handleOwnerPanelClick(player, event.getSlot()); return;
         }
         if (title.equals(maintenanceTitle())) {
             event.setCancelled(true); handleMaintenanceClick(player, event.getSlot()); return;
@@ -1182,6 +1304,49 @@ public class GuiManager implements Listener {
             case 33: openPlayerPicker(player, PlayerAction.IPCHECK); break;
             case 34: openPendingGrants(player); break;
             case 37: openAppealsGui(player); break;
+            case 49: player.closeInventory(); break;
+            default: break;
+        }
+    }
+
+    private void handleAdminPanelClick(Player player, int slot) {
+        switch (slot) {
+            case 10: openRanks(player); break;
+            case 11: openPendingGrants(player); break;
+            case 12: openPlayerPicker(player, PlayerAction.GRANT); break;
+            case 13: openPlayerPicker(player, PlayerAction.PROFILE); break;
+            case 14: openMaintenance(player); break;
+            case 15: openLobbyProtection(player); break;
+            case 16: openReports(player, false); break;
+            case 19: player.closeInventory(); Bukkit.dispatchCommand(player, "serverinfo"); break;
+            case 20: player.closeInventory(); Bukkit.dispatchCommand(player, "tps"); break;
+            case 21: player.closeInventory(); Bukkit.dispatchCommand(player, "entitycount"); break;
+            case 22: player.closeInventory(); Bukkit.dispatchCommand(player, "clearlag"); break;
+            case 23: player.closeInventory(); Bukkit.dispatchCommand(player, "lockdown"); break;
+            case 24: promptCommand(player, "/broadcast <message>"); break;
+            case 25: openStaffDashboard(player); break;
+            case 40: if (player.hasPermission("evaulx.owner.panel")) openOwnerPanel(player); break;
+            case 49: player.closeInventory(); break;
+            default: break;
+        }
+    }
+
+    private void handleOwnerPanelClick(Player player, int slot) {
+        switch (slot) {
+            case 10: promptCommand(player, "/owneralert <message>"); break;
+            case 11: promptCommand(player, "/ownerbc <message>"); break;
+            case 12: promptCommand(player, "/forcechat <player> <message>"); break;
+            case 13: player.closeInventory(); Bukkit.dispatchCommand(player, "serverfreeze"); break;
+            case 14: player.closeInventory(); Bukkit.dispatchCommand(player, "lockdown"); break;
+            case 15: openMaintenance(player); break;
+            case 16: promptCommand(player, "/shutdown <seconds> [reason]"); break;
+            case 19: openRanks(player); break;
+            case 20: openPendingGrants(player); break;
+            case 21: promptCommand(player, "/coins <add|remove|set> <player> <amount>"); break;
+            case 22: openStaffDashboard(player); break;
+            case 23: player.closeInventory(); Bukkit.dispatchCommand(player, "reloadplugin"); break;
+            case 24: promptCommand(player, "/kickall [reason]"); break;
+            case 25: player.closeInventory(); Bukkit.dispatchCommand(player, "serverinfo"); break;
             case 49: player.closeInventory(); break;
             default: break;
         }
@@ -1993,6 +2158,8 @@ public class GuiManager implements Listener {
         return CC.color(idx >= 0 ? raw.substring(0, idx) : raw);
     }
     private String staffDashboardTitle()  { return CC.color(plugin.getConfig().getString("gui.staff-dashboard.title", "&8Staff Dashboard")); }
+    private String adminPanelTitle()      { return CC.color(plugin.getConfig().getString("gui.admin-panel.title", "&8Admin Panel")); }
+    private String ownerPanelTitle()      { return CC.color(plugin.getConfig().getString("gui.owner-panel.title", "&8Owner Panel")); }
     private String maintenanceTitle()     { return CC.color(plugin.getConfig().getString("gui.maintenance.title", "&8Maintenance")); }
     private String staffSessionsTitle()   { return CC.color(plugin.getConfig().getString("gui.staff-sessions.title", "&8Staff Sessions")); }
     private String pendingGrantsTitle()   { return CC.color(plugin.getConfig().getString("gui.pending-grants.title", "&8Pending Grants")); }

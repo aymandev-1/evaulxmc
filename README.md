@@ -23,9 +23,10 @@ multi-server synchronisation into a single jar with **no hard dependencies**.
 6. [Multi-server / network setup](#multi-server--network-setup)
 7. [Integrations](#integrations)
 8. [Reference documentation](#reference-documentation)
-9. [Building from source (developers)](#building-from-source-developers)
-10. [Project structure](#project-structure)
-11. [Support](#support)
+9. [Complete command reference](#complete-command-reference)
+10. [Building from source (developers)](#building-from-source-developers)
+11. [Project structure](#project-structure)
+12. [Support](#support)
 
 ---
 
@@ -75,8 +76,51 @@ multi-server synchronisation into a single jar with **no hard dependencies**.
 - Admin tooling: `/evaulxmc doctor`, `/evaulxmc setup [quick]`, `/evaulxmc export`,
   `/evaulxmc restore <file.zip> confirm`, `/permaudit cleanup confirm`, `/perm debug <player> <node>`.
 
+### Rank perks & power tools
+Purpose-built commands for every rank tier, each gated behind its own permission so you can
+attach them to store ranks and staff ranks exactly how you like:
+
+| Tier | Commands |
+|------|----------|
+| **Staff / Mod** | `/clearlag`, `/slowchat`, `/freeze`, `/vanish`, `/staffmode`, `/socialspy`, `/commandspy` |
+| **Admin** | `/adminpanel`, `/entitycount`, `/killentities`, `/chunkinfo`, `/maintenance`, `/lockdown` |
+| **Builder** | `/buildmode`, `/top`, `/up`, `/builderannounce`, `/head`, `/globalfly` |
+| **Developer** | `/devmode`, `/gc`, `/threads`, `/plugininfo`, `/testeffect`, `/devbroadcast`, `/reloadplugin` |
+| **Owner** | `/ownerpanel`, `/owneralert`, `/ownerbc`, `/serverfreeze`, `/shutdown`, `/forcechat` |
+| **Content Creator** | `/golive`, `/offair`, `/spotlight`, `/recording`, `/shoutout`, `/cchat`, `/ccgiveaway`, `/milestone`, `/socials`, `/watchparty` |
+| **Store ranks** | `/firework`, `/launch`, `/nightvision`, `/hideall`, `/particles`, `/hat`, `/glow`, `/nick` |
+
+### In-game GUIs
+EvaulxMC ships **24 menus** built on a single, version-safe GUI engine (auto-resolves
+1.8 ↔ modern materials, so the same menus render on 1.8.8 through the latest builds):
+
+| GUI | Opened by | Purpose |
+|-----|-----------|---------|
+| **Staff Panel** | `/staffpanel` | Central hub: reports, helpop, punish, freeze, inspect, notes, mod logs, grants, vanish, staff mode |
+| **Staff Dashboard** | `/staffdashboard` | Live overview with queue counts and a recent-actions feed |
+| **Admin Panel** ⭐ | `/adminpanel` | Rank manager, grants, maintenance, lobby protection, server diagnostics, broadcast, clear-lag, lockdown |
+| **Owner Panel** ⭐ | `/ownerpanel` | Owner alerts/broadcasts, server freeze, scheduled shutdown, reload, economy, kick-all, lockdown |
+| **Maintenance** | `/maintenance` | Toggle maintenance, manage the allow-list |
+| **Staff Sessions** | `/staffsessions` | Active staff sessions and time tracking |
+| **Pending Grants** | `/grant` queue | Approve / deny queued rank grants |
+| **Player Profile** | `/profile <player>` | Full player dossier: rank, punishments, notes, alts, flags |
+| **Punishment History** | profile → history | Paginated punishment record |
+| **Reports / HelpOP** | `/reports` | Claim and resolve report & help queues |
+| **Punish menu** | `/punish <player>` | Apply punishment presets in two clicks |
+| **Grant pickers** | `/grant <player>` | Rank → duration → reason selection flow |
+| **Tags menu** | `/tag` | Paginated cosmetic tag catalog |
+| **Notes** | `/note <player>` | View and add staff notes |
+| **Ranks browser + editor** | `/rank` | Browse ranks and edit prefix/suffix/colour/weight/permissions |
+| **Streamer mode** | `/streamermode` | Toggle name-hiding and alias options |
+| **Lobby protection** | `/lobbyprotect` | Toggle each protection rule per world |
+| **Appeals** | `/appeal` | Review and action ban/mute appeals |
+
+> ⭐ = new. The Admin & Owner panels are permission-gated (`evaulx.admin.panel`, `evaulx.owner.panel`);
+> the Owner panel is also reachable from a button inside the Admin panel.
+
 > A complete command and permission list is in [`docs/COMMANDS.md`](docs/COMMANDS.md) and
-> [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md).
+> [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) — and inline in the
+> [Complete command reference](#complete-command-reference) below.
 
 ---
 
@@ -219,6 +263,222 @@ All integrations are detected at runtime; none of them are required to run.
 | [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) | Every permission node and default |
 | [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md) | Section-by-section `config.yml` guide |
 | [`CHANGELOG.md`](CHANGELOG.md) | Version history |
+
+---
+
+## Complete command reference
+
+All **201** commands, grouped by system (the same order they register in). Every command is
+permission-gated — see [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) for the matching nodes and defaults.
+
+<details>
+<summary><b>Click to expand the full command list</b></summary>
+
+| Command | Aliases | Description |
+|---------|---------|-------------|
+| `/evaulxmc` | emc, evaulx | Main EvaulxMC command |
+| `/ban` | — | Ban a player |
+| `/tempban` | — | Temporarily ban a player |
+| `/ipban` | — | IP Ban a player |
+| `/unban` | — | Unban a player |
+| `/mute` | — | Mute a player |
+| `/tempmute` | — | Temporarily mute a player |
+| `/unmute` | — | Unmute a player |
+| `/kick` | — | Kick a player |
+| `/warn` | — | Warn a player |
+| `/unwarn` | — | Remove a warning from a player |
+| `/blacklist` | — | Blacklist a player |
+| `/unblacklist` | — | Unblacklist a player |
+| `/checkpunishments` | cp, history | Check punishments of a player |
+| `/punish` | — | Open or run punishment presets |
+| `/alts` | — | Find alternate accounts linked by IP |
+| `/evidence` | setevidence | Attach or clear evidence on a punishment |
+| `/rank` | ranks | Manage ranks |
+| `/listranks` | ranklist | List ranks |
+| `/rankladder` | rankhierarchy | View grouped rank hierarchy |
+| `/createrank` | rankcreate | Create a rank |
+| `/deleterank` | delrank, rankdelete | Delete a rank |
+| `/rankdisplay` | — | Set a rank display name |
+| `/rankpermission` | — | Set a rank permission node |
+| `/rankprefix` | — | Set a rank prefix |
+| `/ranksuffix` | — | Set a rank suffix |
+| `/rankcolor` | — | Set a rank color |
+| `/ranknamecolor` | — | Set a rank name color |
+| `/rankweight` | — | Set a rank weight |
+| `/rankdefault` | — | Set the default rank |
+| `/rankstaff` | — | Toggle rank staff status |
+| `/rankperm` | rankperms | Manage rank permissions |
+| `/rankinherit` | rankinherits, rankinheritance | Manage rank inheritance |
+| `/rankclone` | copyrank | Clone a rank |
+| `/rankreload` | — | Reload ranks |
+| `/playerrank` | — | View a player's rank information |
+| `/setrank` | — | Set a player's rank |
+| `/addrank` | — | Add a rank to a player |
+| `/removerank` | — | Remove a rank from a player |
+| `/rankinfo` | — | View rank info |
+| `/perm` | — | Manage permissions |
+| `/grant` | — | Open the grant GUI or grant a temporary/permanent extra rank |
+| `/grants` | — | View rank grants for a player |
+| `/removegrant` | — | Remove an active rank grant |
+| `/disguise` | dis | Disguise as another player |
+| `/skin` | nickskin, changeskin | Change your disguise skin |
+| `/undisguise` | undis, unnick | Remove your disguise |
+| `/disguiseinfo` | — | View disguise info |
+| `/realname` | rn | Resolve a disguised player's real name |
+| `/nicklist` | disguiselist | List online disguised players |
+| `/nickhistory` | disguisehistory | View disguise history |
+| `/forcedisguise` | fnick, forcenick | Force-disguise another player |
+| `/disguisecooldown` | nickcooldown, dcooldown | Check or reset a player's disguise cooldown |
+| `/nickcolor` | disguisecolor, nickcolour | Change your disguise name color while disguised |
+| `/gamemode` | gm | Change gamemode |
+| `/fly` | — | Toggle fly mode |
+| `/vanish` | v | Toggle vanish |
+| `/staffmode` | sm, staff | Toggle staff mode |
+| `/staffstatus` | sstatus | View your staff status |
+| `/staffchat` | sc, staffc | Send or toggle staff chat |
+| `/commandspy` | cmdspy, cspy | Toggle command spy |
+| `/staffrecover` | smrecover, staffrestore | Recover staff mode inventory and state |
+| `/freeze` | — | Freeze or unfreeze a player |
+| `/unfreeze` | thaw | Unfreeze a player |
+| `/stafflist` | staffonline, slist | Show online staff |
+| `/staffpanel` | staffgui, spanel | Open the staff panel |
+| `/staffdashboard` | staffdash, sdashboard | Open the staff dashboard |
+| `/staffsessions` | stafftime, sessions | View staff session tracking |
+| `/maintenance` | maint | Manage maintenance mode |
+| `/permaudit` | permissionaudit, auditperms | Audit rank and player permissions |
+| `/lookup` | playerlookup | Lookup cached player profile information |
+| `/profile` | playerprofile, pprofile | Open a staff player profile |
+| `/modlogs` | mlogs, modlog | View moderation logs for a player |
+| `/stafflogs` | slogs, actionlogs | Search recent staff action logs |
+| `/note` | notes | Manage staff notes |
+| `/spawn` | — | Teleport to spawn |
+| `/setspawn` | — | Set the server spawn |
+| `/back` | — | Return to your previous teleport location |
+| `/tppos` | — | Teleport to coordinates |
+| `/list` | online, who | List online players by rank |
+| `/sudo` | — | Force a player to run a command or chat |
+| `/announce` | announcement, announcements | Send or manage announcements |
+| `/enchant` | — | Enchant your held item without level limits |
+| `/teleport` | tp | Teleport to a player |
+| `/teleporthere` | tphere | Teleport a player to you |
+| `/teleportall` | tpall | Teleport all players to you |
+| `/feed` | — | Feed a player |
+| `/heal` | — | Heal a player |
+| `/god` | — | Toggle god mode |
+| `/speed` | — | Set speed |
+| `/invsee` | — | View a player's inventory |
+| `/broadcast` | bc | Broadcast a message |
+| `/alert` | — | Alert the server |
+| `/helpop` | — | Send a message to staff |
+| `/report` | — | Report a player |
+| `/reports` | staffreports | View recent player reports |
+| `/msg` | pm, tell, whisper | Send a private message |
+| `/reply` | r | Reply to a private message |
+| `/socialspy` | ss | Toggle social spy |
+| `/mutechat` | — | Mute the global chat |
+| `/clearchat` | cc | Clear the chat |
+| `/nametag` | — | Refresh EvaulxMC display names |
+| `/chatcolor` | chatcolour | Set your chat color |
+| `/namecolor` | namecolour | Set your name color |
+| `/tag` | tags, taglist | List, preview, set, clear, or randomize your chat tag |
+| `/buildmode` | build, bm | Toggle lobby build bypass mode |
+| `/lobbyprotect` | lobbyprotection, protectlobby, lp | Manage and enforce lobby protection |
+| `/afk` | away | Toggle your AFK status |
+| `/msgtoggle` | msgt, togglemsg | Toggle whether you receive private messages |
+| `/ignore` | — | Toggle ignoring private messages from a player |
+| `/hat` | — | Wear your held item as a helmet |
+| `/kickall` | — | Kick all non-exempt players from the server |
+| `/time` | — | Set world time |
+| `/weather` | sky | Set world weather |
+| `/nick` | nickname | Set or remove your nickname |
+| `/seen` | — | Check when a player was last online |
+| `/repair` | — | Repair held item or all items in inventory |
+| `/more` | — | Fill your held item stack to maximum |
+| `/clearinv` | clear, ci | Clear a player's inventory |
+| `/appeal` | — | Submit or manage ban/mute appeals |
+| `/creator` | contentcreator, creators | Manage content creator profiles and status |
+| `/redeemcode` | redeem | Redeem a content creator subscriber code for rewards |
+| `/shoutout` | so | Content creator shoutout to a fan |
+| `/cchat` | ccchat | Send a message in the content creator private channel |
+| `/golive` | live, startstream | Announce you are going live on your stream |
+| `/offair` | endstream, stoplive | Announce you have ended your stream |
+| `/ccgiveaway` | ccga, creatorga | Run a random giveaway for online players as a content creator |
+| `/milestone` | — | Broadcast a content creator milestone to the server |
+| `/socials` | — | Broadcast your social links and stream info to the server |
+| `/lockdown` | — | Toggle server lockdown to prevent new players joining |
+| `/tempfly` | tfly | Grant a player temporary fly for a specified duration |
+| `/craft` | workbench, wb | Open a workbench anywhere |
+| `/ec` | enderchest | Open your ender chest or view another player's ender chest |
+| `/globalfly` | gfly | Toggle fly mode for all online players |
+| `/ownerbc` | ownerbroadcast, obc | Send a special owner-styled broadcast with sound |
+| `/servermsg` | joinmsg, servermessage | Set or clear a persistent message shown to players on join |
+| `/resetrank` | rankreset | Remove all active grants and reset a player to their default rank |
+| `/streamermode` | streammode | Toggle streamer mode to hide your real name in chat and tab |
+| `/ping` | — | Check a player's connection ping |
+| `/ipcheck` | checkip | Check a player's stored IP address and online alts |
+| `/playtime` | — | View how long a player has been on the server |
+| `/whois` | playerinfo, pinfo | View detailed player info, rank, punishments, and flags |
+| `/owneralert` | oalert | Send a dramatic owner alert to all players |
+| `/serverfreeze` | sfreeze, freezeall | Freeze or unfreeze all non-staff players server-wide |
+| `/forcechat` | fc | Force a player to say something in chat |
+| `/devmode` | dev | Toggle developer creative mode with enhanced tools |
+| `/reloadplugin` | plreload, evaulxreload | Reload the EvaulxMC plugin configuration |
+| `/testeffect` | teffect | Apply a potion effect to yourself for testing |
+| `/devbroadcast` | devbc | Broadcast a developer announcement to all players |
+| `/builderannounce` | bannounce, ba | Send a builder announcement to all players |
+| `/nightvision` | nv, nightvis | Toggle night vision on yourself or another player |
+| `/hideall` | hideplayers | Hide or show all other players from your view |
+| `/head` | playerhead, skull | Get a player head item |
+| `/ccannounce` | creatorannounce | Send a content creator style announcement to all players |
+| `/watchparty` | wp | Start or end a watch party event for your stream |
+| `/particles` | particle, pe | Toggle a particle effect that follows you |
+| `/home` | h | Teleport to one of your saved homes |
+| `/sethome` | homeset | Set a home at your current location |
+| `/delhome` | deletehome, removehome | Delete a saved home |
+| `/homes` | — | List all your saved homes |
+| `/warp` | — | Teleport to a server warp |
+| `/setwarp` | createwarp | Create or update a server warp |
+| `/delwarp` | deletewarp, removewarp | Delete a server warp |
+| `/warps` | — | List all available server warps |
+| `/tpa` | — | Request to teleport to a player |
+| `/tpahere` | — | Request a player to teleport to you |
+| `/tpaccept` | tpyes | Accept a pending teleport request |
+| `/tpdeny` | tpno | Deny a pending teleport request |
+| `/rename` | itemname | Rename your held item |
+| `/lore` | itemlore | Edit the lore lines of your held item |
+| `/glow` | — | Toggle an enchantment glow effect on your held item |
+| `/tps` | — | View server TPS, RAM usage and uptime |
+| `/serverinfo` | sinfo, si | View detailed server information |
+| `/coins` | balance, bal | View your coin balance or manage another player's coins |
+| `/pay` | — | Send coins to another player |
+| `/daily` | dailyreward | Claim your daily coin reward |
+| `/friend` | friends, f | Manage your friends list |
+| `/mail` | — | Send and read offline player mail |
+| `/ext` | extinguish | Extinguish a player who is on fire |
+| `/near` | nearby | Show nearby players within a radius |
+| `/smite` | lightning | Strike a player with lightning |
+| `/coords` | pos, position, loc | Display your current coordinates and facing direction |
+| `/party` | p | Create and manage a party with other players |
+| `/fm` | friendmsg, fmsg | Send a quick message to a friend |
+| `/clearlag` | lagclear, cl | Remove ground items and stray entities to reduce lag |
+| `/slowchat` | chatslow | Enable or disable a global chat slow mode |
+| `/entitycount` | entities, ecount | Show per-world entity counts for lag diagnostics |
+| `/killentities` | butcher, removeentities | Remove entities by category across all worlds |
+| `/chunkinfo` | chunk | Show diagnostics for the chunk you are standing in |
+| `/top` | totop | Teleport to the highest block above you |
+| `/up` | ascend | Teleport straight up, placing a platform beneath you |
+| `/gc` | garbagecollect | Run garbage collection and report memory usage |
+| `/threads` | threadinfo | Show JVM thread statistics |
+| `/plugininfo` | pl, plinfo | List plugins or show details for one |
+| `/shutdown` | stopserver | Schedule a graceful server shutdown with countdown |
+| `/spotlight` | shine | Shine a server-wide spotlight on a player |
+| `/recording` | rec | Toggle your content-creator recording status |
+| `/firework` | fw | Launch a colourful firework (store perk) |
+| `/launch` | rocket | Launch yourself into the air (store perk) |
+| `/adminpanel` | apanel, admingui | Open the admin control-panel GUI |
+| `/ownerpanel` | opanel, ownergui | Open the owner control-panel GUI |
+
+</details>
 
 ---
 

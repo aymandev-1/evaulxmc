@@ -686,6 +686,10 @@ public class EvaulxCore extends JavaPlugin {
         LaunchCommand launchCommand = new LaunchCommand(this);
         getCommand("launch").setExecutor(launchCommand);
         getCommand("launch").setTabCompleter(launchCommand);
+
+        // Admin & Owner control panels
+        getCommand("adminpanel").setExecutor(new AdminPanelCommand(this));
+        getCommand("ownerpanel").setExecutor(new OwnerPanelCommand(this));
     }
 
     private void registerRankCommand(RankCommand executor, String name) {

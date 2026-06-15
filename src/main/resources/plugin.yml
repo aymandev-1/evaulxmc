@@ -536,6 +536,12 @@ commands:
   launch:
     description: Launch yourself into the air (store perk)
     aliases: [rocket]
+  adminpanel:
+    description: Open the admin control-panel GUI
+    aliases: [apanel, admingui]
+  ownerpanel:
+    description: Open the owner control-panel GUI
+    aliases: [opanel, ownergui]
 
 permissions:
   evaulx.*:
@@ -1809,4 +1815,10 @@ permissions:
     default: op
   evaulx.store.launch:
     description: Launch yourself into the air with /launch
+    default: op
+  evaulx.admin.panel:
+    description: Open the admin control panel with /adminpanel
+    default: op
+  evaulx.owner.panel:
+    description: Open the owner control panel with /ownerpanel
     default: op
