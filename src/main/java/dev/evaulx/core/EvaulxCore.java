@@ -244,6 +244,7 @@ public class EvaulxCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new LobbyProtectionListener(this), this);
         getServer().getPluginManager().registerEvents(new AfkListener(this), this);
         getServer().getPluginManager().registerEvents(new ContentCreatorListener(this), this);
+        getServer().getPluginManager().registerEvents(new ChatSlowModeListener(this), this);
         getServer().getPluginManager().registerEvents(guiManager, this);
     }
 
@@ -624,6 +625,67 @@ public class EvaulxCore extends JavaPlugin {
         WatchPartyCommand watchPartyCommand = new WatchPartyCommand(this);
         getCommand("watchparty").setExecutor(watchPartyCommand);
         getCommand("watchparty").setTabCompleter(watchPartyCommand);
+
+        // ── New rank perks & power tools ──────────────────────────────────────
+
+        // Staff / Mod tools
+        ClearLagCommand clearLagCommand = new ClearLagCommand(this);
+        getCommand("clearlag").setExecutor(clearLagCommand);
+        getCommand("clearlag").setTabCompleter(clearLagCommand);
+        SlowChatCommand slowChatCommand = new SlowChatCommand(this);
+        getCommand("slowchat").setExecutor(slowChatCommand);
+        getCommand("slowchat").setTabCompleter(slowChatCommand);
+
+        // Admin diagnostics
+        EntityCountCommand entityCountCommand = new EntityCountCommand(this);
+        getCommand("entitycount").setExecutor(entityCountCommand);
+        getCommand("entitycount").setTabCompleter(entityCountCommand);
+        KillEntitiesCommand killEntitiesCommand = new KillEntitiesCommand(this);
+        getCommand("killentities").setExecutor(killEntitiesCommand);
+        getCommand("killentities").setTabCompleter(killEntitiesCommand);
+        ChunkInfoCommand chunkInfoCommand = new ChunkInfoCommand(this);
+        getCommand("chunkinfo").setExecutor(chunkInfoCommand);
+        getCommand("chunkinfo").setTabCompleter(chunkInfoCommand);
+
+        // Builder tools
+        TopCommand topCommand = new TopCommand(this);
+        getCommand("top").setExecutor(topCommand);
+        getCommand("top").setTabCompleter(topCommand);
+        UpCommand upCommand = new UpCommand(this);
+        getCommand("up").setExecutor(upCommand);
+        getCommand("up").setTabCompleter(upCommand);
+
+        // Developer tools
+        GcCommand gcCommand = new GcCommand(this);
+        getCommand("gc").setExecutor(gcCommand);
+        getCommand("gc").setTabCompleter(gcCommand);
+        ThreadsCommand threadsCommand = new ThreadsCommand(this);
+        getCommand("threads").setExecutor(threadsCommand);
+        getCommand("threads").setTabCompleter(threadsCommand);
+        PluginInfoCommand pluginInfoCommand = new PluginInfoCommand(this);
+        getCommand("plugininfo").setExecutor(pluginInfoCommand);
+        getCommand("plugininfo").setTabCompleter(pluginInfoCommand);
+
+        // Owner tools
+        ShutdownCommand shutdownCommand = new ShutdownCommand(this);
+        getCommand("shutdown").setExecutor(shutdownCommand);
+        getCommand("shutdown").setTabCompleter(shutdownCommand);
+
+        // Content creator perks
+        SpotlightCommand spotlightCommand = new SpotlightCommand(this);
+        getCommand("spotlight").setExecutor(spotlightCommand);
+        getCommand("spotlight").setTabCompleter(spotlightCommand);
+        RecordingCommand recordingCommand = new RecordingCommand(this);
+        getCommand("recording").setExecutor(recordingCommand);
+        getCommand("recording").setTabCompleter(recordingCommand);
+
+        // Store-rank (donor) perks
+        FireworkCommand fireworkCommand = new FireworkCommand(this);
+        getCommand("firework").setExecutor(fireworkCommand);
+        getCommand("firework").setTabCompleter(fireworkCommand);
+        LaunchCommand launchCommand = new LaunchCommand(this);
+        getCommand("launch").setExecutor(launchCommand);
+        getCommand("launch").setTabCompleter(launchCommand);
     }
 
     private void registerRankCommand(RankCommand executor, String name) {
