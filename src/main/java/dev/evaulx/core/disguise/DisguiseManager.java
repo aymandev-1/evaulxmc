@@ -42,6 +42,18 @@ import java.util.regex.PatternSyntaxException;
 
 public class DisguiseManager {
 
+    private static Material matDm(String modern, String legacy) {
+        Material m = Material.getMaterial(modern);
+        if (m != null) return m;
+        m = Material.getMaterial(legacy);
+        return m != null ? m : Material.STONE;
+    }
+    private static final Material DM_ENDER_EYE = matDm("ENDER_EYE",              "EYE_OF_ENDER");
+    private static final Material DM_OAK_SIGN  = matDm("OAK_SIGN",               "SIGN");
+    private static final Material DM_HEAD_MAT  = matDm("PLAYER_HEAD",             "SKULL_ITEM");
+    private static final Material DM_GRAY_PANE = matDm("GRAY_STAINED_GLASS_PANE", "STAINED_GLASS_PANE");
+    private static final Material DM_GRAY_CLAY = matDm("GRAY_TERRACOTTA",         "STAINED_CLAY");
+
     private static final String SKIN_TITLE = "Skin Select";
     private static final String RANK_TITLE = "Rank Select";
     private static final String NAME_TITLE = "Name Select";
@@ -562,23 +574,81 @@ public class DisguiseManager {
     public long getCooldownRemaining(Player player) {
         Long last = disguiseCooldowns.get(player.getUniqueId());
         if (last == null) return 0L;
-        long cooldown = plugin.getConfig().getLong("disguise.cooldown-seconds", 10L) * 1000L;
+        long cooldown = getRankCooldownSeconds(player) * 1000L;
         return Math.max(0L, cooldown - (System.currentTimeMillis() - last));
     }
 
+    public void resetCooldown(UUID uuid) {
+        disguiseCooldowns.remove(uuid);
+    }
+
+    public boolean forceDisguise(CommandSender admin, Player target, String disguiseName, String skinName, String rankName) {
+        PlayerProfile profile = plugin.getPlayerManager().getProfile(target);
+        if (profile == null) {
+            plugin.getMessageManager().send(admin, "profile-loading", "&cThat player's profile is still loading.");
+            return false;
+        }
+        String realName = profile.getName();
+
+        String cleanName = cleanName(disguiseName);
+        if (cleanName == null) {
+            admin.sendMessage(CC.color("&cInvalid disguise name. Must be 3-16 letters, numbers, or underscores."));
+            return false;
+        }
+
+        if (skinName == null || skinName.trim().isEmpty()) skinName = cleanName;
+        String cleanSkin = cleanName(skinName);
+        if (cleanSkin == null) {
+            admin.sendMessage(CC.color("&cInvalid skin name. Must be 3-16 letters, numbers, or underscores."));
+            return false;
+        }
+
+        if (rankName != null && !rankName.trim().isEmpty() && plugin.getRankManager().getRank(rankName) == null) {
+            plugin.getMessageManager().send(admin, "disguise.rank-not-found", "&cRank not found.");
+            return false;
+        }
+
+        String finalRank = rankName == null || rankName.trim().isEmpty() ? null : rankName;
+        List<SkinProperty> cached = cachedTextures(cleanSkin);
+        applyDisguise(target, profile, realName, cleanName, cleanSkin, finalRank, "forcedisguise", cached);
+        admin.sendMessage(CC.color("&8[&cDisguise&8] &7Force-disguised &f" + realName + " &7as &c" + cleanName + "&7."));
+        if (cached == null || cached.isEmpty()) loadSkinAsync(target.getUniqueId(), cleanSkin, false);
+        return true;
+    }
+
     public List<DisguiseHistoryEntry> getHistory(String realName, int max) {
+        return getHistory(realName, max, 0);
+    }
+
+    public List<DisguiseHistoryEntry> getHistory(String realName, int max, int offset) {
         List<DisguiseHistoryEntry> results = new ArrayList<>();
+        int skipped = 0;
         synchronized (history) {
             for (DisguiseHistoryEntry entry : history) {
                 if (realName == null || realName.isEmpty()
                         || entry.getRealName().equalsIgnoreCase(realName)
                         || entry.getDisguiseName().equalsIgnoreCase(realName)) {
+                    if (skipped < offset) { skipped++; continue; }
                     results.add(entry);
                     if (results.size() >= max) break;
                 }
             }
         }
         return results;
+    }
+
+    public int countHistory(String realName) {
+        int count = 0;
+        synchronized (history) {
+            for (DisguiseHistoryEntry entry : history) {
+                if (realName == null || realName.isEmpty()
+                        || entry.getRealName().equalsIgnoreCase(realName)
+                        || entry.getDisguiseName().equalsIgnoreCase(realName)) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     public void openSkinSelector(Player player) {
@@ -607,9 +677,9 @@ public class DisguiseManager {
             inventory.setItem(slots[i], createSkinItem(skin));
         }
 
-        inventory.setItem(getNextPageSlot(), createNamedItem(Material.ENDER_EYE, "&aNext Page",
+        inventory.setItem(getNextPageSlot(), createNamedItem(DM_ENDER_EYE, "&aNext Page",
                 "&7Click to go to the next skin page."));
-        inventory.setItem(getPreviousPageSlot(), createNamedItem(Material.ENDER_EYE, "&cPrevious Page",
+        inventory.setItem(getPreviousPageSlot(), createNamedItem(DM_ENDER_EYE, "&cPrevious Page",
                 "&7Click to go back a skin page."));
 
         player.openInventory(inventory);
@@ -633,7 +703,7 @@ public class DisguiseManager {
         Inventory inventory = Bukkit.createInventory(null, 54, getNameTitle());
         fillBorder(inventory);
         inventory.setItem(plugin.getConfig().getInt("disguise.gui.name.custom-slot", 21),
-                createConfiguredItem("disguise.gui.name.custom-item", Material.OAK_SIGN, "&cPick your name",
+                createConfiguredItem("disguise.gui.name.custom-item", DM_OAK_SIGN, "&cPick your name",
                         Arrays.asList("&7Click to write your own disguise name.", "&7You will type the name in chat."), null));
         inventory.setItem(plugin.getConfig().getInt("disguise.gui.name.random-slot", 23),
                 createConfiguredItem("disguise.gui.name.random-item", Material.BOOK, "&cRandom Name",
@@ -677,9 +747,9 @@ public class DisguiseManager {
             inventory.setItem(slots[i], createActiveDisguiseItem(disguised.get(index)));
         }
 
-        inventory.setItem(getNextPageSlot(), createNamedItem(Material.ENDER_EYE, "&aNext Page",
+        inventory.setItem(getNextPageSlot(), createNamedItem(DM_ENDER_EYE, "&aNext Page",
                 "&7Click to go to the next disguise page."));
-        inventory.setItem(getPreviousPageSlot(), createNamedItem(Material.ENDER_EYE, "&cPrevious Page",
+        inventory.setItem(getPreviousPageSlot(), createNamedItem(DM_ENDER_EYE, "&cPrevious Page",
                 "&7Click to go back a disguise page."));
 
         player.openInventory(inventory);
@@ -781,6 +851,10 @@ public class DisguiseManager {
 
     public String getVisibleName(Player player) {
         PlayerProfile profile = plugin.getPlayerManager().getProfile(player);
+        if (profile != null && profile.isStreamerMode()
+                && profile.getStreamerAlias() != null && !profile.getStreamerAlias().isEmpty()) {
+            return profile.getStreamerAlias();
+        }
         if (profile != null && profile.isDisguised() && profile.getDisguiseName() != null) {
             return profile.getDisguiseName();
         }
@@ -858,6 +932,15 @@ public class DisguiseManager {
 
         disguiseCooldowns.put(player.getUniqueId(), System.currentTimeMillis());
         return true;
+    }
+
+    private long getRankCooldownSeconds(Player player) {
+        PlayerProfile profile = plugin.getPlayerManager().getProfile(player);
+        if (profile != null) {
+            long override = plugin.getConfig().getLong("disguise.rank-cooldowns." + profile.getRankName(), -1L);
+            if (override >= 0L) return override;
+        }
+        return plugin.getConfig().getLong("disguise.cooldown-seconds", 10L);
     }
 
     private void clearDisguiseState(PlayerProfile profile) {
@@ -1106,7 +1189,7 @@ public class DisguiseManager {
             return;
         }
 
-        if (item.getType() != Material.PLAYER_HEAD) return;
+        if (item.getType() != DM_HEAD_MAT) return;
         String skin = CC.strip(item.getItemMeta().getDisplayName()).trim();
         if (cleanName(skin) == null) return;
 
@@ -1493,7 +1576,7 @@ public class DisguiseManager {
     }
 
     private void fillBorder(Inventory inventory) {
-        Material material = parseMaterial(plugin.getConfig().getString("disguise.gui.border.material", "STAINED_GLASS_PANE"), Material.GRAY_STAINED_GLASS_PANE);
+        Material material = parseMaterial(plugin.getConfig().getString("disguise.gui.border.material", "STAINED_GLASS_PANE"), DM_GRAY_PANE);
         short data = (short) plugin.getConfig().getInt("disguise.gui.border.data", 15);
         String name = plugin.getConfig().getString("disguise.gui.border.name", " ");
         ItemStack filler = createNamedItem(new ItemStack(material, 1, data), name);
@@ -1505,7 +1588,7 @@ public class DisguiseManager {
     }
 
     private ItemStack createSkinItem(String skin) {
-        ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+        ItemStack item = new ItemStack(DM_HEAD_MAT, 1, (short) 3);
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwner(skin);
         Map<String, String> placeholders = plugin.getMessageManager().placeholders("{skin}", skin);
@@ -1517,7 +1600,7 @@ public class DisguiseManager {
     }
 
     private ItemStack createRankItem(dev.evaulx.core.models.Rank rank, int order) {
-        Material material = parseMaterial(plugin.getConfig().getString("disguise.gui.rank.material", "STAINED_CLAY"), Material.GRAY_TERRACOTTA);
+        Material material = parseMaterial(plugin.getConfig().getString("disguise.gui.rank.material", "STAINED_CLAY"), DM_GRAY_CLAY);
         ItemStack item = new ItemStack(material, 1, colorData(rank.getColor()));
         ItemMeta meta = item.getItemMeta();
         Map<String, String> placeholders = plugin.getMessageManager().placeholders(
@@ -1543,7 +1626,7 @@ public class DisguiseManager {
         String skin = profile == null ? "" : profile.getDisguiseSkin();
         String rank = profile == null ? "" : profile.getDisguiseRank();
 
-        ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+        ItemStack item = new ItemStack(DM_HEAD_MAT, 1, (short) 3);
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwner(disguiseName == null ? target.getName() : disguiseName);
         meta.setDisplayName(CC.color("&c" + nullToNone(disguiseName)));
@@ -2301,3 +2384,6 @@ public class DisguiseManager {
         public long getCreatedAt() { return createdAt; }
     }
 }
+
+
+

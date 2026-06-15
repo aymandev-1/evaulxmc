@@ -30,7 +30,23 @@ public class RealNameCommand implements CommandExecutor {
         String query = args[0];
         for (Player player : Bukkit.getOnlinePlayers()) {
             PlayerProfile profile = plugin.getPlayerManager().getProfile(player);
-            if (profile == null || !profile.isDisguised()) continue;
+            if (profile == null) continue;
+
+            // Check streamer mode first
+            if (profile.isStreamerMode() && profile.getStreamerAlias() != null) {
+                if (query.equalsIgnoreCase(profile.getStreamerAlias())
+                        || query.equalsIgnoreCase(profile.getName())
+                        || query.equalsIgnoreCase(player.getName())) {
+                    sender.sendMessage(CC.color("&8[&dStreamer&8] &f" + profile.getStreamerAlias()
+                            + " &7is &f" + profile.getName() + " &7(streamer mode)&7."));
+                    plugin.getStaffRequestManager().logAction(sender.getName(), "REALNAME_LOOKUP", profile.getName(),
+                            "streamer alias '" + query + "' -> " + profile.getName());
+                    return true;
+                }
+            }
+
+            // Check disguise
+            if (!profile.isDisguised()) continue;
             if (query.equalsIgnoreCase(profile.getDisguiseName())
                     || query.equalsIgnoreCase(profile.getName())
                     || query.equalsIgnoreCase(player.getName())) {

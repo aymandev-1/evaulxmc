@@ -17,55 +17,58 @@ public class EnchantCommand implements CommandExecutor {
     private static final Map<String, Enchantment> ALIASES = new HashMap<>();
 
     static {
-        alias("sharpness", Enchantment.SHARPNESS);
-        alias("smite", Enchantment.SMITE);
-        alias("bane", Enchantment.BANE_OF_ARTHROPODS);
-        alias("efficiency", Enchantment.EFFICIENCY);
-        alias("unbreaking", Enchantment.UNBREAKING);
-        alias("fortune", Enchantment.FORTUNE);
-        alias("looting", Enchantment.LOOTING);
-        alias("protection", Enchantment.PROTECTION);
-        alias("fireprotection", Enchantment.FIRE_PROTECTION);
-        alias("blastprotection", Enchantment.BLAST_PROTECTION);
-        alias("projectileprotection", Enchantment.PROJECTILE_PROTECTION);
-        alias("featherfalling", Enchantment.FEATHER_FALLING);
-        alias("fireaspect", Enchantment.FIRE_ASPECT);
-        alias("knockback", Enchantment.KNOCKBACK);
-        alias("silktouch", Enchantment.SILK_TOUCH);
-        alias("thorns", Enchantment.THORNS);
-        alias("respiration", Enchantment.RESPIRATION);
-        alias("aquaaffinity", Enchantment.AQUA_AFFINITY);
-        alias("power", Enchantment.POWER);
-        alias("punch", Enchantment.PUNCH);
-        alias("flame", Enchantment.FLAME);
-        alias("infinity", Enchantment.INFINITY);
-        alias("luck", Enchantment.LUCK_OF_THE_SEA);
-        alias("lure", Enchantment.LURE);
+        // Each entry tries the 1.8 legacy name first, then the modern (1.13+) name.
+        // getByName() exists on all server versions and is safe to call.
+        safeAlias("sharpness",            "DAMAGE_ALL",               "SHARPNESS");
+        safeAlias("smite",                "DAMAGE_UNDEAD",            "SMITE");
+        safeAlias("bane",                 "DAMAGE_ARTHROPODS",        "BANE_OF_ARTHROPODS");
+        safeAlias("efficiency",           "DIG_SPEED",                "EFFICIENCY");
+        safeAlias("unbreaking",           "DURABILITY",               "UNBREAKING");
+        safeAlias("fortune",              "LOOT_BONUS_BLOCKS",        "FORTUNE");
+        safeAlias("looting",              "LOOT_BONUS_MOBS",          "LOOTING");
+        safeAlias("protection",           "PROTECTION_ENVIRONMENTAL", "PROTECTION");
+        safeAlias("fireprotection",       "PROTECTION_FIRE",          "FIRE_PROTECTION");
+        safeAlias("blastprotection",      "PROTECTION_EXPLOSIONS",    "BLAST_PROTECTION");
+        safeAlias("projectileprotection", "PROTECTION_PROJECTILE",    "PROJECTILE_PROTECTION");
+        safeAlias("featherfalling",       "PROTECTION_FALL",          "FEATHER_FALLING");
+        safeAlias("fireaspect",           "FIRE_ASPECT");
+        safeAlias("knockback",            "KNOCKBACK");
+        safeAlias("silktouch",            "SILK_TOUCH");
+        safeAlias("thorns",               "THORNS");
+        safeAlias("respiration",          "OXYGEN",                   "RESPIRATION");
+        safeAlias("aquaaffinity",         "WATER_WORKER",             "AQUA_AFFINITY");
+        safeAlias("power",                "ARROW_DAMAGE",             "POWER");
+        safeAlias("punch",                "ARROW_KNOCKBACK",          "PUNCH");
+        safeAlias("flame",                "ARROW_FIRE",               "FLAME");
+        safeAlias("infinity",             "ARROW_INFINITE",           "INFINITY");
+        safeAlias("luck",                 "LUCK",                     "LUCK_OF_THE_SEA");
+        safeAlias("lure",                 "LURE");
 
-        alias("0", Enchantment.PROTECTION);
-        alias("1", Enchantment.FIRE_PROTECTION);
-        alias("2", Enchantment.FEATHER_FALLING);
-        alias("3", Enchantment.BLAST_PROTECTION);
-        alias("4", Enchantment.PROJECTILE_PROTECTION);
-        alias("5", Enchantment.RESPIRATION);
-        alias("6", Enchantment.AQUA_AFFINITY);
-        alias("7", Enchantment.THORNS);
-        alias("16", Enchantment.SHARPNESS);
-        alias("17", Enchantment.SMITE);
-        alias("18", Enchantment.BANE_OF_ARTHROPODS);
-        alias("19", Enchantment.KNOCKBACK);
-        alias("20", Enchantment.FIRE_ASPECT);
-        alias("21", Enchantment.LOOTING);
-        alias("32", Enchantment.EFFICIENCY);
-        alias("33", Enchantment.SILK_TOUCH);
-        alias("34", Enchantment.UNBREAKING);
-        alias("35", Enchantment.FORTUNE);
-        alias("48", Enchantment.POWER);
-        alias("49", Enchantment.PUNCH);
-        alias("50", Enchantment.FLAME);
-        alias("51", Enchantment.INFINITY);
-        alias("61", Enchantment.LUCK_OF_THE_SEA);
-        alias("62", Enchantment.LURE);
+        // Numeric ID aliases (1.8 enchantment IDs)
+        safeAlias("0",  "PROTECTION_ENVIRONMENTAL", "PROTECTION");
+        safeAlias("1",  "PROTECTION_FIRE",          "FIRE_PROTECTION");
+        safeAlias("2",  "PROTECTION_FALL",          "FEATHER_FALLING");
+        safeAlias("3",  "PROTECTION_EXPLOSIONS",    "BLAST_PROTECTION");
+        safeAlias("4",  "PROTECTION_PROJECTILE",    "PROJECTILE_PROTECTION");
+        safeAlias("5",  "OXYGEN",                   "RESPIRATION");
+        safeAlias("6",  "WATER_WORKER",             "AQUA_AFFINITY");
+        safeAlias("7",  "THORNS");
+        safeAlias("16", "DAMAGE_ALL",               "SHARPNESS");
+        safeAlias("17", "DAMAGE_UNDEAD",            "SMITE");
+        safeAlias("18", "DAMAGE_ARTHROPODS",        "BANE_OF_ARTHROPODS");
+        safeAlias("19", "KNOCKBACK");
+        safeAlias("20", "FIRE_ASPECT");
+        safeAlias("21", "LOOT_BONUS_MOBS",          "LOOTING");
+        safeAlias("32", "DIG_SPEED",                "EFFICIENCY");
+        safeAlias("33", "SILK_TOUCH");
+        safeAlias("34", "DURABILITY",               "UNBREAKING");
+        safeAlias("35", "LOOT_BONUS_BLOCKS",        "FORTUNE");
+        safeAlias("48", "ARROW_DAMAGE",             "POWER");
+        safeAlias("49", "ARROW_KNOCKBACK",          "PUNCH");
+        safeAlias("50", "ARROW_FIRE",               "FLAME");
+        safeAlias("51", "ARROW_INFINITE",           "INFINITY");
+        safeAlias("61", "LUCK",                     "LUCK_OF_THE_SEA");
+        safeAlias("62", "LURE");
     }
 
     private final EvaulxCore plugin;
@@ -117,12 +120,12 @@ public class EnchantCommand implements CommandExecutor {
     }
 
     private Enchantment findEnchantment(String input) {
-        String key = normalize(input);
-        Enchantment alias = ALIASES.get(key);
+        Enchantment alias = ALIASES.get(normalize(input));
         if (alias != null) return alias;
-
-        Enchantment byName = Enchantment.getByName(input.toUpperCase(Locale.ENGLISH));
-        if (byName != null) return byName;
+        try {
+            Enchantment byName = Enchantment.getByName(input.toUpperCase(Locale.ENGLISH));
+            if (byName != null) return byName;
+        } catch (Throwable ignored) {}
         return null;
     }
 
@@ -135,11 +138,21 @@ public class EnchantCommand implements CommandExecutor {
         }
     }
 
-    private static void alias(String name, Enchantment enchantment) {
-        ALIASES.put(normalize(name), enchantment);
+    // Tries each enchantment name in order; on 1.8 the legacy name works, on modern the new name works.
+    private static void safeAlias(String alias, String... enchNames) {
+        for (String enchName : enchNames) {
+            try {
+                Enchantment e = Enchantment.getByName(enchName);
+                if (e != null) {
+                    ALIASES.put(normalize(alias), e);
+                    return;
+                }
+            } catch (Throwable ignored) {}
+        }
     }
 
     private static String normalize(String input) {
         return input.toLowerCase(Locale.ENGLISH).replace("_", "").replace("-", "").replace(" ", "");
     }
 }
+

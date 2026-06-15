@@ -77,9 +77,7 @@ chat:
   format: "{tag}{prefix}{namecolor}{player}{suffix}&7: {message}"
   range: -1  # -1 = global
   filter-enabled: false
-  filtered-words:
-    - "badword1"
-    - "badword2"
+  filtered-words: []
   anti-spam:
     enabled: true
     cooldown-seconds: 1.5
@@ -103,150 +101,684 @@ chat:
 tags:
   require-per-tag-permission: true
   show-locked: true
-  custom-max-raw-length: 48
-  custom-max-visible-length: 16
+  custom-max-raw-length: 64
+  custom-max-visible-length: 20
   gui:
-    title: "&8Tags {page}/{pages}"
+    title: "&8Tags &7{page}&8/&7{pages}"
   catalog:
+
+    # ── Staff ─────────────────────────────────────────────────────────────────
     owner:
-      display: "&7[&4OP&7]"
+      display: "&4[&f★ &4&lOwner &f★&4]"
       category: "Staff"
       rarity: "Exclusive"
-      description: "Server owner tag."
+      description: "The server owner."
       permission: "evaulx.tag.owner"
       ranks: ["Owner"]
       order: 10
+    owner_op:
+      display: "&4[&f&l✦ OP &f&l✦&4]"
+      category: "Staff"
+      rarity: "Exclusive"
+      description: "Classic operator variant."
+      permission: "evaulx.tag.owner"
+      ranks: ["Owner"]
+      order: 11
     admin:
-      display: "&c[Admin]"
+      display: "&8[&c⚔ &c&lAdmin&8]"
       category: "Staff"
       rarity: "Staff"
-      description: "Administrator tag."
+      description: "Server administrator."
       permission: "evaulx.tag.admin"
       ranks: ["Admin", "Platform-Admin"]
       order: 20
-    mod:
-      display: "&2[Mod]"
+    admin_star:
+      display: "&c★ &c&lAdmin &c★"
       category: "Staff"
       rarity: "Staff"
-      description: "Moderator tag."
+      description: "Admin star variant."
+      permission: "evaulx.tag.admin"
+      ranks: ["Admin", "Platform-Admin"]
+      order: 21
+    developer:
+      display: "&8[&1⚙ &1Dev&8]"
+      category: "Staff"
+      rarity: "Staff"
+      description: "Server developer."
+      permission: "evaulx.tag.developer"
+      ranks: ["Developer"]
+      order: 25
+    seniormod:
+      display: "&8[&a★ &a&lSr.Mod&8]"
+      category: "Staff"
+      rarity: "Staff"
+      description: "Senior moderator."
+      permission: "evaulx.tag.seniormod"
+      ranks: ["Senior-Mod"]
+      order: 30
+    mod:
+      display: "&8[&2⚔ &2Mod&8]"
+      category: "Staff"
+      rarity: "Staff"
+      description: "Server moderator."
       permission: "evaulx.tag.mod"
       ranks: ["Mod", "Senior-Mod"]
-      order: 30
+      order: 35
     helper:
-      display: "&9[Helper]"
+      display: "&8[&9♦ &9Helper&8]"
       category: "Staff"
       rarity: "Staff"
-      description: "Helper tag."
+      description: "Community helper."
       permission: "evaulx.tag.helper"
       ranks: []
       order: 40
-    vip:
-      display: "&6[VIP]"
-      category: "Donator"
-      rarity: "Rare"
-      description: "VIP supporter tag."
-      permission: "evaulx.tag.vip"
-      ranks: ["VIP"]
-      order: 100
-    mvp:
-      display: "&e[MVP]"
-      category: "Donator"
-      rarity: "Epic"
-      description: "MVP supporter tag."
-      permission: "evaulx.tag.mvp"
-      ranks: []
-      order: 110
-    legend:
-      display: "&6[Legend]"
-      category: "Donator"
-      rarity: "Legendary"
-      description: "Top supporter tag."
-      permission: "evaulx.tag.legend"
-      ranks: ["Evaulx"]
-      order: 120
-    media:
-      display: "&d[Media]"
+
+    # ── Creator ───────────────────────────────────────────────────────────────
+    creator:
+      display: "&8[&6✦ &6Creator&8]"
       category: "Creator"
       rarity: "Creator"
-      description: "Media creator tag."
-      permission: "evaulx.tag.media"
+      description: "Content creator tag."
+      permission: "evaulx.tag.creator"
       ranks: ["Youtuber", "Twitch"]
       order: 200
-    streamer:
-      display: "&5[Streamer]"
+    media:
+      display: "&8[&d▶ &dMedia&8]"
       category: "Creator"
       rarity: "Creator"
-      description: "Live streamer tag."
+      description: "Media creator."
+      permission: "evaulx.tag.media"
+      ranks: ["Youtuber", "Twitch"]
+      order: 205
+    streamer:
+      display: "&8[&5● &5Streamer&8]"
+      category: "Creator"
+      rarity: "Creator"
+      description: "Live streamer."
       permission: "evaulx.tag.streamer"
       ranks: ["Twitch"]
       order: 210
     yt:
-      display: "&c[YT]"
+      display: "&8[&c▶ &cYouTube&8]"
       category: "Creator"
       rarity: "Creator"
-      description: "Video creator tag."
+      description: "YouTube creator."
       permission: "evaulx.tag.yt"
       ranks: ["Youtuber"]
-      order: 220
-    builder:
-      display: "&a[Builder]"
-      category: "Community"
-      rarity: "Rare"
-      description: "Builder tag."
-      permission: "evaulx.tag.builder"
-      ranks: ["Builder"]
-      order: 300
+      order: 215
     partner:
-      display: "&3[Partner]"
-      category: "Community"
-      rarity: "Epic"
-      description: "Partner tag."
+      display: "&8[&3✪ &3Partner&8]"
+      category: "Creator"
+      rarity: "Creator"
+      description: "Official server partner."
       permission: "evaulx.tag.partner"
+      ranks: []
+      order: 220
+
+    # ── Store / Ranks ─────────────────────────────────────────────────────────
+    vip:
+      display: "&8[&6★ &6VIP&8]"
+      category: "Store"
+      rarity: "Rare"
+      description: "VIP supporter."
+      permission: "evaulx.tag.vip"
+      ranks: ["VIP"]
+      order: 100
+    vip_diamond:
+      display: "&8[&6♦ &6&lVIP&8]"
+      category: "Store"
+      rarity: "Rare"
+      description: "VIP diamond variant."
+      permission: "evaulx.tag.vip"
+      ranks: ["VIP"]
+      order: 101
+    mvp:
+      display: "&8[&e⚡ &e&lMVP&8]"
+      category: "Store"
+      rarity: "Epic"
+      description: "MVP supporter."
+      permission: "evaulx.tag.mvp"
+      ranks: ["VIP"]
+      order: 110
+    mvp_star:
+      display: "&8[&e★ &e&lMVP&8]"
+      category: "Store"
+      rarity: "Epic"
+      description: "MVP star variant."
+      permission: "evaulx.tag.mvp"
+      ranks: ["VIP"]
+      order: 111
+    legend:
+      display: "&8[&6♛ &6&lLegend&8]"
+      category: "Store"
+      rarity: "Legendary"
+      description: "Legendary supporter."
+      permission: "evaulx.tag.legend"
+      ranks: ["Evaulx"]
+      order: 120
+    legend_diamond:
+      display: "&8[&6◆ &6&lLegend&8]"
+      category: "Store"
+      rarity: "Legendary"
+      description: "Legend diamond variant."
+      permission: "evaulx.tag.legend"
+      ranks: ["Evaulx"]
+      order: 121
+    evaulxtag:
+      display: "&8[&b✦ &b&lEvaulx&8]"
+      category: "Store"
+      rarity: "Legendary"
+      description: "Evaulx rank holder."
+      permission: "evaulx.tag.evaulxtag"
+      ranks: ["Evaulx"]
+      order: 130
+    evaulx_celestial:
+      display: "&b✦ &b&lEvaulx &b✦"
+      category: "Store"
+      rarity: "Legendary"
+      description: "Evaulx celestial variant."
+      permission: "evaulx.tag.evaulxtag"
+      ranks: ["Evaulx"]
+      order: 131
+    phase:
+      display: "&8[&7◆ &7Phase&8]"
+      category: "Store"
+      rarity: "Store"
+      description: "Phase rank tag."
+      permission: "evaulx.tag.phase"
+      ranks: ["Phase"]
+      order: 140
+    zecon:
+      display: "&8[&3◆ &3Zecon&8]"
+      category: "Store"
+      rarity: "Store"
+      description: "Zecon rank tag."
+      permission: "evaulx.tag.zecon"
+      ranks: ["Zecon"]
+      order: 150
+
+    # ── Community ─────────────────────────────────────────────────────────────
+    og:
+      display: "&8[&6♦ &6OG&8]"
+      category: "Community"
+      rarity: "Legacy"
+      description: "Original server member."
+      permission: "evaulx.tag.og"
+      ranks: []
+      order: 300
+    beta:
+      display: "&8[&b✦ &bBeta&8]"
+      category: "Community"
+      rarity: "Legacy"
+      description: "Beta tester."
+      permission: "evaulx.tag.beta"
       ranks: []
       order: 310
     veteran:
-      display: "&8[Veteran]"
+      display: "&8[&7★ &7Veteran&8]"
       category: "Community"
       rarity: "Legacy"
-      description: "Long-time community member tag."
+      description: "Long-standing community member."
       permission: "evaulx.tag.veteran"
       ranks: []
       order: 320
+    builder:
+      display: "&8[&a⚙ &aBuilder&8]"
+      category: "Community"
+      rarity: "Rare"
+      description: "Server builder."
+      permission: "evaulx.tag.builder"
+      ranks: ["Builder"]
+      order: 330
+    verified:
+      display: "&8[&a✔ &aVerified&8]"
+      category: "Community"
+      rarity: "Uncommon"
+      description: "Verified community member."
+      permission: "evaulx.tag.verified"
+      ranks: []
+      order: 340
+    chill:
+      display: "&8[&3≈ &3Chill&8]"
+      category: "Community"
+      rarity: "Common"
+      description: "Laid-back and easy-going."
+      permission: "evaulx.tag.chill"
+      ranks: []
+      order: 350
+    social:
+      display: "&8[&d♥ &dSocial&8]"
+      category: "Community"
+      rarity: "Common"
+      description: "Community socialite."
+      permission: "evaulx.tag.social"
+      ranks: []
+      order: 360
+    trader:
+      display: "&8[&6◆ &6Trader&8]"
+      category: "Community"
+      rarity: "Uncommon"
+      description: "Economy and trade specialist."
+      permission: "evaulx.tag.trader"
+      ranks: []
+      order: 370
+    sigma:
+      display: "&8[&dΣ &dSigma&8]"
+      category: "Community"
+      rarity: "Common"
+      description: "The lone wolf."
+      permission: "evaulx.tag.sigma"
+      ranks: []
+      order: 380
+
+    # ── Achievement ───────────────────────────────────────────────────────────
     champion:
-      display: "&b[Champion]"
+      display: "&8[&b♛ &b&lChampion&8]"
       category: "Achievement"
       rarity: "Epic"
-      description: "Tournament or event winner tag."
+      description: "Tournament or event champion."
       permission: "evaulx.tag.champion"
       ranks: []
       order: 400
-    grinder:
-      display: "&3[Grinder]"
+    warrior:
+      display: "&8[&c⚔ &cWarrior&8]"
       category: "Achievement"
       rarity: "Rare"
-      description: "Progression and playtime tag."
-      permission: "evaulx.tag.grinder"
+      description: "Proven combat veteran."
+      permission: "evaulx.tag.warrior"
       ranks: []
       order: 410
-    seasonal:
-      display: "&a[Seasonal]"
-      category: "Limited"
-      rarity: "Limited"
-      description: "Limited seasonal event tag."
-      permission: "evaulx.tag.seasonal"
+    victor:
+      display: "&8[&6★ &6Victor&8]"
+      category: "Achievement"
+      rarity: "Rare"
+      description: "Consistent winner."
+      permission: "evaulx.tag.victor"
+      ranks: []
+      order: 420
+    elite:
+      display: "&8[&e✬ &e&lElite&8]"
+      category: "Achievement"
+      rarity: "Epic"
+      description: "Top-tier player."
+      permission: "evaulx.tag.elite"
+      ranks: []
+      order: 430
+    grinder:
+      display: "&8[&3⚙ &3Grinder&8]"
+      category: "Achievement"
+      rarity: "Rare"
+      description: "Dedicated progression grinder."
+      permission: "evaulx.tag.grinder"
+      ranks: []
+      order: 440
+    clutch:
+      display: "&8[&a✦ &aClutch&8]"
+      category: "Achievement"
+      rarity: "Rare"
+      description: "Never gives up."
+      permission: "evaulx.tag.clutch"
+      ranks: []
+      order: 450
+    slayer:
+      display: "&8[&4☠ &4Slayer&8]"
+      category: "Achievement"
+      rarity: "Rare"
+      description: "High kill count."
+      permission: "evaulx.tag.slayer"
+      ranks: []
+      order: 460
+    goat:
+      display: "&8[&6♛ &6G.O.A.T&8]"
+      category: "Achievement"
+      rarity: "Legendary"
+      description: "Greatest of all time."
+      permission: "evaulx.tag.goat"
+      ranks: []
+      order: 470
+    unstoppable:
+      display: "&8[&c▲ &c&lUnstoppable&8]"
+      category: "Achievement"
+      rarity: "Epic"
+      description: "On an unstoppable streak."
+      permission: "evaulx.tag.unstoppable"
+      ranks: []
+      order: 480
+
+    # ── Combat ────────────────────────────────────────────────────────────────
+    pvp:
+      display: "&8[&c⚔ &cPvP&8]"
+      category: "Combat"
+      rarity: "Uncommon"
+      description: "PvP enthusiast."
+      permission: "evaulx.tag.pvp"
       ranks: []
       order: 500
-  # Legacy/public list. These remain available to anyone with evaulx.tag.
-  available:
-    - "&7[Member]"
-    - "&f[Verified]"
-    - "&6[OG]"
-    - "&b[Beta]"
-    - "&e[Pro]"
-    - "&a[Chill]"
-    - "&d[Hype]"
-    - "&3[Grinder]"
-    - "&9[Event]"
+    assassin:
+      display: "&8[&8✦ &0Assassin&8]"
+      category: "Combat"
+      rarity: "Rare"
+      description: "Silent and deadly."
+      permission: "evaulx.tag.assassin"
+      ranks: []
+      order: 510
+    sniper:
+      display: "&8[&a◆ &aSniper&8]"
+      category: "Combat"
+      rarity: "Rare"
+      description: "Precision long-range fighter."
+      permission: "evaulx.tag.sniper"
+      ranks: []
+      order: 520
+    duelist:
+      display: "&8[&9♦ &9Duelist&8]"
+      category: "Combat"
+      rarity: "Uncommon"
+      description: "1v1 specialist."
+      permission: "evaulx.tag.duelist"
+      ranks: []
+      order: 530
+    berserker:
+      display: "&8[&4✦ &4Berserker&8]"
+      category: "Combat"
+      rarity: "Rare"
+      description: "Fights with pure aggression."
+      permission: "evaulx.tag.berserker"
+      ranks: []
+      order: 540
+    tank:
+      display: "&8[&2▲ &2Tank&8]"
+      category: "Combat"
+      rarity: "Uncommon"
+      description: "Absorbs every hit."
+      permission: "evaulx.tag.tank"
+      ranks: []
+      order: 550
+
+    # ── Elemental ─────────────────────────────────────────────────────────────
+    blaze:
+      display: "&8[&c✦ &cBlaze&8]"
+      category: "Elemental"
+      rarity: "Rare"
+      description: "Fire elemental tag."
+      permission: "evaulx.tag.blaze"
+      ranks: []
+      order: 600
+    frost:
+      display: "&8[&b❄ &bFrost&8]"
+      category: "Elemental"
+      rarity: "Rare"
+      description: "Ice elemental tag."
+      permission: "evaulx.tag.frost"
+      ranks: []
+      order: 610
+    thunder:
+      display: "&8[&e⚡ &eThunder&8]"
+      category: "Elemental"
+      rarity: "Rare"
+      description: "Lightning elemental tag."
+      permission: "evaulx.tag.thunder"
+      ranks: []
+      order: 620
+    void:
+      display: "&8[&8◆ &0Void&8]"
+      category: "Elemental"
+      rarity: "Rare"
+      description: "Darkness elemental tag."
+      permission: "evaulx.tag.void"
+      ranks: []
+      order: 630
+    nature:
+      display: "&8[&a✿ &aNature&8]"
+      category: "Elemental"
+      rarity: "Rare"
+      description: "Earth elemental tag."
+      permission: "evaulx.tag.nature"
+      ranks: []
+      order: 640
+    storm:
+      display: "&8[&9◎ &9Storm&8]"
+      category: "Elemental"
+      rarity: "Rare"
+      description: "Wind elemental tag."
+      permission: "evaulx.tag.storm"
+      ranks: []
+      order: 650
+
+    # ── Special / Prestige ────────────────────────────────────────────────────
+    founder:
+      display: "&8[&6♛ &6&lFounder&8]"
+      category: "Special"
+      rarity: "Exclusive"
+      description: "Server founder."
+      permission: "evaulx.tag.founder"
+      ranks: []
+      order: 700
+    phantom:
+      display: "&8[&7◇ &7Phantom&8]"
+      category: "Special"
+      rarity: "Exclusive"
+      description: "A ghost-like presence."
+      permission: "evaulx.tag.phantom"
+      ranks: []
+      order: 710
+    crimson:
+      display: "&8[&4◆ &4Crimson&8]"
+      category: "Special"
+      rarity: "Exclusive"
+      description: "Crimson prestige tag."
+      permission: "evaulx.tag.crimson"
+      ranks: []
+      order: 720
+    celestial:
+      display: "&8[&b✦ &b&lCelestial&8]"
+      category: "Special"
+      rarity: "Exclusive"
+      description: "Among the stars."
+      permission: "evaulx.tag.celestial"
+      ranks: []
+      order: 730
+    infamous:
+      display: "&8[&c☄ &cInfamous&8]"
+      category: "Special"
+      rarity: "Exclusive"
+      description: "Notoriously known."
+      permission: "evaulx.tag.infamous"
+      ranks: []
+      order: 740
+    shadow:
+      display: "&8[&8★ &0Shadow&8]"
+      category: "Special"
+      rarity: "Exclusive"
+      description: "Lurking in the shadows."
+      permission: "evaulx.tag.shadow"
+      ranks: []
+      order: 750
+    omega:
+      display: "&8[&5Ω &5&lOmega&8]"
+      category: "Special"
+      rarity: "Exclusive"
+      description: "The final form."
+      permission: "evaulx.tag.omega"
+      ranks: []
+      order: 760
+    vortex:
+      display: "&8[&9◎ &9&lVortex&8]"
+      category: "Special"
+      rarity: "Exclusive"
+      description: "Consumed by the vortex."
+      permission: "evaulx.tag.vortex"
+      ranks: []
+      order: 770
+
+    # ── Seasonal / Limited ────────────────────────────────────────────────────
+    halloween:
+      display: "&8[&6☯ &6Spooky&8]"
+      category: "Limited"
+      rarity: "Limited"
+      description: "Halloween 2024 seasonal tag."
+      permission: "evaulx.tag.halloween"
+      ranks: []
+      order: 800
+    christmas:
+      display: "&8[&a❄ &aMerry&8]"
+      category: "Limited"
+      rarity: "Limited"
+      description: "Christmas seasonal tag."
+      permission: "evaulx.tag.christmas"
+      ranks: []
+      order: 810
+    summer:
+      display: "&8[&e☀ &eSummer&8]"
+      category: "Limited"
+      rarity: "Limited"
+      description: "Summer seasonal tag."
+      permission: "evaulx.tag.summer"
+      ranks: []
+      order: 820
+    winter:
+      display: "&8[&b❄ &bFrostbite&8]"
+      category: "Limited"
+      rarity: "Limited"
+      description: "Winter seasonal tag."
+      permission: "evaulx.tag.winter"
+      ranks: []
+      order: 830
+    easter:
+      display: "&8[&d✿ &dEaster&8]"
+      category: "Limited"
+      rarity: "Limited"
+      description: "Easter seasonal tag."
+      permission: "evaulx.tag.easter"
+      ranks: []
+      order: 840
+    newyear:
+      display: "&8[&e✦ &eNew Year&8]"
+      category: "Limited"
+      rarity: "Limited"
+      description: "New Year celebration tag."
+      permission: "evaulx.tag.newyear"
+      ranks: []
+      order: 850
+    seasonal:
+      display: "&8[&a✿ &aSeasonal&8]"
+      category: "Limited"
+      rarity: "Limited"
+      description: "Generic seasonal event tag."
+      permission: "evaulx.tag.seasonal"
+      ranks: []
+      order: 860
+
+    # ── Fun / Status ──────────────────────────────────────────────────────────
+    sweaty:
+      display: "&8[&a⚡ &aSweaty&8]"
+      category: "Fun"
+      rarity: "Common"
+      description: "Takes everything too seriously."
+      permission: "evaulx.tag.sweaty"
+      ranks: []
+      order: 900
+    tryhard:
+      display: "&8[&c▲ &cTryhard&8]"
+      category: "Fun"
+      rarity: "Common"
+      description: "Trying way too hard."
+      permission: "evaulx.tag.tryhard"
+      ranks: []
+      order: 910
+    god:
+      display: "&8[&e★ &eGod&8]"
+      category: "Fun"
+      rarity: "Rare"
+      description: "Self-proclaimed deity."
+      permission: "evaulx.tag.god"
+      ranks: []
+      order: 920
+    nolife:
+      display: "&8[&7● &7No-Life&8]"
+      category: "Fun"
+      rarity: "Common"
+      description: "Spends every hour on the server."
+      permission: "evaulx.tag.nolife"
+      ranks: []
+      order: 930
+    toxic:
+      display: "&8[&2☠ &2Toxic&8]"
+      category: "Fun"
+      rarity: "Common"
+      description: "Embracing the toxic persona."
+      permission: "evaulx.tag.toxic"
+      ranks: []
+      order: 940
+    noob:
+      display: "&8[&7? &7Noob&8]"
+      category: "Fun"
+      rarity: "Common"
+      description: "Still learning the ropes."
+      permission: "evaulx.tag.noob"
+      ranks: []
+      order: 950
+
+    # ── Public / Free for all ─────────────────────────────────────────────────
+    member:
+      display: "&7[★ Member&7]"
+      category: "Public"
+      rarity: "Common"
+      description: "Default member tag."
+      permission: ""
+      ranks: []
+      order: 1000
+    active:
+      display: "&a[⚡ Active&a]"
+      category: "Public"
+      rarity: "Common"
+      description: "Active player tag."
+      permission: ""
+      ranks: []
+      order: 1010
+    friendly:
+      display: "&d[♥ Friendly&d]"
+      category: "Public"
+      rarity: "Common"
+      description: "Friendly player tag."
+      permission: ""
+      ranks: []
+      order: 1020
+    pro:
+      display: "&e[◆ Pro&e]"
+      category: "Public"
+      rarity: "Common"
+      description: "Pro player tag."
+      permission: ""
+      ranks: []
+      order: 1030
+    hype:
+      display: "&d[✦ Hype&d]"
+      category: "Public"
+      rarity: "Common"
+      description: "Hype tag."
+      permission: ""
+      ranks: []
+      order: 1040
+    mystic:
+      display: "&5[Ω Mystic&5]"
+      category: "Public"
+      rarity: "Common"
+      description: "Mystic tag."
+      permission: ""
+      ranks: []
+      order: 1050
+    frosty:
+      display: "&b[❄ Frosty&b]"
+      category: "Public"
+      rarity: "Common"
+      description: "Frosty tag."
+      permission: ""
+      ranks: []
+      order: 1060
+
+  # Legacy simple list — any non-conflicting IDs here are also public.
+  available: []
 
 # Display, scoreboard team, and tab-list settings.
 nametags:
@@ -532,13 +1064,34 @@ disguise:
         name: "&cRandom Name"
         lore:
           - "&7Click to use a random disguise name."
+  # Per-rank cooldown overrides in seconds. Falls back to cooldown-seconds if the rank is not listed.
+  rank-cooldowns:
+    Default: 30
+    VIP: 20
+    MVP: 15
+    Legend: 10
+    Evaulx: 10
+    Phase: 10
+    Zecon: 10
+    Youtuber: 5
+    Twitch: 5
+    Creator: 5
+    Builder: 20
+    Helper: 5
+    Mod: 0
+    Senior-Mod: 0
+    Admin: 0
+    Developer: 0
+    Owner: 0
   skins:
+    # Classic/Default skins
     - Steve
     - Alex
     - Notch
     - jeb_
     - Dinnerbone
     - Grumm
+    # Well-known creators
     - Dream
     - Technoblade
     - TommyInnit
@@ -549,7 +1102,34 @@ disguise:
     - CaptainSparklez
     - PrestonPlayz
     - Unspeakable
+    - PopularMMOs
+    - GamingWithJen
+    - DanTDM
+    - CraftedRL
+    - Aphmau
+    - SSundee
+    - Sigils
+    - BiffleWiffle
+    - Nicovald
+    - Fundy
+    - Wilbur_Soot
+    - Tubbo
+    - Ranboo
+    - Quackity
+    - Karl_Jacobs
+    - Punz
+    - Eret
+    - HBomb94
+    - Antfrost
+    - ConnorEatsPants
+    - xNestorio
+    - Fruitberries
+    - Couriway
+    - Illumina
+    - Purpled
+    - CubistMC
   random-names:
+    # Nature-themed
     - OakRunner
     - StoneVale
     - FrostByte
@@ -560,6 +1140,61 @@ disguise:
     - PixelBloom
     - CloudRift
     - EmberFox
+    # Speed/Action
+    - VoidStriker
+    - BlazeDash
+    - NightProwl
+    - StormBolt
+    - ShadowRun
+    - CrimsonEdge
+    - FrostSprint
+    - ThunderStep
+    - SwiftBlade
+    - QuickSilver
+    # Cosmic/Space
+    - StarForge
+    - CelestialX
+    - NebulaRift
+    - CosmicDrift
+    - AstralBurn
+    - VoidWalker
+    - LunarBlade
+    - GalacticDawn
+    - SolarFlux
+    - NovaSurge
+    # Nature/Earth
+    - TerraKnight
+    - MossStride
+    - GlacierFang
+    - MagmaVeil
+    - TideFury
+    - GaleRider
+    - ThornCrest
+    - DuskPetal
+    - CinderWolf
+    - AlpineRun
+    # Mysterious
+    - PhantomMist
+    - EchoShade
+    - NullForm
+    - SpecterRun
+    - MirrorCast
+    - DarkPrism
+    - SilentEdge
+    - HollowRift
+    - GlitchX
+    - CipherVoid
+    # Cool random words
+    - NexusByte
+    - ZephyrBolt
+    - VertexRun
+    - ApexStar
+    - MatrixHex
+    - QuantumX
+    - PrismFall
+    - OmegaPulse
+    - AlphaStrike
+    - SigmaCore
 
 # Staff tools
 staff-tools:
@@ -568,7 +1203,7 @@ staff-tools:
   helpop-cooldown-seconds: 15
   max-recent-requests: 50
   clickable-alerts: true
-  staff-chat-format: "&b[&bS&b] {player}&8: &7{message}"
+  staff-chat-format: "&8[&bS&8] &8[&f{server}&8] &f{player} &8: &7{message}"
   command-spy:
     enabled: true
     hide-staff-commands: true
@@ -751,6 +1386,8 @@ gui:
     title: "&8Pending Grants"
   player-profile:
     title: "&8Profile: {player}"
+  streamer-mode:
+    title: "&8[&dStreamer&8] Settings"
   grants:
     title: "&8Grant: {player}"
     title-prefix: "&8Grant: "
@@ -815,15 +1452,21 @@ join-quit:
   first-join-message: "&6[NEW] &f{player} &7joined for the first time!"
   enabled: true
 
+# Appeal settings
+appeals:
+  max-reason-length: 200
+
 # Punishment defaults
 punishments:
   default-appeal-status: "not-submitted"
+  # URL shown in ban screens. Set to your appeal form, e.g. "yourserver.com/appeal". Leave empty to omit.
+  appeal-url: "evaulx.dev/appeal"
   ban-message: |
     &cYou have been banned.
     &7Reason: &f{reason}
     &7Duration: &f{duration}
     &7ID: &f{id}
-    &7Appeal at: &fevaulx.dev/appeal
+    &7Appeal at: &f{appeal}
   mute-message: "&cYou are muted. Reason: &f{reason} &cExpires: &f{duration} &7(ID: &f{id}&7)"
   kick-message: |
     &cYou have been kicked.
@@ -863,6 +1506,30 @@ punishment-presets:
     first: "warn {player} disrespect - first offence"
     second: "tempmute {player} 6h disrespect - second offence"
     third: "tempmute {player} 3d disrespect - repeated offences"
+
+# Streamer mode (session-only — not persisted to DB)
+streamer-mode:
+  alias-pool:
+    - "Shadow"
+    - "Phantom"
+    - "Ghost"
+    - "Cipher"
+    - "Specter"
+    - "Echo"
+    - "Raven"
+    - "Lynx"
+    - "Nova"
+    - "Volt"
+    - "Blaze"
+    - "Storm"
+    - "Frost"
+    - "Steel"
+    - "Jade"
+    - "Onyx"
+    - "Sage"
+    - "Drake"
+    - "Rune"
+    - "Byte"
 
 # Permissions
 permissions:

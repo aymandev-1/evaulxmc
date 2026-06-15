@@ -431,23 +431,24 @@ public class LobbyProtectionListener implements Listener {
             case CAKE:
             case CHEST:
             case DAYLIGHT_DETECTOR:
-            case REPEATER:
             case DISPENSER:
             case DROPPER:
-            case ENCHANTING_TABLE:
             case ENDER_CHEST:
             case FURNACE:
             case HOPPER:
             case JUKEBOX:
             case LEVER:
             case NOTE_BLOCK:
-            case COMPARATOR:
             case TRAPPED_CHEST:
-            case CRAFTING_TABLE:
                 return true;
             default:
-                return false;
+                break;
         }
+        String n = material.name();
+        return n.equals("REPEATER") || n.equals("DIODE")
+            || n.equals("ENCHANTING_TABLE") || n.equals("ENCHANTMENT_TABLE")
+            || n.equals("COMPARATOR") || n.equals("REDSTONE_COMPARATOR")
+            || n.equals("CRAFTING_TABLE") || n.equals("WORKBENCH");
     }
 
     private boolean isDangerousItem(Material material) {

@@ -4,7 +4,6 @@ main: dev.evaulx.core.EvaulxCore
 description: Core Manager for your Minecraft Server
 author: EvaulxMC
 website: https://evaulx.dev
-api-version: '1.21'
 
 softdepend:
   - PlaceholderAPI
@@ -46,6 +45,11 @@ commands:
     aliases: [cp, history]
   punish:
     description: Open or run punishment presets
+  alts:
+    description: Find alternate accounts linked by IP
+  evidence:
+    description: Attach or clear evidence on a punishment
+    aliases: [setevidence]
   rank:
     description: Manage ranks
     aliases: [ranks]
@@ -110,7 +114,7 @@ commands:
     description: Remove an active rank grant
   disguise:
     description: Disguise as another player
-    aliases: [dis, nick]
+    aliases: [dis]
   skin:
     description: Change your disguise skin
     aliases: [nickskin, changeskin]
@@ -128,6 +132,15 @@ commands:
   nickhistory:
     description: View disguise history
     aliases: [disguisehistory]
+  forcedisguise:
+    description: Force-disguise another player
+    aliases: [fnick, forcenick]
+  disguisecooldown:
+    description: Check or reset a player's disguise cooldown
+    aliases: [nickcooldown, dcooldown]
+  nickcolor:
+    description: Change your disguise name color while disguised
+    aliases: [disguisecolor, nickcolour]
   gamemode:
     description: Change gamemode
     aliases: [gm]
@@ -272,6 +285,212 @@ commands:
   afk:
     description: Toggle your AFK status
     aliases: [away]
+  msgtoggle:
+    description: Toggle whether you receive private messages
+    aliases: [msgt, togglemsg]
+  ignore:
+    description: Toggle ignoring private messages from a player
+  hat:
+    description: Wear your held item as a helmet
+  kickall:
+    description: Kick all non-exempt players from the server
+  time:
+    description: Set world time
+  weather:
+    description: Set world weather
+    aliases: [sky]
+  nick:
+    description: Set or remove your nickname
+    aliases: [nickname]
+  seen:
+    description: Check when a player was last online
+  repair:
+    description: Repair held item or all items in inventory
+  more:
+    description: Fill your held item stack to maximum
+  clearinv:
+    description: Clear a player's inventory
+    aliases: [clear, ci]
+  appeal:
+    description: Submit or manage ban/mute appeals
+  creator:
+    description: Manage content creator profiles and status
+    aliases: [contentcreator, creators]
+  redeemcode:
+    description: Redeem a content creator subscriber code for rewards
+    aliases: [redeem]
+  shoutout:
+    description: Content creator shoutout to a fan
+    aliases: [so]
+  cchat:
+    description: Send a message in the content creator private channel
+    aliases: [ccchat]
+  golive:
+    description: Announce you are going live on your stream
+    aliases: [live, startstream]
+  offair:
+    description: Announce you have ended your stream
+    aliases: [endstream, stoplive]
+  ccgiveaway:
+    description: Run a random giveaway for online players as a content creator
+    aliases: [ccga, creatorga]
+  milestone:
+    description: Broadcast a content creator milestone to the server
+  socials:
+    description: Broadcast your social links and stream info to the server
+  lockdown:
+    description: Toggle server lockdown to prevent new players joining
+  tempfly:
+    description: Grant a player temporary fly for a specified duration
+    aliases: [tfly]
+  craft:
+    description: Open a workbench anywhere
+    aliases: [workbench, wb]
+  ec:
+    description: Open your ender chest or view another player's ender chest
+    aliases: [enderchest]
+  globalfly:
+    description: Toggle fly mode for all online players
+    aliases: [gfly]
+  ownerbc:
+    description: Send a special owner-styled broadcast with sound
+    aliases: [ownerbroadcast, obc]
+  servermsg:
+    description: Set or clear a persistent message shown to players on join
+    aliases: [joinmsg, servermessage]
+  resetrank:
+    description: Remove all active grants and reset a player to their default rank
+    aliases: [rankreset]
+  streamermode:
+    description: Toggle streamer mode to hide your real name in chat and tab
+    aliases: [streammode]
+  ping:
+    description: Check a player's connection ping
+  ipcheck:
+    description: Check a player's stored IP address and online alts
+    aliases: [checkip]
+  playtime:
+    description: View how long a player has been on the server
+  whois:
+    description: View detailed player info, rank, punishments, and flags
+    aliases: [playerinfo, pinfo]
+  owneralert:
+    description: Send a dramatic owner alert to all players
+    aliases: [oalert]
+  serverfreeze:
+    description: Freeze or unfreeze all non-staff players server-wide
+    aliases: [sfreeze, freezeall]
+  forcechat:
+    description: Force a player to say something in chat
+    aliases: [fc]
+  devmode:
+    description: Toggle developer creative mode with enhanced tools
+    aliases: [dev]
+  reloadplugin:
+    description: Reload the EvaulxMC plugin configuration
+    aliases: [plreload, evaulxreload]
+  testeffect:
+    description: Apply a potion effect to yourself for testing
+    aliases: [teffect]
+  devbroadcast:
+    description: Broadcast a developer announcement to all players
+    aliases: [devbc]
+  builderannounce:
+    description: Send a builder announcement to all players
+    aliases: [bannounce, ba]
+  nightvision:
+    description: Toggle night vision on yourself or another player
+    aliases: [nv, nightvis]
+  hideall:
+    description: Hide or show all other players from your view
+    aliases: [hideplayers]
+  head:
+    description: Get a player head item
+    aliases: [playerhead, skull]
+  ccannounce:
+    description: Send a content creator style announcement to all players
+    aliases: [creatorannounce]
+  watchparty:
+    description: Start or end a watch party event for your stream
+    aliases: [wp]
+  particles:
+    description: Toggle a particle effect that follows you
+    aliases: [particle, pe]
+  home:
+    description: Teleport to one of your saved homes
+    aliases: [h]
+  sethome:
+    description: Set a home at your current location
+    aliases: [homeset]
+  delhome:
+    description: Delete a saved home
+    aliases: [deletehome, removehome]
+  homes:
+    description: List all your saved homes
+  warp:
+    description: Teleport to a server warp
+  setwarp:
+    description: Create or update a server warp
+    aliases: [createwarp]
+  delwarp:
+    description: Delete a server warp
+    aliases: [deletewarp, removewarp]
+  warps:
+    description: List all available server warps
+  tpa:
+    description: Request to teleport to a player
+  tpahere:
+    description: Request a player to teleport to you
+  tpaccept:
+    description: Accept a pending teleport request
+    aliases: [tpyes]
+  tpdeny:
+    description: Deny a pending teleport request
+    aliases: [tpno]
+  rename:
+    description: Rename your held item
+    aliases: [itemname]
+  lore:
+    description: Edit the lore lines of your held item
+    aliases: [itemlore]
+  glow:
+    description: Toggle an enchantment glow effect on your held item
+  tps:
+    description: View server TPS, RAM usage and uptime
+  serverinfo:
+    description: View detailed server information
+    aliases: [sinfo, si]
+  coins:
+    description: View your coin balance or manage another player's coins
+    aliases: [balance, bal]
+  pay:
+    description: Send coins to another player
+  daily:
+    description: Claim your daily coin reward
+    aliases: [dailyreward]
+  friend:
+    description: Manage your friends list
+    aliases: [friends, f]
+  mail:
+    description: Send and read offline player mail
+  ext:
+    description: Extinguish a player who is on fire
+    aliases: [extinguish]
+  near:
+    description: Show nearby players within a radius
+    aliases: [nearby]
+  smite:
+    description: Strike a player with lightning
+    aliases: [lightning]
+  coords:
+    description: Display your current coordinates and facing direction
+    aliases: [pos, position, loc]
+  party:
+    description: Create and manage a party with other players
+    aliases: [p]
+  fm:
+    description: Send a quick message to a friend
+    aliases: [friendmsg, fmsg]
 
 permissions:
   evaulx.*:
@@ -340,15 +559,21 @@ permissions:
       evaulx.namecolor.others: true
       evaulx.notes: true
       evaulx.nick: true
+      evaulx.nick.color: true
+      evaulx.nick.skin: true
+      evaulx.disguise.color: true
       evaulx.nickhistory: true
       evaulx.nicklist: true
       evaulx.nick.cooldown.bypass: true
       evaulx.nick.rank: true
+      evaulx.forcedisguise: true
       evaulx.nick.skin: true
       evaulx.skin: true
       evaulx.perm: true
       evaulx.permaudit: true
       evaulx.punish: true
+      evaulx.alts: true
+      evaulx.evidence: true
       evaulx.profile: true
       evaulx.protection.bypass: true
       evaulx.rank: true
@@ -402,6 +627,58 @@ permissions:
       evaulx.tag.partner: true
       evaulx.tag.champion: true
       evaulx.tag.seasonal: true
+      evaulx.tag.developer: true
+      evaulx.tag.seniormod: true
+      evaulx.tag.creator: true
+      evaulx.tag.evaulxtag: true
+      evaulx.tag.phase: true
+      evaulx.tag.zecon: true
+      evaulx.tag.og: true
+      evaulx.tag.beta: true
+      evaulx.tag.verified: true
+      evaulx.tag.chill: true
+      evaulx.tag.social: true
+      evaulx.tag.trader: true
+      evaulx.tag.sigma: true
+      evaulx.tag.warrior: true
+      evaulx.tag.victor: true
+      evaulx.tag.elite: true
+      evaulx.tag.clutch: true
+      evaulx.tag.slayer: true
+      evaulx.tag.goat: true
+      evaulx.tag.unstoppable: true
+      evaulx.tag.pvp: true
+      evaulx.tag.assassin: true
+      evaulx.tag.sniper: true
+      evaulx.tag.duelist: true
+      evaulx.tag.berserker: true
+      evaulx.tag.tank: true
+      evaulx.tag.blaze: true
+      evaulx.tag.frost: true
+      evaulx.tag.thunder: true
+      evaulx.tag.void: true
+      evaulx.tag.nature: true
+      evaulx.tag.storm: true
+      evaulx.tag.founder: true
+      evaulx.tag.phantom: true
+      evaulx.tag.crimson: true
+      evaulx.tag.celestial: true
+      evaulx.tag.infamous: true
+      evaulx.tag.shadow: true
+      evaulx.tag.omega: true
+      evaulx.tag.vortex: true
+      evaulx.tag.halloween: true
+      evaulx.tag.christmas: true
+      evaulx.tag.summer: true
+      evaulx.tag.winter: true
+      evaulx.tag.easter: true
+      evaulx.tag.newyear: true
+      evaulx.tag.sweaty: true
+      evaulx.tag.tryhard: true
+      evaulx.tag.god: true
+      evaulx.tag.nolife: true
+      evaulx.tag.toxic: true
+      evaulx.tag.noob: true
       evaulx.tag.streamer: true
       evaulx.tag.vip: true
       evaulx.tag.veteran: true
@@ -419,6 +696,85 @@ permissions:
       evaulx.vanish.others: true
       evaulx.vanish.see: true
       evaulx.warn: true
+      evaulx.streamermode: true
+      evaulx.streamermode.see: true
+      evaulx.ping: true
+      evaulx.ping.others: true
+      evaulx.ipcheck: true
+      evaulx.playtime: true
+      evaulx.whois: true
+      evaulx.seen: true
+      evaulx.repair: true
+      evaulx.repair.all: true
+      evaulx.more: true
+      evaulx.clear: true
+      evaulx.clear.others: true
+      evaulx.appeals.manage: true
+      evaulx.appeals.see: true
+      evaulx.fly.others: true
+      evaulx.heal.others: true
+      evaulx.feed.others: true
+      evaulx.god.others: true
+      evaulx.gamemode.others: true
+      evaulx.hat: true
+      evaulx.kickall: true
+      evaulx.kickall.exempt: true
+      evaulx.time: true
+      evaulx.weather: true
+      evaulx.globalfly: true
+      evaulx.ownerbc: true
+      evaulx.servermsg: true
+      evaulx.resetrank: true
+      evaulx.owner.aura: true
+      evaulx.owner.alert: true
+      evaulx.serverfreeze: true
+      evaulx.serverfreeze.exempt: true
+      evaulx.forcechat: true
+      evaulx.devmode: true
+      evaulx.reload: true
+      evaulx.testeffect: true
+      evaulx.devbroadcast: true
+      evaulx.builderannounce: true
+      evaulx.nightvision: true
+      evaulx.nightvision.others: true
+      evaulx.hideall: true
+      evaulx.head: true
+      evaulx.ccannounce: true
+      evaulx.watchparty: true
+      evaulx.particles: true
+      evaulx.particles.premium: true
+      evaulx.home: true
+      evaulx.home.set: true
+      evaulx.home.delete: true
+      evaulx.homes.20: true
+      evaulx.warp: true
+      evaulx.warp.*: true
+      evaulx.warp.set: true
+      evaulx.warp.delete: true
+      evaulx.tpa: true
+      evaulx.rename: true
+      evaulx.rename.color: true
+      evaulx.lore: true
+      evaulx.lore.color: true
+      evaulx.glow: true
+      evaulx.tps: true
+      evaulx.serverinfo: true
+      evaulx.coins: true
+      evaulx.coins.others: true
+      evaulx.coins.admin: true
+      evaulx.pay: true
+      evaulx.daily: true
+      evaulx.friends: true
+      evaulx.mail: true
+      evaulx.ext: true
+      evaulx.ext.others: true
+      evaulx.near: true
+      evaulx.smite: true
+      evaulx.coords: true
+      evaulx.party: true
+      evaulx.party.warp: true
+      evaulx.party.pvp: true
+      evaulx.friends.message: true
   evaulx.admin:
     description: Access EvaulxMC admin commands
     default: op
@@ -550,6 +906,15 @@ permissions:
     default: op
   evaulx.realname:
     description: Resolve disguised player names
+    default: op
+  evaulx.nick.color:
+    description: Change disguise name color with /nickcolor
+    default: op
+  evaulx.disguise.color:
+    description: Change disguise name color with /nickcolor
+    default: op
+  evaulx.forcedisguise:
+    description: Force-disguise another online player
     default: op
   evaulx.perm:
     description: Manage permissions
@@ -752,6 +1117,12 @@ permissions:
   evaulx.punish:
     description: Use punishment presets
     default: op
+  evaulx.alts:
+    description: Look up alternate accounts linked by IP
+    default: op
+  evaulx.evidence:
+    description: Attach or clear evidence on punishments
+    default: op
   evaulx.profile:
     description: Open staff player profiles
     default: op
@@ -764,6 +1135,69 @@ permissions:
   evaulx.afk:
     description: Toggle your AFK status
     default: true
+  evaulx.msgtoggle:
+    description: Toggle receiving private messages
+    default: true
+  evaulx.ignore:
+    description: Ignore private messages from specific players
+    default: true
+  evaulx.hat:
+    description: Wear a held item as a helmet
+    default: op
+  evaulx.kickall:
+    description: Kick all non-exempt players
+    default: op
+  evaulx.kickall.exempt:
+    description: Exempt from /kickall
+    default: op
+  evaulx.time:
+    description: Set world time
+    default: op
+  evaulx.weather:
+    description: Set world weather
+    default: op
+  evaulx.fly.others:
+    description: Toggle fly for other players
+    default: op
+  evaulx.heal.others:
+    description: Heal other players
+    default: op
+  evaulx.feed.others:
+    description: Feed other players
+    default: op
+  evaulx.god.others:
+    description: Toggle god mode for other players
+    default: op
+  evaulx.gamemode.others:
+    description: Change another player's gamemode
+    default: op
+  evaulx.seen:
+    description: Check when a player was last online
+    default: true
+  evaulx.repair:
+    description: Repair held item
+    default: op
+  evaulx.repair.all:
+    description: Repair all items in inventory with /repair all
+    default: op
+  evaulx.more:
+    description: Fill held item stack to maximum
+    default: op
+  evaulx.clear:
+    description: Clear your own inventory
+    default: op
+  evaulx.clear.others:
+    description: Clear another player's inventory
+    default: op
+  evaulx.appeal:
+    description: Submit a ban or mute appeal
+    default: true
+  evaulx.appeals.manage:
+    description: Accept or deny player appeals
+    default: op
+  evaulx.appeals.see:
+    description: Receive appeal broadcast notifications
+    default: op
   evaulx.afk.exempt:
     description: Never be marked AFK automatically
     default: op
@@ -848,6 +1282,162 @@ permissions:
   evaulx.tag.seasonal:
     description: Use the Seasonal tag
     default: op
+  evaulx.tag.developer:
+    description: Use the Developer staff tag
+    default: op
+  evaulx.tag.seniormod:
+    description: Use the Senior Mod staff tag
+    default: op
+  evaulx.tag.creator:
+    description: Use the Content Creator tag
+    default: false
+  evaulx.tag.evaulxtag:
+    description: Use the Evaulx rank tags
+    default: false
+  evaulx.tag.phase:
+    description: Use the Phase rank tag
+    default: false
+  evaulx.tag.zecon:
+    description: Use the Zecon rank tag
+    default: false
+  evaulx.tag.og:
+    description: Use the OG community tag
+    default: op
+  evaulx.tag.beta:
+    description: Use the Beta tester tag
+    default: op
+  evaulx.tag.verified:
+    description: Use the Verified community tag
+    default: op
+  evaulx.tag.chill:
+    description: Use the Chill community tag
+    default: op
+  evaulx.tag.social:
+    description: Use the Social community tag
+    default: op
+  evaulx.tag.trader:
+    description: Use the Trader community tag
+    default: op
+  evaulx.tag.sigma:
+    description: Use the Sigma community tag
+    default: op
+  evaulx.tag.warrior:
+    description: Use the Warrior achievement tag
+    default: op
+  evaulx.tag.victor:
+    description: Use the Victor achievement tag
+    default: op
+  evaulx.tag.elite:
+    description: Use the Elite achievement tag
+    default: op
+  evaulx.tag.clutch:
+    description: Use the Clutch achievement tag
+    default: op
+  evaulx.tag.slayer:
+    description: Use the Slayer achievement tag
+    default: op
+  evaulx.tag.goat:
+    description: Use the G.O.A.T achievement tag
+    default: op
+  evaulx.tag.unstoppable:
+    description: Use the Unstoppable achievement tag
+    default: op
+  evaulx.tag.pvp:
+    description: Use the PvP combat tag
+    default: op
+  evaulx.tag.assassin:
+    description: Use the Assassin combat tag
+    default: op
+  evaulx.tag.sniper:
+    description: Use the Sniper combat tag
+    default: op
+  evaulx.tag.duelist:
+    description: Use the Duelist combat tag
+    default: op
+  evaulx.tag.berserker:
+    description: Use the Berserker combat tag
+    default: op
+  evaulx.tag.tank:
+    description: Use the Tank combat tag
+    default: op
+  evaulx.tag.blaze:
+    description: Use the Blaze elemental tag
+    default: op
+  evaulx.tag.frost:
+    description: Use the Frost elemental tag
+    default: op
+  evaulx.tag.thunder:
+    description: Use the Thunder elemental tag
+    default: op
+  evaulx.tag.void:
+    description: Use the Void elemental tag
+    default: op
+  evaulx.tag.nature:
+    description: Use the Nature elemental tag
+    default: op
+  evaulx.tag.storm:
+    description: Use the Storm elemental tag
+    default: op
+  evaulx.tag.founder:
+    description: Use the Founder prestige tag
+    default: op
+  evaulx.tag.phantom:
+    description: Use the Phantom prestige tag
+    default: op
+  evaulx.tag.crimson:
+    description: Use the Crimson prestige tag
+    default: op
+  evaulx.tag.celestial:
+    description: Use the Celestial prestige tag
+    default: op
+  evaulx.tag.infamous:
+    description: Use the Infamous prestige tag
+    default: op
+  evaulx.tag.shadow:
+    description: Use the Shadow prestige tag
+    default: op
+  evaulx.tag.omega:
+    description: Use the Omega prestige tag
+    default: op
+  evaulx.tag.vortex:
+    description: Use the Vortex prestige tag
+    default: op
+  evaulx.tag.halloween:
+    description: Use the Halloween limited tag
+    default: op
+  evaulx.tag.christmas:
+    description: Use the Christmas limited tag
+    default: op
+  evaulx.tag.summer:
+    description: Use the Summer limited tag
+    default: op
+  evaulx.tag.winter:
+    description: Use the Winter limited tag
+    default: op
+  evaulx.tag.easter:
+    description: Use the Easter limited tag
+    default: op
+  evaulx.tag.newyear:
+    description: Use the New Year limited tag
+    default: op
+  evaulx.tag.sweaty:
+    description: Use the Sweaty fun tag
+    default: op
+  evaulx.tag.tryhard:
+    description: Use the Tryhard fun tag
+    default: op
+  evaulx.tag.god:
+    description: Use the God fun tag
+    default: op
+  evaulx.tag.nolife:
+    description: Use the No-Life fun tag
+    default: op
+  evaulx.tag.toxic:
+    description: Use the Toxic fun tag
+    default: op
+  evaulx.tag.noob:
+    description: Use the Noob fun tag
+    default: op
   evaulx.announce:
     description: Send announcements
     default: op
@@ -878,3 +1468,252 @@ permissions:
   evaulx.chat.spy:
     description: See ranged chat from any distance
     default: op
+  evaulx.streamermode:
+    description: Toggle streamer mode to hide your real name
+    default: op
+  evaulx.streamermode.see:
+    description: See streamer mode enable/disable alerts
+    default: op
+  evaulx.ping:
+    description: Check your own ping
+    default: true
+  evaulx.ping.others:
+    description: Check other players' ping
+    default: op
+  evaulx.ipcheck:
+    description: Check a player's stored IP and alts
+    default: op
+  evaulx.playtime:
+    description: View player playtime and join dates
+    default: true
+  evaulx.whois:
+    description: View detailed player info and punishment summary
+    default: op
+  evaulx.creator.manage:
+    description: Grant, revoke and admin-edit content creator profiles
+    default: op
+  evaulx.creator.self:
+    description: Edit your own content creator profile (auto-granted when you have CC status)
+    default: false
+  evaulx.creator.redeem:
+    description: Redeem content creator subscriber codes
+    default: true
+  evaulx.shoutout:
+    description: Shoutout a player server-wide as a content creator
+    default: false
+  evaulx.cchat:
+    description: Send messages in the CC-only private chat channel
+    default: false
+  evaulx.cchat.see:
+    description: See the CC-only private chat channel without being a CC
+    default: op
+  evaulx.golive:
+    description: Use /golive and /offair to announce streams
+    default: false
+  evaulx.ccgiveaway:
+    description: Run a viewer giveaway as a content creator
+    default: false
+  evaulx.milestone:
+    description: Broadcast a milestone to the whole server
+    default: false
+  evaulx.socials:
+    description: Broadcast social links server-wide as a content creator
+    default: false
+  evaulx.lockdown:
+    description: Toggle server lockdown
+    default: op
+  evaulx.lockdown.bypass:
+    description: Bypass server lockdown and join normally
+    default: op
+  evaulx.tempfly:
+    description: Grant temporary fly to other players
+    default: op
+  evaulx.craft:
+    description: Open a workbench anywhere
+    default: true
+  evaulx.ec:
+    description: Open your own ender chest anywhere
+    default: true
+  evaulx.ec.others:
+    description: View other players' ender chests
+    default: op
+  evaulxmc.rank.phase:
+    description: Identifies a player with the Phase rank
+    default: false
+  evaulxmc.rank.zecon:
+    description: Identifies a player with the Zecon rank
+    default: false
+  evaulx.globalfly:
+    description: Toggle fly for all online players server-wide
+    default: op
+  evaulx.ownerbc:
+    description: Send a special owner-styled broadcast to all players
+    default: op
+  evaulx.servermsg:
+    description: Set or clear the persistent server join message
+    default: op
+  evaulx.resetrank:
+    description: Remove all active grants and reset a player to their default rank
+    default: op
+  evaulx.owner.aura:
+    description: Enables the FLAME particle aura and dramatic join effect for this player
+    default: false
+  evaulx.owner.alert:
+    description: Send a dramatic owner alert with sound and title to all players
+    default: op
+  evaulx.serverfreeze:
+    description: Freeze or unfreeze all non-exempt players server-wide
+    default: op
+  evaulx.serverfreeze.exempt:
+    description: Exempt from server freeze slowness and jump effects
+    default: op
+  evaulx.forcechat:
+    description: Force a player to say a message in public chat
+    default: op
+  evaulx.devmode:
+    description: Toggle developer creative mode with night vision and fly
+    default: op
+  evaulx.reload:
+    description: Reload the EvaulxMC plugin config and managers
+    default: op
+  evaulx.testeffect:
+    description: Apply any potion effect to yourself for testing purposes
+    default: op
+  evaulx.devbroadcast:
+    description: Broadcast a developer-styled announcement to all players
+    default: op
+  evaulx.builderannounce:
+    description: Send a builder-styled announcement server-wide
+    default: op
+  evaulx.nightvision:
+    description: Toggle night vision on yourself
+    default: op
+  evaulx.nightvision.others:
+    description: Toggle night vision for other players
+    default: op
+  evaulx.hideall:
+    description: Hide or show all other players from your client view
+    default: op
+  evaulx.head:
+    description: Obtain a player skull item
+    default: op
+  evaulx.ccannounce:
+    description: Send a content creator styled server-wide announcement
+    default: false
+  evaulx.watchparty:
+    description: Start or end a server-wide watch party event
+    default: false
+  evaulx.particles:
+    description: Toggle a basic particle trail effect around yourself
+    default: false
+  evaulx.particles.premium:
+    description: Access premium particle effects (Legend rank and higher)
+    default: false
+  evaulx.home:
+    description: Teleport to your saved homes
+    default: true
+  evaulx.home.set:
+    description: Set homes with /sethome
+    default: true
+  evaulx.home.delete:
+    description: Delete homes with /delhome
+    default: true
+  evaulx.homes.1:
+    description: Allows 1 home
+    default: true
+  evaulx.homes.3:
+    description: Allows 3 homes
+    default: false
+  evaulx.homes.5:
+    description: Allows 5 homes (VIP)
+    default: false
+  evaulx.homes.10:
+    description: Allows 10 homes (MVP+)
+    default: false
+  evaulx.homes.20:
+    description: Allows 20 homes (staff/Legend+)
+    default: false
+  evaulx.warp:
+    description: Use /warp to teleport to server warps
+    default: true
+  evaulx.warp.*:
+    description: Access all warps regardless of per-warp permission
+    default: op
+  evaulx.warp.set:
+    description: Create and update server warps
+    default: op
+  evaulx.warp.delete:
+    description: Delete server warps
+    default: op
+  evaulx.tpa:
+    description: Send and receive teleport requests
+    default: true
+  evaulx.rename:
+    description: Rename held items with /rename
+    default: op
+  evaulx.rename.color:
+    description: Use color codes in /rename
+    default: op
+  evaulx.lore:
+    description: Edit held item lore with /lore
+    default: op
+  evaulx.lore.color:
+    description: Use color codes in /lore
+    default: op
+  evaulx.glow:
+    description: Toggle glow effect on held item
+    default: op
+  evaulx.tps:
+    description: View server TPS and performance stats
+    default: op
+  evaulx.serverinfo:
+    description: View detailed server information
+    default: op
+  evaulx.coins:
+    description: View your own coin balance
+    default: true
+  evaulx.coins.others:
+    description: View other players' coin balances
+    default: op
+  evaulx.coins.admin:
+    description: Add, remove, set, and reset player coin balances
+    default: op
+  evaulx.pay:
+    description: Send coins to other players
+    default: true
+  evaulx.daily:
+    description: Claim daily coin reward
+    default: true
+  evaulx.friends:
+    description: Manage your friends list
+    default: true
+  evaulx.mail:
+    description: Send and receive offline mail
+    default: true
+  evaulx.ext:
+    description: Extinguish yourself with /ext
+    default: op
+  evaulx.ext.others:
+    description: Extinguish other players with /ext
+    default: op
+  evaulx.near:
+    description: View nearby players with /near
+    default: op
+  evaulx.smite:
+    description: Strike players with lightning using /smite
+    default: op
+  evaulx.coords:
+    description: View your current coordinates with /coords
+    default: true
+  evaulx.party:
+    description: Use the party system
+    default: true
+  evaulx.party.warp:
+    description: Warp your party to your location (leader only)
+    default: true
+  evaulx.party.pvp:
+    description: Toggle party friendly fire (leader only)
+    default: true
+  evaulx.friends.message:
+    description: Message friends with /fm
+    default: true

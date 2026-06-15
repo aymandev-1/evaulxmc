@@ -262,8 +262,12 @@ public class StaffRequestManager {
 
     public void sendStaffChat(String playerName, String message, boolean publish) {
         String format = plugin.getConfig().getString("staff-tools.staff-chat-format",
-                "&8[&cStaffChat&8] &f{player}&8: &7{message}");
-        String formatted = format.replace("{player}", playerName).replace("{message}", message);
+                "&8[&bS&8] &8[&f{server}&8] &f{player} &8: &7{message}");
+        String server = plugin.getConfig().getString("server.name", "Server");
+        String formatted = format
+                .replace("{player}", playerName)
+                .replace("{server}", server)
+                .replace("{message}", message);
         broadcastStaff(formatted, "evaulx.staffchat");
         Bukkit.getConsoleSender().sendMessage(CC.color(formatted));
         plugin.getDiscordManager().sendStaffChat(playerName, message);
@@ -1118,9 +1122,9 @@ public class StaffRequestManager {
 
     public enum StaffModeItem {
         TELEPORT_COMPASS("teleport-compass", Material.COMPASS, 0, "&cTeleport Compass"),
-        RANDOM_TELEPORT("random-teleport", Material.CLOCK, 1, "&cRandom Teleport"),
+        RANDOM_TELEPORT("random-teleport", Material.getMaterial("CLOCK") != null ? Material.getMaterial("CLOCK") : Material.getMaterial("WATCH"), 1, "&cRandom Teleport"),
         INSPECT_PLAYER("inspect-player", Material.BLAZE_ROD, 3, "&cInspect Player"),
-        TOGGLE_VANISH("toggle-vanish", Material.ENDER_EYE, 5, "&cToggle Vanish"),
+        TOGGLE_VANISH("toggle-vanish", Material.getMaterial("ENDER_EYE") != null ? Material.getMaterial("ENDER_EYE") : Material.getMaterial("EYE_OF_ENDER"), 5, "&cToggle Vanish"),
         REPORTS("reports", Material.BOOK, 7, "&cReports");
 
         private final String key;

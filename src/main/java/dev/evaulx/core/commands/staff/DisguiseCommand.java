@@ -1,6 +1,8 @@
 package dev.evaulx.core.commands.staff;
 
 import dev.evaulx.core.EvaulxCore;
+import dev.evaulx.core.models.PlayerProfile;
+import dev.evaulx.core.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -94,9 +96,26 @@ public class DisguiseCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("info")) {
+            PlayerProfile profile = plugin.getPlayerManager().getProfile(player);
+            if (profile == null || !profile.isDisguised()) {
+                plugin.getMessageManager().send(sender, "disguise.not-disguised", "&cYou are not disguised.");
+                return true;
+            }
+            sender.sendMessage(CC.color(CC.SEPARATOR));
+            sender.sendMessage(CC.color("&cYour Disguise Info"));
+            sender.sendMessage(CC.color("&7Name:     &f" + profile.getDisguiseName()));
+            sender.sendMessage(CC.color("&7Skin:     &f" + none(profile.getDisguiseSkin())));
+            sender.sendMessage(CC.color("&7Rank:     &f" + none(profile.getDisguiseRank())));
+            long cd = plugin.getDisguiseManager().getCooldownRemaining(player);
+            sender.sendMessage(CC.color("&7Cooldown: &f" + (cd > 0L ? ((cd + 999L) / 1000L) + "s" : "ready")));
+            sender.sendMessage(CC.color(CC.SEPARATOR));
+            return true;
+        }
+
         if (args.length > 3) {
             plugin.getMessageManager().send(sender, "disguise.usage",
-                    "&cUsage: /{command} <name|random|skin|rank|off|reload|clearskincache|debug|test|refresh|status|menu> [skin] [rank]",
+                    "&cUsage: /{command} <name|random|skin|rank|off|info|reload|clearskincache|debug|test|refresh|status|menu|clone> [skin] [rank]",
                     plugin.getMessageManager().placeholders("{command}", commandName));
             return true;
         }
@@ -191,6 +210,31 @@ public class DisguiseCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (subcommand.equalsIgnoreCase("clone")) {
+            if (!(sender instanceof Player)) {
+                plugin.getMessageManager().send(sender, "players-only", "&cOnly players can use this command.");
+                return true;
+            }
+            if (args.length < 2) {
+                sender.sendMessage(CC.color("&cUsage: /" + commandName + " clone <player>"));
+                return true;
+            }
+            Player cloneSource = plugin.getDisguiseManager().findOnlinePlayer(args[1]);
+            if (cloneSource == null) {
+                plugin.getMessageManager().send(sender, "player-not-online", "&cPlayer not online.");
+                return true;
+            }
+            PlayerProfile sourceProfile = plugin.getPlayerManager().getProfile(cloneSource);
+            if (sourceProfile == null || !sourceProfile.isDisguised()) {
+                plugin.getMessageManager().send(sender, "disguise.force-not-disguised", "&cThat player is not disguised.");
+                return true;
+            }
+            plugin.getDisguiseManager().disguise((Player) sender,
+                    sourceProfile.getDisguiseName(), sourceProfile.getDisguiseSkin(),
+                    sourceProfile.getDisguiseRank(), commandName);
+            return true;
+        }
+
         int cleared = plugin.getDisguiseManager().clearSkinCache();
         plugin.getMessageManager().send(sender, "disguise.skin-cache-cleared",
                 "&aDisguise skin cache cleared. &7Removed &f{count}&7 cached skin(s).",
@@ -224,7 +268,12 @@ public class DisguiseCommand implements CommandExecutor, TabCompleter {
                 || value.equalsIgnoreCase("menu")
                 || value.equalsIgnoreCase("gui")
                 || value.equalsIgnoreCase("clearskincache")
-                || value.equalsIgnoreCase("clearcache");
+                || value.equalsIgnoreCase("clearcache")
+                || value.equalsIgnoreCase("clone");
+    }
+
+    private String none(String value) {
+        return value == null || value.isEmpty() ? "none" : value;
     }
 
     @Override
@@ -233,7 +282,7 @@ public class DisguiseCommand implements CommandExecutor, TabCompleter {
         boolean nickCommand = commandName.equals("nick");
 
         if (args.length == 1) {
-            List<String> values = new ArrayList<>(Arrays.asList("random", "skin", "rank", "off"));
+            List<String> values = new ArrayList<>(Arrays.asList("random", "skin", "rank", "off", "info"));
             if (sender.hasPermission("evaulx.disguise.admin")) {
                 values.add("reload");
                 values.add("clearskincache");
@@ -242,6 +291,7 @@ public class DisguiseCommand implements CommandExecutor, TabCompleter {
                 values.add("refresh");
                 values.add("status");
                 values.add("menu");
+                values.add("clone");
             }
             if (!nickCommand) values.addAll(plugin.getConfig().getStringList("disguise.random-names"));
             return filter(values, args[0]);
@@ -250,10 +300,12 @@ public class DisguiseCommand implements CommandExecutor, TabCompleter {
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("debug")) return filter(onlineNames(), args[1]);
             if (args[0].equalsIgnoreCase("refresh")) return filter(onlineNames(), args[1]);
+            if (args[0].equalsIgnoreCase("clone")) return filter(onlineNames(), args[1]);
             if (args[0].equalsIgnoreCase("test")) return filter(plugin.getConfig().getStringList("disguise.skins"), args[1]);
             if (args[0].equalsIgnoreCase("skin")) return filter(plugin.getConfig().getStringList("disguise.skins"), args[1]);
             if (args[0].equalsIgnoreCase("rank")) return rankNames(args[1], true);
             if (isOffSubcommand(args[0])) return Collections.emptyList();
+            if (args[0].equalsIgnoreCase("info")) return Collections.emptyList();
             if (isAdminSubcommand(args[0])) return Collections.emptyList();
             if (args[0].equalsIgnoreCase("random")) return rankNames(args[1], false);
             return filter(plugin.getConfig().getStringList("disguise.skins"), args[1]);

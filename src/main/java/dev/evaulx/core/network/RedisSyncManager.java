@@ -86,6 +86,23 @@ public class RedisSyncManager {
         publish("GRANT", data);
     }
 
+    public void publishMaintenance(boolean enabled, String actor, String reason) {
+        JsonObject data = new JsonObject();
+        data.addProperty("enabled", enabled);
+        data.addProperty("actor", actor);
+        data.addProperty("reason", reason);
+        publish("MAINTENANCE", data);
+    }
+
+    public void publishFreeze(UUID targetUuid, String targetName, boolean frozen, String actorName) {
+        JsonObject data = new JsonObject();
+        data.addProperty("uuid", targetUuid.toString());
+        data.addProperty("targetName", targetName);
+        data.addProperty("frozen", frozen);
+        data.addProperty("actor", actorName);
+        publish("FREEZE", data);
+    }
+
     public void publishStaffChat(String playerName, String message) {
         JsonObject data = new JsonObject();
         data.addProperty("player", playerName);
@@ -193,6 +210,12 @@ public class RedisSyncManager {
                     break;
                 case "DISGUISE":
                     handleDisguise(data, source);
+                    break;
+                case "MAINTENANCE":
+                    handleMaintenance(data);
+                    break;
+                case "FREEZE":
+                    handleFreeze(data);
                     break;
                 default:
                     break;
@@ -317,6 +340,40 @@ public class RedisSyncManager {
                 + (enabled
                 ? " &7disguised on &f" + source + " &7as &f" + disguiseName + " &7skin &f" + skinName + " &7rank &f" + rankName
                 : " &7removed disguise on &f" + source)));
+    }
+
+    private void handleMaintenance(JsonObject data) {
+        boolean enabled = getBoolean(data, "enabled", false);
+        String actor = getString(data, "actor", "Unknown");
+        String reason = getString(data, "reason", "");
+        TaskUtil.sync(() -> {
+            plugin.getConfig().set("maintenance.enabled", enabled);
+            if (enabled && !reason.isEmpty()) plugin.getConfig().set("maintenance.reason", reason);
+            plugin.saveConfig();
+            plugin.getStaffRequestManager().broadcastStaff(
+                    "&8[&cNetwork&8] &f" + actor + " &7" + (enabled ? "&cenabled" : "&adisabled")
+                            + " &7maintenance mode" + (enabled && !reason.isEmpty() ? " &8(&f" + reason + "&8)" : "") + "&7.");
+        });
+    }
+
+    private void handleFreeze(JsonObject data) {
+        UUID uuid = UUID.fromString(getString(data, "uuid", "00000000-0000-0000-0000-000000000000"));
+        String targetName = getString(data, "targetName", "Unknown");
+        boolean frozen = getBoolean(data, "frozen", false);
+        String actor = getString(data, "actor", "Unknown");
+        TaskUtil.sync(() -> {
+            Player target = Bukkit.getPlayer(uuid);
+            if (target != null) {
+                if (frozen) {
+                    plugin.getStaffRequestManager().freeze(actor, target, "Network freeze by " + actor);
+                } else {
+                    plugin.getStaffRequestManager().unfreeze(actor, target, "Network unfreeze by " + actor);
+                }
+            }
+            plugin.getStaffRequestManager().broadcastStaff(
+                    "&8[&cNetwork&8] &f" + targetName + " &7was " + (frozen ? "&cfrozen" : "&athawed")
+                            + " &7by &f" + actor + "&7.");
+        });
     }
 
     private void addStaffStatus(JsonObject data, UUID uuid) {

@@ -49,6 +49,14 @@ public class PlayerLoginListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onLogin(PlayerLoginEvent e) {
+        if (plugin.getEssentialsManager().isLockdown()
+                && !e.getPlayer().hasPermission("evaulx.lockdown.bypass")
+                && !e.getPlayer().isOp()) {
+            e.disallow(PlayerLoginEvent.Result.KICK_OTHER,
+                    CC.color("&cThe server is currently locked down.\n&7Reason: &f"
+                            + plugin.getEssentialsManager().getLockdownReason()));
+            return;
+        }
         if (plugin.getConfig().getBoolean("maintenance.enabled", false) && !canJoinDuringMaintenance(e)) {
             String reason = plugin.getConfig().getString("maintenance.reason", "Server maintenance");
             String message = plugin.getConfig().getString("maintenance.kick-message",
@@ -74,12 +82,14 @@ public class PlayerLoginListener implements Listener {
                     "&4You have been blacklisted.\n&7Reason: &f{reason}");
         } else {
             template = plugin.getConfig().getString("punishments.ban-message",
-                    "&cYou have been banned.\n&7Reason: &f{reason}\n&7Duration: &f{duration}\n&7Appeal: &fevaulx.dev/appeal");
+                    "&cYou have been banned.\n&7Reason: &f{reason}\n&7Duration: &f{duration}");
         }
+        String appeal = plugin.getConfig().getString("punishments.appeal-url", "");
         return CC.color(template
                 .replace("{reason}", ban.getReason())
                 .replace("{duration}", TimeUtil.formatDuration(ban.getExpires()))
                 .replace("{id}", ban.getId())
-                .replace("{punisher}", ban.getPunisherName()));
+                .replace("{punisher}", ban.getPunisherName())
+                .replace("{appeal}", appeal));
     }
 }

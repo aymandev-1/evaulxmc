@@ -5,6 +5,7 @@ import dev.evaulx.core.commands.essential.*;
 import dev.evaulx.core.commands.punishment.*;
 import dev.evaulx.core.commands.rank.*;
 import dev.evaulx.core.commands.staff.*;
+import dev.evaulx.core.creator.ContentCreatorManager;
 import dev.evaulx.core.database.DatabaseManager;
 import dev.evaulx.core.discord.DiscordManager;
 import dev.evaulx.core.disguise.DisguiseManager;
@@ -15,6 +16,8 @@ import dev.evaulx.core.hooks.ProtocolLibHook;
 import dev.evaulx.core.hooks.VaultHook;
 import dev.evaulx.core.listeners.*;
 import dev.evaulx.core.managers.*;
+import dev.evaulx.core.managers.FriendManager;
+import dev.evaulx.core.managers.PartyManager;
 import dev.evaulx.core.network.RedisSyncManager;
 import dev.evaulx.core.nametags.NameTagManager;
 import dev.evaulx.core.staff.StaffRequestManager;
@@ -48,11 +51,20 @@ public class EvaulxCore extends JavaPlugin {
     private GrantTemplateManager grantTemplateManager;
     private GuiManager guiManager;
     private AfkManager afkManager;
+    private AppealManager appealManager;
     private RedisSyncManager redisSyncManager;
     private EvaulxMCHubHook hubHook;
     private VaultHook vaultHook;
     private MessageManager messageManager;
     private ProtocolLibHook protocolLibHook;
+    private ContentCreatorManager contentCreatorManager;
+    private FriendManager friendManager;
+    private PartyManager partyManager;
+    private CoinsManager coinsManager;
+    private DailyRewardManager dailyRewardManager;
+    private HomeManager homeManager;
+    private MailManager mailManager;
+    private WarpManager warpManager;
 
     @Override
     public void onEnable() {
@@ -94,7 +106,21 @@ public class EvaulxCore extends JavaPlugin {
         this.noteManager.load();
         this.punishmentPresetManager = new PunishmentPresetManager(this);
         this.afkManager = new AfkManager(this);
+        this.appealManager = new AppealManager(this);
+        this.appealManager.load();
         this.guiManager = new GuiManager(this);
+        this.contentCreatorManager = new ContentCreatorManager(this);
+        this.friendManager = new FriendManager(this);
+        this.partyManager = new PartyManager(this);
+        this.coinsManager = new CoinsManager(this);
+        this.coinsManager.load();
+        this.dailyRewardManager = new DailyRewardManager(this);
+        this.dailyRewardManager.load();
+        this.homeManager = new HomeManager(this);
+        this.mailManager = new MailManager(this);
+        this.mailManager.load();
+        this.warpManager = new WarpManager(this);
+        this.warpManager.load();
         this.hubHook = new EvaulxMCHubHook(this);
         this.hubHook.load();
         this.protocolLibHook = new ProtocolLibHook(this);
@@ -217,6 +243,7 @@ public class EvaulxCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new DisguiseListener(this), this);
         getServer().getPluginManager().registerEvents(new LobbyProtectionListener(this), this);
         getServer().getPluginManager().registerEvents(new AfkListener(this), this);
+        getServer().getPluginManager().registerEvents(new ContentCreatorListener(this), this);
         getServer().getPluginManager().registerEvents(guiManager, this);
     }
 
@@ -241,6 +268,8 @@ public class EvaulxCore extends JavaPlugin {
         getCommand("unblacklist").setExecutor(new UnblacklistCommand(this));
         getCommand("checkpunishments").setExecutor(new CheckPunishmentsCommand(this));
         getCommand("punish").setExecutor(new PunishCommand(this));
+        getCommand("alts").setExecutor(new AltsCommand(this));
+        getCommand("evidence").setExecutor(new EvidenceCommand(this));
 
         // Rank commands
         RankCommand rankCommand = new RankCommand(this);
@@ -287,7 +316,18 @@ public class EvaulxCore extends JavaPlugin {
         getCommand("disguiseinfo").setExecutor(new DisguiseInfoCommand(this));
         getCommand("realname").setExecutor(new RealNameCommand(this));
         getCommand("nicklist").setExecutor(new NickListCommand(this));
-        getCommand("nickhistory").setExecutor(new NickHistoryCommand(this));
+        NickHistoryCommand nickHistoryCommand = new NickHistoryCommand(this);
+        getCommand("nickhistory").setExecutor(nickHistoryCommand);
+        getCommand("nickhistory").setTabCompleter(nickHistoryCommand);
+        ForcedisguiseCommand forcedisguiseCommand = new ForcedisguiseCommand(this);
+        getCommand("forcedisguise").setExecutor(forcedisguiseCommand);
+        getCommand("forcedisguise").setTabCompleter(forcedisguiseCommand);
+        DisguiseCooldownCommand disguiseCooldownCommand = new DisguiseCooldownCommand(this);
+        getCommand("disguisecooldown").setExecutor(disguiseCooldownCommand);
+        getCommand("disguisecooldown").setTabCompleter(disguiseCooldownCommand);
+        NickColorCommand nickColorCommand = new NickColorCommand(this);
+        getCommand("nickcolor").setExecutor(nickColorCommand);
+        getCommand("nickcolor").setTabCompleter(nickColorCommand);
 
         // Essential commands
         getCommand("gamemode").setExecutor(new GamemodeCommand(this));
@@ -360,6 +400,230 @@ public class EvaulxCore extends JavaPlugin {
 
         // AFK
         getCommand("afk").setExecutor(new AfkCommand(this));
+
+        // Essential utility commands
+        NickCommand nickCommand = new NickCommand(this);
+        getCommand("nick").setExecutor(nickCommand);
+        getCommand("nick").setTabCompleter(nickCommand);
+        SeenCommand seenCommand = new SeenCommand(this);
+        getCommand("seen").setExecutor(seenCommand);
+        getCommand("seen").setTabCompleter(seenCommand);
+        RepairCommand repairCommand = new RepairCommand(this);
+        getCommand("repair").setExecutor(repairCommand);
+        getCommand("repair").setTabCompleter(repairCommand);
+        getCommand("more").setExecutor(new MoreCommand(this));
+        ClearInventoryCommand clearCommand = new ClearInventoryCommand(this);
+        getCommand("clearinv").setExecutor(clearCommand);
+        getCommand("clearinv").setTabCompleter(clearCommand);
+        AppealCommand appealCommand = new AppealCommand(this);
+        getCommand("appeal").setExecutor(appealCommand);
+        getCommand("appeal").setTabCompleter(appealCommand);
+        getCommand("msgtoggle").setExecutor(new MsgToggleCommand(this));
+        IgnoreCommand ignoreCommand = new IgnoreCommand(this);
+        getCommand("ignore").setExecutor(ignoreCommand);
+        getCommand("ignore").setTabCompleter(ignoreCommand);
+        getCommand("hat").setExecutor(new HatCommand(this));
+        getCommand("kickall").setExecutor(new KickAllCommand(this));
+        TimeCommand timeCommand = new TimeCommand(this);
+        getCommand("time").setExecutor(timeCommand);
+        getCommand("time").setTabCompleter(timeCommand);
+        WeatherCommand weatherCommand = new WeatherCommand(this);
+        getCommand("weather").setExecutor(weatherCommand);
+        getCommand("weather").setTabCompleter(weatherCommand);
+
+        // Content creator
+        ContentCreatorCommand creatorCommand = new ContentCreatorCommand(this);
+        getCommand("creator").setExecutor(creatorCommand);
+        getCommand("creator").setTabCompleter(creatorCommand);
+        getCommand("redeemcode").setExecutor(new RedeemCodeCommand(this));
+        ShoutoutCommand shoutoutCommand = new ShoutoutCommand(this);
+        getCommand("shoutout").setExecutor(shoutoutCommand);
+        getCommand("shoutout").setTabCompleter(shoutoutCommand);
+        getCommand("cchat").setExecutor(new CCChatCommand(this));
+        GoLiveCommand goLiveCommand = new GoLiveCommand(this, false);
+        getCommand("golive").setExecutor(goLiveCommand);
+        getCommand("golive").setTabCompleter(goLiveCommand);
+        getCommand("offair").setExecutor(new GoLiveCommand(this, true));
+        getCommand("ccgiveaway").setExecutor(new CCGiveawayCommand(this));
+        getCommand("milestone").setExecutor(new MilestoneCommand(this));
+        getCommand("socials").setExecutor(new SocialsCommand(this));
+
+        // Staff / admin / owner utilities
+        getCommand("lockdown").setExecutor(new LockdownCommand(this));
+        TempFlyCommand tempFlyCommand = new TempFlyCommand(this);
+        getCommand("tempfly").setExecutor(tempFlyCommand);
+        getCommand("tempfly").setTabCompleter(tempFlyCommand);
+        getCommand("craft").setExecutor(new CraftCommand(this));
+        EnderChestCommand ecCommand = new EnderChestCommand(this);
+        getCommand("ec").setExecutor(ecCommand);
+        getCommand("ec").setTabCompleter(ecCommand);
+        GlobalFlyCommand globalFlyCommand = new GlobalFlyCommand(this);
+        getCommand("globalfly").setExecutor(globalFlyCommand);
+        getCommand("globalfly").setTabCompleter(globalFlyCommand);
+        getCommand("ownerbc").setExecutor(new OwnerBroadcastCommand(this));
+        ServerMsgCommand serverMsgCommand = new ServerMsgCommand(this);
+        getCommand("servermsg").setExecutor(serverMsgCommand);
+        getCommand("servermsg").setTabCompleter(serverMsgCommand);
+        ResetRankCommand resetRankCommand = new ResetRankCommand(this);
+        getCommand("resetrank").setExecutor(resetRankCommand);
+        getCommand("resetrank").setTabCompleter(resetRankCommand);
+
+        // Streamer mode
+        StreamerModeCommand streamerModeCommand = new StreamerModeCommand(this);
+        getCommand("streamermode").setExecutor(streamerModeCommand);
+        getCommand("streamermode").setTabCompleter(streamerModeCommand);
+
+        // Staff utilities
+        PingCommand pingCommand = new PingCommand(this);
+        getCommand("ping").setExecutor(pingCommand);
+        getCommand("ping").setTabCompleter(pingCommand);
+        IpCheckCommand ipCheckCommand = new IpCheckCommand(this);
+        getCommand("ipcheck").setExecutor(ipCheckCommand);
+        getCommand("ipcheck").setTabCompleter(ipCheckCommand);
+        PlaytimeCommand playtimeCommand = new PlaytimeCommand(this);
+        getCommand("playtime").setExecutor(playtimeCommand);
+        getCommand("playtime").setTabCompleter(playtimeCommand);
+        WhoIsCommand whoIsCommand = new WhoIsCommand(this);
+        getCommand("whois").setExecutor(whoIsCommand);
+        getCommand("whois").setTabCompleter(whoIsCommand);
+
+        // Owner / admin power tools
+        OwnerAlertCommand ownerAlertCommand = new OwnerAlertCommand(this);
+        getCommand("owneralert").setExecutor(ownerAlertCommand);
+        getCommand("owneralert").setTabCompleter(ownerAlertCommand);
+        ServerFreezeCommand serverFreezeCommand = new ServerFreezeCommand(this);
+        getCommand("serverfreeze").setExecutor(serverFreezeCommand);
+        getCommand("serverfreeze").setTabCompleter(serverFreezeCommand);
+        ForceChatCommand forceChatCommand = new ForceChatCommand(this);
+        getCommand("forcechat").setExecutor(forceChatCommand);
+        getCommand("forcechat").setTabCompleter(forceChatCommand);
+
+        // Dev tools
+        DevModeCommand devModeCommand = new DevModeCommand(this);
+        getCommand("devmode").setExecutor(devModeCommand);
+        getCommand("devmode").setTabCompleter(devModeCommand);
+        getCommand("reloadplugin").setExecutor(new ReloadPluginCommand(this));
+        TestEffectCommand testEffectCommand = new TestEffectCommand(this);
+        getCommand("testeffect").setExecutor(testEffectCommand);
+        getCommand("testeffect").setTabCompleter(testEffectCommand);
+        getCommand("devbroadcast").setExecutor(new DevBroadcastCommand(this));
+
+        // Builder tools
+        BuilderAnnounceCommand builderAnnounceCommand = new BuilderAnnounceCommand(this);
+        getCommand("builderannounce").setExecutor(builderAnnounceCommand);
+        getCommand("builderannounce").setTabCompleter(builderAnnounceCommand);
+        HeadCommand headCommand = new HeadCommand(this);
+        getCommand("head").setExecutor(headCommand);
+        getCommand("head").setTabCompleter(headCommand);
+
+        // Store rank / player perks
+        NightVisionCommand nightVisionCommand = new NightVisionCommand(this);
+        getCommand("nightvision").setExecutor(nightVisionCommand);
+        getCommand("nightvision").setTabCompleter(nightVisionCommand);
+        HideAllCommand hideAllCommand = new HideAllCommand(this);
+        getCommand("hideall").setExecutor(hideAllCommand);
+        getCommand("hideall").setTabCompleter(hideAllCommand);
+        ParticlesCommand particlesCommand = new ParticlesCommand(this);
+        getCommand("particles").setExecutor(particlesCommand);
+        getCommand("particles").setTabCompleter(particlesCommand);
+
+        // Homes
+        HomeCommand homeCommand = new HomeCommand(this);
+        getCommand("home").setExecutor(homeCommand);
+        getCommand("home").setTabCompleter(homeCommand);
+        getCommand("sethome").setExecutor(homeCommand);
+        getCommand("sethome").setTabCompleter(homeCommand);
+        getCommand("delhome").setExecutor(homeCommand);
+        getCommand("delhome").setTabCompleter(homeCommand);
+        getCommand("homes").setExecutor(homeCommand);
+        getCommand("homes").setTabCompleter(homeCommand);
+
+        // Warps
+        WarpCommand warpCommand = new WarpCommand(this);
+        getCommand("warp").setExecutor(warpCommand);
+        getCommand("warp").setTabCompleter(warpCommand);
+        getCommand("setwarp").setExecutor(warpCommand);
+        getCommand("setwarp").setTabCompleter(warpCommand);
+        getCommand("delwarp").setExecutor(warpCommand);
+        getCommand("delwarp").setTabCompleter(warpCommand);
+        getCommand("warps").setExecutor(warpCommand);
+        getCommand("warps").setTabCompleter(warpCommand);
+
+        // TPA
+        TpaCommand tpaCommand = new TpaCommand(this, false);
+        getCommand("tpa").setExecutor(tpaCommand);
+        getCommand("tpa").setTabCompleter(tpaCommand);
+        TpaCommand tpaHereCommand = new TpaCommand(this, true);
+        getCommand("tpahere").setExecutor(tpaHereCommand);
+        getCommand("tpahere").setTabCompleter(tpaHereCommand);
+        TpAcceptCommand tpAcceptCommand = new TpAcceptCommand(this);
+        getCommand("tpaccept").setExecutor(tpAcceptCommand);
+        getCommand("tpaccept").setTabCompleter(tpAcceptCommand);
+        TpDenyCommand tpDenyCommand = new TpDenyCommand(this);
+        getCommand("tpdeny").setExecutor(tpDenyCommand);
+        getCommand("tpdeny").setTabCompleter(tpDenyCommand);
+
+        // Item tools
+        RenameCommand renameCommand = new RenameCommand(this);
+        getCommand("rename").setExecutor(renameCommand);
+        getCommand("rename").setTabCompleter(renameCommand);
+        LoreCommand loreCommand = new LoreCommand(this);
+        getCommand("lore").setExecutor(loreCommand);
+        getCommand("lore").setTabCompleter(loreCommand);
+        GlowCommand glowCommand = new GlowCommand(this);
+        getCommand("glow").setExecutor(glowCommand);
+        getCommand("glow").setTabCompleter(glowCommand);
+
+        // Server stats
+        getCommand("tps").setExecutor(new TpsCommand(this));
+        getCommand("serverinfo").setExecutor(new ServerInfoCommand(this));
+
+        // Economy
+        CoinsCommand coinsCommand = new CoinsCommand(this);
+        getCommand("coins").setExecutor(coinsCommand);
+        getCommand("coins").setTabCompleter(coinsCommand);
+        PayCommand payCommand = new PayCommand(this);
+        getCommand("pay").setExecutor(payCommand);
+        getCommand("pay").setTabCompleter(payCommand);
+        getCommand("daily").setExecutor(new DailyCommand(this));
+
+        // Mail
+        MailCommand mailCommand = new MailCommand(this);
+        getCommand("mail").setExecutor(mailCommand);
+        getCommand("mail").setTabCompleter(mailCommand);
+
+        // Utility
+        ExtinguishCommand extCommand = new ExtinguishCommand(this);
+        getCommand("ext").setExecutor(extCommand);
+        getCommand("ext").setTabCompleter(extCommand);
+        NearCommand nearCommand = new NearCommand(this);
+        getCommand("near").setExecutor(nearCommand);
+        getCommand("near").setTabCompleter(nearCommand);
+        SmiteCommand smiteCommand = new SmiteCommand(this);
+        getCommand("smite").setExecutor(smiteCommand);
+        getCommand("smite").setTabCompleter(smiteCommand);
+        getCommand("coords").setExecutor(new CoordsCommand(this));
+
+        // Social — Friends
+        FriendCommand friendCommand = new FriendCommand(this);
+        getCommand("friend").setExecutor(friendCommand);
+        getCommand("friend").setTabCompleter(friendCommand);
+        FriendMessageCommand fmCommand = new FriendMessageCommand(this);
+        getCommand("fm").setExecutor(fmCommand);
+        getCommand("fm").setTabCompleter(fmCommand);
+
+        // Party
+        PartyCommand partyCommand = new PartyCommand(this);
+        getCommand("party").setExecutor(partyCommand);
+        getCommand("party").setTabCompleter(partyCommand);
+
+        // Content creator perks
+        CreatorAnnounceCommand creatorAnnounceCommand = new CreatorAnnounceCommand(this);
+        getCommand("ccannounce").setExecutor(creatorAnnounceCommand);
+        getCommand("ccannounce").setTabCompleter(creatorAnnounceCommand);
+        WatchPartyCommand watchPartyCommand = new WatchPartyCommand(this);
+        getCommand("watchparty").setExecutor(watchPartyCommand);
+        getCommand("watchparty").setTabCompleter(watchPartyCommand);
     }
 
     private void registerRankCommand(RankCommand executor, String name) {
@@ -409,9 +673,18 @@ public class EvaulxCore extends JavaPlugin {
     public PunishmentPresetManager getPunishmentPresetManager() { return punishmentPresetManager; }
     public GuiManager getGuiManager() { return guiManager; }
     public AfkManager getAfkManager() { return afkManager; }
+    public AppealManager getAppealManager() { return appealManager; }
     public RedisSyncManager getRedisSyncManager() { return redisSyncManager; }
     public EvaulxMCHubHook getHubHook() { return hubHook; }
     public VaultHook getVaultHook() { return vaultHook; }
     public MessageManager getMessageManager() { return messageManager; }
     public ProtocolLibHook getProtocolLibHook() { return protocolLibHook; }
+    public ContentCreatorManager getContentCreatorManager() { return contentCreatorManager; }
+    public FriendManager getFriendManager() { return friendManager; }
+    public PartyManager getPartyManager() { return partyManager; }
+    public CoinsManager getCoinsManager() { return coinsManager; }
+    public DailyRewardManager getDailyRewardManager() { return dailyRewardManager; }
+    public HomeManager getHomeManager() { return homeManager; }
+    public MailManager getMailManager() { return mailManager; }
+    public WarpManager getWarpManager() { return warpManager; }
 }

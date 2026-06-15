@@ -17,7 +17,7 @@ public class Grant {
     private boolean active;
 
     public Grant(UUID target, String targetName, String rankName, String issuerName, String reason, long expiresAt) {
-        this.id = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        this.id = "GRT-" + UUID.randomUUID().toString().replace("-", "").substring(0, 6).toUpperCase();
         this.target = target;
         this.targetName = targetName;
         this.rankName = rankName;

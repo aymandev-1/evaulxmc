@@ -26,7 +26,7 @@ public class RankManager {
 
     private static final List<String> EVAULX_PRESET_RANKS = Collections.unmodifiableList(Arrays.asList(
             "Owner", "Platform-Admin", "Admin", "Developer", "Senior-Mod", "Mod", "Builder",
-            "Youtuber", "Twitch", "Evaulx", "VIP", "Default"
+            "Youtuber", "Twitch", "Phase", "Zecon", "Evaulx", "VIP", "Default"
     ));
 
     private final EvaulxCore plugin;
@@ -59,7 +59,7 @@ public class RankManager {
                 perms("evaulx.admin", "evaulx.rank", "evaulx.perm", "evaulx.grant", "evaulx.staff"), inherits());
         installed += savePreset("Admin", "Staff", "&7[&cAdmin&7] &c&o", "", "&c", 900, true, false,
                 perms("evaulx.rank", "evaulx.perm", "evaulx.grant", "evaulx.maintenance", "evaulx.staff"), inherits());
-        installed += savePreset("Developer", "Staff", "&7[&9Developer&7] &9&o", "", "&9", 850, true, false,
+        installed += savePreset("Developer", "Staff", "&7[&1Developer&7] &1&o", "", "&1", 850, true, false,
                 perms("evaulx.admin", "evaulx.permaudit", "evaulx.staffdashboard", "evaulx.buildmode", "evaulx.staff"), inherits());
         installed += savePreset("Senior-Mod", "Staff", "&7[&dSenior-Mod&7] &d", "", "&d", 750, true, false,
                 perms("evaulx.ban", "evaulx.tempban", "evaulx.unban", "evaulx.staff"), inherits());
@@ -70,6 +70,10 @@ public class RankManager {
         installed += savePreset("Youtuber", "Media", "&7[&cYOU&fTUBE&7] &c", "", "&c", 450, false, false,
                 perms(), inherits());
         installed += savePreset("Twitch", "Media", "&7[&5Twitch&7] &f", "", "&5", 425, false, false,
+                perms(), inherits());
+        installed += savePreset("Phase", "Store", "&7[&8Phase&7] &8", "", "&8", 415, false, false,
+                perms(), inherits());
+        installed += savePreset("Zecon", "Store", "&7[&3Zecon&7] &3", "", "&3", 413, false, false,
                 perms(), inherits());
         installed += savePreset("Evaulx", "Store", "&7[&6Evaulx&7] &6", "", "&6", 350, false, false,
                 perms(), inherits());
@@ -223,7 +227,9 @@ public class RankManager {
         if (name.equalsIgnoreCase("Owner")) return "&7[&4Owner&7] &4&oOwner";
         if (name.equalsIgnoreCase("Platform-Admin")) return "&7[&cPlatform-Admin&7] &cPlatform-Admin";
         if (name.equalsIgnoreCase("Admin")) return "&7[&cAdmin&7] &c&oAdmin";
-        if (name.equalsIgnoreCase("Developer")) return "&7[&9Developer&7] &9&oDeveloper";
+        if (name.equalsIgnoreCase("Developer")) return "&7[&1Developer&7] &1&oDeveloper";
+        if (name.equalsIgnoreCase("Phase")) return "&7[&8Phase&7] &8Phase";
+        if (name.equalsIgnoreCase("Zecon")) return "&7[&3Zecon&7] &3Zecon";
         if (name.equalsIgnoreCase("Senior-Mod")) return "&7[&dSenior-Mod&7] &dSenior-Mod";
         if (name.equalsIgnoreCase("Mod")) return "&7[&5Mod&7] &5&oMod";
         if (name.equalsIgnoreCase("Builder")) return "&7[&bBuilder&7] &bBuilder";

@@ -24,9 +24,12 @@ public class PlayerJoinQuitListener implements Listener {
         Player player = e.getPlayer();
         boolean firstJoin = !player.hasPlayedBefore();
         plugin.getAfkManager().handleJoin(player);
+        // Capture the IP on the main thread — getAddress() is not safe to call async.
+        final String ipAddress = player.getAddress() != null
+                ? player.getAddress().getAddress().getHostAddress() : null;
         TaskUtil.async(() -> {
             PlayerProfile profile = plugin.getPlayerManager().loadProfile(player);
-            profile.setIp(player.getAddress().getAddress().getHostAddress());
+            if (ipAddress != null) profile.setIp(ipAddress);
             profile.setLastSeen(System.currentTimeMillis());
             if (firstJoin || profile.getFirstJoin() == 0) profile.setFirstJoin(System.currentTimeMillis());
             plugin.getGrantManager().reconcileProfile(profile);
@@ -122,8 +125,8 @@ public class PlayerJoinQuitListener implements Listener {
         if (plugin.getConfig().getBoolean("staff-tools.staff-join-leave-alerts.local", true)) {
             String key = joined ? "staff-alerts.join-local" : "staff-alerts.leave-local";
             String fallback = joined
-                    ? "&8[&cStaff&8] &f{player} &7joined this server."
-                    : "&8[&cStaff&8] &f{player} &7left this server.";
+                    ? "&8[&bS&8] &f{player} &7joined &f{server}&7."
+                    : "&8[&bS&8] &f{player} &7left &f{server}&7.";
             String message = plugin.getMessageManager().get(key, fallback,
                     plugin.getMessageManager().placeholders("{player}", player.getName(), "{server}", server));
             plugin.getStaffRequestManager().broadcastStaff(message);

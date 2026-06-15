@@ -82,8 +82,8 @@ disguise:
   realname-not-found: "&cNo online disguised player matched &f{query}&c."
 
 staff-alerts:
-  join-local: "&b[&bS] &f{player} &7joined this server."
-  leave-local: "&b[&bS] &f{player} &7left this server."
+  join-local: "&8[&bS&8] &f{player} &7joined &f{server}&7."
+  leave-local: "&8[&bS&8] &f{player} &7left &f{server}&7."
   join-network: "&8[&cNetwork&8] &f{player} &7joined &f{server}&7."
   leave-network: "&8[&cNetwork&8] &f{player} &7left &f{server}&7."
 

@@ -1,24 +1,101 @@
 package dev.evaulx.core.commands.rank;
-import dev.evaulx.core.EvaulxCore; import dev.evaulx.core.models.*; import dev.evaulx.core.utils.CC;
+
+import dev.evaulx.core.EvaulxCore;
+import dev.evaulx.core.models.PlayerProfile;
+import dev.evaulx.core.models.Rank;
+import dev.evaulx.core.utils.CC;
 import dev.evaulx.core.utils.PlayerUtil;
-import org.bukkit.Bukkit; import org.bukkit.OfflinePlayer; import org.bukkit.command.*; import org.bukkit.entity.Player;
-public class SetRankCommand implements CommandExecutor {
-    private final EvaulxCore plugin; public SetRankCommand(EvaulxCore p){this.plugin=p;}
-    @Override public boolean onCommand(CommandSender s,Command c,String l,String[] a){
-        if(!s.hasPermission("evaulx.rank.set")){s.sendMessage(CC.color("&cNo permission."));return true;}
-        if(a.length<2){s.sendMessage(CC.color("&cUsage: /setrank <player> <rank>"));return true;}
-        OfflinePlayer t=PlayerUtil.getOfflinePlayer(a[0]);
-        if(t==null||!t.hasPlayedBefore()){s.sendMessage(CC.color("&cPlayer not found."));return true;}
-        Rank rank=plugin.getRankManager().getRank(a[1]);
-        if(rank==null){s.sendMessage(CC.color("&cRank '"+a[1]+"' not found."));return true;}
-        PlayerProfile profile=plugin.getPlayerManager().getProfile(t.getUniqueId());
-        if(profile==null){s.sendMessage(CC.color("&cPlayer must be online."));return true;}
-        String old=profile.getRankName(); profile.setRankName(rank.getName());
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.*;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+
+public class SetRankCommand implements CommandExecutor, TabCompleter {
+
+    private final EvaulxCore plugin;
+
+    public SetRankCommand(EvaulxCore plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission("evaulx.rank.set")) {
+            sender.sendMessage(CC.color("&cNo permission."));
+            return true;
+        }
+        if (args.length < 2) {
+            sender.sendMessage(CC.color("&cUsage: /setrank <player> <rank>"));
+            return true;
+        }
+
+        OfflinePlayer target = PlayerUtil.getOfflinePlayer(args[0]);
+        if (target == null || !target.hasPlayedBefore()) {
+            sender.sendMessage(CC.color("&cPlayer not found."));
+            return true;
+        }
+
+        Rank rank = plugin.getRankManager().getRank(args[1]);
+        if (rank == null) {
+            sender.sendMessage(CC.color("&cRank '" + args[1] + "' not found."));
+            return true;
+        }
+
+        PlayerProfile profile = plugin.getPlayerManager().getProfile(target.getUniqueId());
+        if (profile == null) {
+            sender.sendMessage(CC.color("&cPlayer must be online for /setrank."));
+            return true;
+        }
+
+        String oldRank = profile.getRankName();
+        profile.setRankName(rank.getName());
         plugin.getPlayerManager().saveProfile(profile);
-        Player online=Bukkit.getPlayer(t.getUniqueId());
-        if(online!=null){plugin.getPlayerManager().applyPermissions(online,profile);plugin.getNameTagManager().applyNameTag(online);}
-        plugin.getDiscordManager().sendRankChange(t.getName(),old,rank.getName(),s.getName());
-        if(plugin.getRedisSyncManager()!=null) plugin.getRedisSyncManager().publishRankChange(t.getName(),t.getUniqueId(),old,rank.getName(),s.getName());
-        s.sendMessage(CC.color("&aSet &f"+t.getName()+" &arank to "+rank.getDisplayName())); return true;
+
+        Player online = Bukkit.getPlayer(target.getUniqueId());
+        if (online != null) {
+            plugin.getPlayerManager().applyPermissions(online, profile);
+            plugin.getNameTagManager().applyNameTag(online);
+            online.sendMessage(CC.color("&8[&6Rank&8] &7Your rank has been set to "
+                    + rank.getDisplayName() + " &7by &f" + sender.getName() + "&7."));
+        }
+
+        plugin.getDiscordManager().sendRankChange(target.getName(), oldRank, rank.getName(), sender.getName());
+        if (plugin.getRedisSyncManager() != null) {
+            plugin.getRedisSyncManager().publishRankChange(target.getName(), target.getUniqueId(),
+                    oldRank, rank.getName(), sender.getName());
+        }
+        plugin.getStaffRequestManager().logAction(sender.getName(), "SET_RANK",
+                target.getName(), oldRank + " -> " + rank.getName());
+
+        sender.sendMessage(CC.color("&aSet &f" + target.getName() + " &arank to " + rank.getDisplayName() + "&a."));
+        return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (!sender.hasPermission("evaulx.rank.set")) return Collections.emptyList();
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 1) {
+            for (Player p : Bukkit.getOnlinePlayers()) suggestions.add(p.getName());
+            return filter(suggestions, args[0]);
+        }
+        if (args.length == 2) {
+            for (Rank r : plugin.getRankManager().getVisibleRanksByWeight()) suggestions.add(r.getName());
+            return filter(suggestions, args[1]);
+        }
+        return Collections.emptyList();
+    }
+
+    private List<String> filter(List<String> list, String prefix) {
+        String lower = prefix.toLowerCase(Locale.ENGLISH);
+        List<String> result = new ArrayList<>();
+        for (String s : list) if (s.toLowerCase(Locale.ENGLISH).startsWith(lower)) result.add(s);
+        Collections.sort(result);
+        return result;
     }
 }

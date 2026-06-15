@@ -5,25 +5,24 @@ public class GamemodeCommand implements CommandExecutor {
     private final EvaulxCore plugin; public GamemodeCommand(EvaulxCore p){this.plugin=p;}
     @Override public boolean onCommand(CommandSender s,Command c,String l,String[] a){
         if(!s.hasPermission("evaulx.gamemode")){s.sendMessage(CC.color("&cNo permission."));return true;}
-        if(a.length<1){s.sendMessage(CC.color("&cUsage: /gm <0|1|2|3> [player]"));return true;}
-        Player t=(a.length>1)?Bukkit.getPlayer(a[1]):(s instanceof Player?(Player)s:null);
-        if(t==null){s.sendMessage(CC.color("&cPlayer not found."));return true;}
+        if(a.length<1){s.sendMessage(CC.color("&cUsage: /gm <survival|creative|adventure|spectator> [player]"));return true;}
+        Player t;
+        if(a.length>1){
+            if(!s.hasPermission("evaulx.gamemode.others")){s.sendMessage(CC.color("&cNo permission to change others' gamemode."));return true;}
+            t=Bukkit.getPlayer(a[1]); if(t==null){s.sendMessage(CC.color("&cPlayer not found."));return true;}
+        } else { if(!(s instanceof Player)){s.sendMessage(CC.color("&cUsage: /gm <mode> <player>"));return true;} t=(Player)s; }
         GameMode gm=parseGameMode(a[0]);
-        if(gm==null){s.sendMessage(CC.color("&cInvalid gamemode."));return true;}
+        if(gm==null){s.sendMessage(CC.color("&cInvalid gamemode. Use survival, creative, adventure, or spectator."));return true;}
         t.setGameMode(gm); t.sendMessage(CC.color("&7Your gamemode is now &c"+gm.name()));
         if(!t.equals(s)) s.sendMessage(CC.color("&aSet &f"+t.getName()+"&a's gamemode to &c"+gm.name())); return true;
     }
     private GameMode parseGameMode(String input){
-        try{
-            switch(Integer.parseInt(input)){
-                case 0: return GameMode.SURVIVAL;
-                case 1: return GameMode.CREATIVE;
-                case 2: return GameMode.ADVENTURE;
-                case 3: return GameMode.SPECTATOR;
-                default: return null;
-            }
-        }catch(NumberFormatException ignored){
-            return null;
+        switch(input.toLowerCase(java.util.Locale.ENGLISH)){
+            case "0": case "survival":  case "s":  case "surv": return GameMode.SURVIVAL;
+            case "1": case "creative":  case "c":  case "cre":  return GameMode.CREATIVE;
+            case "2": case "adventure": case "a":  case "adv":  return GameMode.ADVENTURE;
+            case "3": case "spectator": case "sp": case "spec": return GameMode.SPECTATOR;
+            default: try{int i=Integer.parseInt(input);if(i>=0&&i<=3)return GameMode.values()[i];}catch(NumberFormatException ignored){} return null;
         }
     }
 }

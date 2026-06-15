@@ -97,7 +97,7 @@ public class StaffToolListener implements Listener {
         if (!(event.getRightClicked() instanceof Player)) return;
         if (!isStaffMode(event.getPlayer())) return;
 
-        ItemStack item = event.getPlayer().getInventory().getItemInHand();
+        ItemStack item = event.getPlayer().getItemInHand();
         StaffModeItem staffItem = plugin.getStaffRequestManager().getStaffModeItem(item);
         if (staffItem != StaffModeItem.INSPECT_PLAYER) return;
 
@@ -208,3 +208,4 @@ public class StaffToolListener implements Listener {
                 plugin.getMessageManager().placeholders("{reason}", reason));
     }
 }
+

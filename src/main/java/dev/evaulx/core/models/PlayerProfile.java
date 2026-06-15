@@ -25,6 +25,9 @@ public class PlayerProfile {
     private String disguiseSkin;
     private String disguiseRank;
     private boolean disguised;
+    private boolean streamerMode;
+    private String streamerAlias;
+    private List<String> ignoredPlayers;
 
     public PlayerProfile(UUID uuid, String name) {
         this.uuid = uuid;
@@ -44,6 +47,7 @@ public class PlayerProfile {
         this.socialSpy = false;
         this.msgToggled = true;
         this.disguised = false;
+        this.ignoredPlayers = new ArrayList<>();
     }
 
     public boolean hasPermission(String permission) {
@@ -122,4 +126,16 @@ public class PlayerProfile {
 
     public String getDisguiseRank() { return disguiseRank; }
     public void setDisguiseRank(String disguiseRank) { this.disguiseRank = disguiseRank; }
+
+    public boolean isStreamerMode() { return streamerMode; }
+    public void setStreamerMode(boolean streamerMode) { this.streamerMode = streamerMode; }
+
+    public String getStreamerAlias() { return streamerAlias; }
+    public void setStreamerAlias(String streamerAlias) { this.streamerAlias = streamerAlias; }
+
+    public List<String> getIgnoredPlayers() { return ignoredPlayers != null ? ignoredPlayers : new ArrayList<>(); }
+    public void setIgnoredPlayers(List<String> ignoredPlayers) { this.ignoredPlayers = ignoredPlayers != null ? ignoredPlayers : new ArrayList<>(); }
+    public void addIgnoredPlayer(UUID uuid) { if (ignoredPlayers == null) ignoredPlayers = new ArrayList<>(); String s = uuid.toString(); if (!ignoredPlayers.contains(s)) ignoredPlayers.add(s); }
+    public void removeIgnoredPlayer(UUID uuid) { if (ignoredPlayers != null) ignoredPlayers.remove(uuid.toString()); }
+    public boolean isIgnoring(UUID uuid) { return ignoredPlayers != null && ignoredPlayers.contains(uuid.toString()); }
 }

@@ -59,7 +59,7 @@ public class GrantManager {
         grants.put(grant.getId(), grant);
         saveGrants();
 
-        applyOnline(target.getUniqueId(), profile);
+        applyOnline(target.getUniqueId(), profile, grant);
         plugin.getDiscordManager().sendGrant(grant);
         if (plugin.getRedisSyncManager() != null) plugin.getRedisSyncManager().publishGrant(grant, false);
         return grant;
@@ -264,12 +264,34 @@ public class GrantManager {
         TaskUtil.async(() -> plugin.getDatabaseManager().saveProfile(profile));
     }
 
-    private void applyOnline(UUID uuid, PlayerProfile profile) {
+    private void applyOnline(UUID uuid, PlayerProfile profile, Grant grant) {
         Player player = Bukkit.getPlayer(uuid);
         if (player == null) return;
         plugin.getPlayerManager().applyPermissions(player, profile);
         plugin.getNameTagManager().applyNameTag(player);
-        player.sendMessage(CC.color("&7Your rank grants were updated."));
+        if (grant != null) {
+            String rankName = grant.getRankName();
+            String duration = grant.getExpiresAt() > 0 ? grant.getDurationString() : "Permanent";
+            String issuer = grant.getIssuerName();
+            String grantId = grant.getId();
+            player.sendMessage(CC.color(" "));
+            player.sendMessage(CC.color("&8&m----------------------------------------"));
+            player.sendMessage(CC.color(" "));
+            player.sendMessage(CC.color("   &6&l✦ NEW RANK GRANTED!"));
+            player.sendMessage(CC.color(" "));
+            player.sendMessage(CC.color("   &7Rank: &6&l" + rankName));
+            player.sendMessage(CC.color("   &7Duration: &f" + duration));
+            player.sendMessage(CC.color("   &7Granted by: &f" + issuer));
+            player.sendMessage(CC.color("   &7Grant ID: &8#&f" + grantId));
+            player.sendMessage(CC.color(" "));
+            player.sendMessage(CC.color("   &7Your new rank is now active. Enjoy!"));
+            player.sendMessage(CC.color(" "));
+            player.sendMessage(CC.color("&8&m----------------------------------------"));
+            player.sendMessage(CC.color(" "));
+            player.sendTitle(CC.color("&6&l✦ Rank Granted!"), CC.color("&7You received &6" + rankName));
+        } else {
+            player.sendMessage(CC.color("&8[&6Grant&8] &7Your rank access has been updated."));
+        }
     }
 
     private void removeRankIfUnused(UUID uuid, String name, String rankName) {
@@ -283,7 +305,10 @@ public class GrantManager {
         if (profile == null) return;
         profile.removeExtraRank(rankName);
         saveProfile(profile);
-        applyOnline(uuid, profile);
+        applyOnline(uuid, profile, null);
+        if (player != null) {
+            player.sendMessage(CC.color("&8[&6Grant&8] &7Your &f" + rankName + " &7grant was removed."));
+        }
     }
 
     private boolean hasActiveGrant(UUID uuid, String rankName, String ignoredId) {
@@ -320,7 +345,13 @@ public class GrantManager {
                     expiryReminders.remove(grant.getId());
                     removeRankIfUnused(grant.getTarget(), grant.getTargetName(), grant.getRankName());
                     plugin.getStaffRequestManager().broadcastStaff("&8[&cGrant&8] &f" + grant.getTargetName()
-                            + "'s &f" + grant.getRankName() + " &7grant expired.");
+                            + "'s &f" + grant.getRankName() + " &7grant expired. &8(ID: &f" + grant.getId() + "&8)");
+                    // Notify target if online (removeRankIfUnused sends the general message; this is grant-specific)
+                    Player grantedPlayer = Bukkit.getPlayer(grant.getTarget());
+                    if (grantedPlayer != null) {
+                        grantedPlayer.sendMessage(CC.color("&8[&6Grant&8] &7Your &f" + grant.getRankName()
+                                + " &7grant has expired. &8(ID: &f" + grant.getId() + "&8)"));
+                    }
                     changed = true;
                     continue;
                 }
