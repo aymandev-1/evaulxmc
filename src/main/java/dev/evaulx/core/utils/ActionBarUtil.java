@@ -13,8 +13,12 @@ public final class ActionBarUtil {
             String pkg = player.getServer().getClass().getPackage().getName();
             String ver = pkg.substring(pkg.lastIndexOf('.') + 1);
             String nms = "net.minecraft.server." + ver + ".";
-            Class<?> chatSerializer = Class.forName(nms + "ChatSerializer");
             Class<?> iChatBase = Class.forName(nms + "IChatBaseComponent");
+            // On 1.8+ ChatSerializer is a nested class of IChatBaseComponent; older builds
+            // expose a top-level ChatSerializer. Try the nested form first.
+            Class<?> chatSerializer;
+            try { chatSerializer = Class.forName(nms + "IChatBaseComponent$ChatSerializer"); }
+            catch (ClassNotFoundException e) { chatSerializer = Class.forName(nms + "ChatSerializer"); }
             String escaped = CC.color(message).replace("\\", "\\\\").replace("\"", "\\\"");
             Object comp = chatSerializer.getMethod("a", String.class).invoke(null, "{\"text\":\"" + escaped + "\"}");
             Class<?> packetClass = Class.forName(nms + "PacketPlayOutChat");

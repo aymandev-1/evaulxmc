@@ -4,6 +4,7 @@ import dev.evaulx.core.EvaulxCore;
 import dev.evaulx.core.models.Rank;
 import dev.evaulx.core.utils.CC;
 import dev.evaulx.core.utils.TaskUtil;
+import dev.evaulx.core.utils.WitherBossBar;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -58,7 +59,10 @@ public final class ContentCreatorManager {
     private final Map<UUID, Long> socialsCooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, Long> shoutoutCooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, BukkitTask> particleTasks = new ConcurrentHashMap<>();
-    private Object ccBossBar; // BossBar via reflection (API added 1.9)
+    private Object ccBossBar;          // native BossBar via reflection (API added 1.9)
+    private WitherBossBar witherBar;   // 1.8 fallback (wither-packet boss bar)
+
+    private static final String BOSSBAR_DEFAULT_TITLE = "&6&l✦ &eContent Creators Online &8» &7/creator list";
 
     public ContentCreatorManager(EvaulxCore plugin) {
         this.plugin = plugin;
@@ -210,11 +214,14 @@ public final class ContentCreatorManager {
             Object solid  = Enum.valueOf((Class<Enum>) styleClass, "SOLID");
             ccBossBar = Bukkit.class
                     .getMethod("createBossBar", String.class, colorClass, styleClass)
-                    .invoke(null, CC.color("&6&l✦ &eContent Creators Online &8» &7/creator list"), yellow, solid);
+                    .invoke(null, CC.color(BOSSBAR_DEFAULT_TITLE), yellow, solid);
             bbCall("setVisible", boolean.class, false);
             for (Player p : Bukkit.getOnlinePlayers()) bbCall("addPlayer", Player.class, p);
         } catch (Throwable ignored) {
+            // Native BossBar API unavailable (1.8) — fall back to a wither-packet boss bar.
             ccBossBar = null;
+            witherBar = new WitherBossBar(plugin, CC.color(BOSSBAR_DEFAULT_TITLE));
+            for (Player p : Bukkit.getOnlinePlayers()) witherBar.addPlayer(p);
         }
     }
 
@@ -224,18 +231,20 @@ public final class ContentCreatorManager {
     }
 
     public void addPlayerToBossBar(Player player) {
+        if (witherBar != null) { witherBar.addPlayer(player); return; }
         bbCall("addPlayer", Player.class, player);
     }
 
     public void removePlayerFromBossBar(Player player) {
+        if (witherBar != null) { witherBar.removePlayer(player); return; }
         bbCall("removePlayer", Player.class, player);
     }
 
     public void updateBossBar() {
-        if (ccBossBar == null) return;
+        if (ccBossBar == null && witherBar == null) return;
         try {
             if (!plugin.getConfig().getBoolean("content-creators.bossbar", true)) {
-                bbCall("setVisible", boolean.class, false);
+                setBossBarVisible(false);
                 return;
             }
             List<String> parts = new ArrayList<>();
@@ -247,14 +256,24 @@ public final class ContentCreatorManager {
                 parts.add(entry);
             }
             if (parts.isEmpty()) {
-                bbCall("setVisible", boolean.class, false);
+                setBossBarVisible(false);
                 return;
             }
             String title = CC.color("&6&l✦ &7CCs: " + String.join(" &8| ", parts) + " &8» &7/creator list");
             if (title.length() > 64) title = title.substring(0, 64);
-            bbCall("setTitle", String.class, title);
-            bbCall("setVisible", boolean.class, true);
+            if (witherBar != null) {
+                witherBar.setTitle(title);
+                witherBar.setVisible(true);
+            } else {
+                bbCall("setTitle", String.class, title);
+                bbCall("setVisible", boolean.class, true);
+            }
         } catch (Throwable ignored) {}
+    }
+
+    private void setBossBarVisible(boolean visible) {
+        if (witherBar != null) witherBar.setVisible(visible);
+        else bbCall("setVisible", boolean.class, visible);
     }
 
     // ── Particle trails ───────────────────────────────────────────────────────
