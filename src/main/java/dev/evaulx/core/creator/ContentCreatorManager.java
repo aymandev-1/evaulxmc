@@ -301,6 +301,22 @@ public final class ContentCreatorManager {
         if (t != null) t.cancel();
     }
 
+    /**
+     * Cancels every task and tears down the boss bar. Call from the plugin's onDisable so a
+     * full disable/enable (server reload) doesn't leave the wither boss-bar follow task or
+     * particle trails running against a stale manager.
+     */
+    public void shutdown() {
+        for (BukkitTask t : particleTasks.values()) {
+            if (t != null) t.cancel();
+        }
+        particleTasks.clear();
+        if (witherBar != null) {
+            witherBar.destroy();
+            witherBar = null;
+        }
+    }
+
     // ── Join / Quit handling ──────────────────────────────────────────────────
 
     public void onCreatorJoin(Player player) {

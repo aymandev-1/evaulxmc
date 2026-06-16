@@ -163,6 +163,7 @@ public class EvaulxCore extends JavaPlugin {
         if (staffRequestManager != null) staffRequestManager.shutdown();
         if (messageManager != null) messageManager.shutdown();
         if (afkManager != null) afkManager.shutdown();
+        if (contentCreatorManager != null) contentCreatorManager.shutdown();
         if (playerManager != null) playerManager.saveAll();
         if (databaseManager != null) databaseManager.disconnect();
         getLogger().info("EvaulxMC disabled.");

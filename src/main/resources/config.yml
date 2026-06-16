@@ -1534,6 +1534,36 @@ streamer-mode:
     - "Rune"
     - "Byte"
 
+# Content creators — perks and announcements for ranked creators (/creator grant <player>)
+content-creators:
+  # Purple wither boss bar listing creators currently online (1.8 uses a packet-based
+  # wither bar; 1.9+ uses the native boss bar API).
+  bossbar: true
+  # END_ROD particle trail that follows creators as they walk.
+  particle-trail: true
+  # Broadcast a styled join message with the creator's socials when they log in.
+  announce-join: true
+  # Tag prefixed to a creator's public chat messages.
+  chat-tag: "&c[CC] &r"
+  # Cooldowns (seconds) to stop creators spamming server-wide broadcasts.
+  socials-cooldown-seconds: 300
+  shoutout-cooldown-seconds: 120
+  golive:
+    enabled: true
+    cooldown-seconds: 300
+  giveaway:
+    cooldown-seconds: 600
+    # Prize pool for /ccgiveaway. Each entry grants a rank for the given days (0 = permanent).
+    prizes:
+      - rank: "VIP"
+        duration-days: 7
+      - rank: "Evaulx"
+        duration-days: 30
+  # Console commands run when a player redeems a creator's code with /redeemcode <code>.
+  # Placeholders: {player} {code} {cc}
+  code-reward-commands:
+    - "coins add {player} 500"
+
 # Permissions
 permissions:
   default-rank: "default"
