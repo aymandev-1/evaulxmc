@@ -89,6 +89,12 @@ All permission nodes as declared in `plugin.yml`. **Default** is the node's defa
 | `evaulx.staffstatus` | op | View current staff status |
 | `evaulx.staffrecover` | op | Recover staff-mode inventory/state |
 | `evaulx.staffpanel` | op | Open the staff panel |
+| `evaulx.admin.panel` | op | Open the admin control panel (`/adminpanel`) |
+| `evaulx.owner.panel` | op | Open the owner control panel (`/ownerpanel`) |
+| `evaulx.panel.mod` | op | Open the moderator panel (`/modpanel`) |
+| `evaulx.panel.builder` | op | Open the builder panel (`/builderpanel`) |
+| `evaulx.panel.developer` | op | Open the developer panel (`/developerpanel`) |
+| `evaulx.panel.creator` | op | Open the content creator panel (`/creatorpanel`) — creators also have access automatically |
 | `evaulx.staffdashboard` | op | Open the staff dashboard |
 | `evaulx.staffsessions` | op | View staff session tracking |
 | `evaulx.stafflist` | op | View online staff |

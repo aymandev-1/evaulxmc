@@ -82,16 +82,16 @@ attach them to store ranks and staff ranks exactly how you like:
 
 | Tier | Commands |
 |------|----------|
-| **Staff / Mod** | `/clearlag`, `/slowchat`, `/freeze`, `/vanish`, `/staffmode`, `/socialspy`, `/commandspy` |
+| **Staff / Mod** | `/modpanel`, `/clearlag`, `/slowchat`, `/freeze`, `/vanish`, `/staffmode`, `/socialspy`, `/commandspy` |
 | **Admin** | `/adminpanel`, `/entitycount`, `/killentities`, `/chunkinfo`, `/maintenance`, `/lockdown` |
-| **Builder** | `/buildmode`, `/top`, `/up`, `/builderannounce`, `/head`, `/globalfly` |
-| **Developer** | `/devmode`, `/gc`, `/threads`, `/plugininfo`, `/testeffect`, `/devbroadcast`, `/reloadplugin` |
+| **Builder** | `/builderpanel`, `/buildmode`, `/top`, `/up`, `/builderannounce`, `/head`, `/globalfly` |
+| **Developer** | `/developerpanel`, `/devmode`, `/gc`, `/threads`, `/plugininfo`, `/testeffect`, `/devbroadcast`, `/reloadplugin` |
 | **Owner** | `/ownerpanel`, `/owneralert`, `/ownerbc`, `/serverfreeze`, `/shutdown`, `/forcechat` |
-| **Content Creator** | `/golive`, `/offair`, `/spotlight`, `/recording`, `/shoutout`, `/cchat`, `/ccgiveaway`, `/milestone`, `/socials`, `/watchparty` |
+| **Content Creator** | `/creatorpanel`, `/golive`, `/offair`, `/spotlight`, `/recording`, `/shoutout`, `/cchat`, `/ccgiveaway`, `/milestone`, `/socials`, `/watchparty` |
 | **Store ranks** | `/firework`, `/launch`, `/nightvision`, `/hideall`, `/particles`, `/hat`, `/glow`, `/nick` |
 
 ### In-game GUIs
-EvaulxMC ships **24 menus** built on a single, version-safe GUI engine (auto-resolves
+EvaulxMC ships **28 menus** built on a single, version-safe GUI engine (auto-resolves
 1.8 ↔ modern materials, so the same menus render on 1.8.8 through the latest builds):
 
 | GUI | Opened by | Purpose |
@@ -100,6 +100,10 @@ EvaulxMC ships **24 menus** built on a single, version-safe GUI engine (auto-res
 | **Staff Dashboard** | `/staffdashboard` | Live overview with queue counts and a recent-actions feed |
 | **Admin Panel** ⭐ | `/adminpanel` | Rank manager, grants, maintenance, lobby protection, server diagnostics, broadcast, clear-lag, lockdown |
 | **Owner Panel** ⭐ | `/ownerpanel` | Owner alerts/broadcasts, server freeze, scheduled shutdown, reload, economy, kick-all, lockdown |
+| **Mod Panel** ⭐ | `/modpanel` | Reports, punish, freeze, inspect, notes, mod logs, vanish, staff mode, whois, IP check, chat moderation |
+| **Builder Panel** ⭐ | `/builderpanel` | Gamemode, fly, build mode, time/weather, speed, workbench, builder announce |
+| **Developer Panel** ⭐ | `/developerpanel` | TPS, memory/GC, threads, plugin info, entity/chunk diagnostics, dev mode, test effects, reload |
+| **Creator Panel** ⭐ | `/creatorpanel` | Go live, shoutout, giveaway, milestone, socials, recording, watch party, spotlight, profile |
 | **Maintenance** | `/maintenance` | Toggle maintenance, manage the allow-list |
 | **Staff Sessions** | `/staffsessions` | Active staff sessions and time tracking |
 | **Pending Grants** | `/grant` queue | Approve / deny queued rank grants |
@@ -283,7 +287,7 @@ Onboarding and role-specific feature guides for your team, in [`docs/staff/`](do
 
 ## Complete command reference
 
-All **201** commands, grouped by system (the same order they register in). Every command is
+All **205** commands, grouped by system (the same order they register in). Every command is
 permission-gated — see [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) for the matching nodes and defaults.
 
 <details>
@@ -492,6 +496,10 @@ permission-gated — see [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) for the ma
 | `/launch` | rocket | Launch yourself into the air (store perk) |
 | `/adminpanel` | apanel, admingui | Open the admin control-panel GUI |
 | `/ownerpanel` | opanel, ownergui | Open the owner control-panel GUI |
+| `/creatorpanel` | ccpanel, creatorgui | Open the content creator control-panel GUI |
+| `/builderpanel` | buildpanel, buildergui | Open the builder control-panel GUI |
+| `/developerpanel` | devpanel, devgui | Open the developer control-panel GUI |
+| `/modpanel` | modgui, modtools | Open the moderator control-panel GUI |
 
 </details>
 

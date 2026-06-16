@@ -838,6 +838,12 @@ permissions:
       evaulx.party.warp: true
       evaulx.party.pvp: true
       evaulx.friends.message: true
+      evaulx.admin.panel: true
+      evaulx.owner.panel: true
+      evaulx.panel.mod: true
+      evaulx.panel.builder: true
+      evaulx.panel.developer: true
+      evaulx.panel.creator: true
   evaulx.admin:
     description: Access EvaulxMC admin commands
     default: op

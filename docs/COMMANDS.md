@@ -130,6 +130,20 @@ Diagnostics: `/disguise test <skin> [rank]`, `/disguise status`, `/disguise refr
 
 ---
 
+## Control panels (GUIs)
+
+| Command | Aliases | Description |
+|---------|---------|-------------|
+| `/staffpanel` | `staffgui`, `spanel` | General staff panel |
+| `/adminpanel` | `apanel`, `admingui` | Admin control panel |
+| `/ownerpanel` | `opanel`, `ownergui` | Owner control panel |
+| `/modpanel` | `modgui`, `modtools` | Moderator panel |
+| `/builderpanel` | `buildpanel`, `buildergui` | Builder panel |
+| `/developerpanel` | `devpanel`, `devgui` | Developer panel |
+| `/creatorpanel` | `ccpanel`, `creatorgui` | Content creator panel |
+
+---
+
 ## Essentials & utility
 
 | Command | Aliases | Description |
