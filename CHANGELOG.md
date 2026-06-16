@@ -2,6 +2,45 @@
 
 All notable changes to EvaulxMC are documented here.
 
+## Unreleased (branch `main`) — 2026-06-16
+
+### Added
+- **Role control panels:** `/creatorpanel`, `/builderpanel`, `/developerpanel`, and `/modpanel`
+  GUIs (alongside the existing staff/admin/owner panels), each bundling that role's tools.
+  New `evaulx.panel.*` permissions, included as children of `evaulx.*`.
+- **1.8 boss bar:** the "content creators online" boss bar now works on 1.8 via a packet-based
+  invisible wither (`WitherBossBar`), used as a fallback when the native 1.9+ boss bar API is absent.
+- **`content-creators` config section** added to `config.yml` (boss bar, particle trail, join
+  announce, chat tag, cooldowns, go-live, giveaway prizes, redeem-code reward commands) with comments.
+- **Staff handbook** under `docs/staff/` — onboarding plus per-role guides (mod, admin, builder,
+  developer, content creator) and a concise, player-facing changelog.
+
+### Fixed
+- **Content creator commands now work.** `/golive`, `/offair`, `/shoutout`, `/socials`, `/milestone`,
+  `/ccgiveaway`, `/cchat`, `/ccannounce`, `/watchparty` and `/creator set` are gated by `default: false`
+  permission nodes that were never assigned, so they failed even for operators. The nodes are now
+  auto-granted when a player is given creator status (on `/creator grant` and on join) and removed on
+  revoke/quit, re-synced on reload.
+- **Action bar on 1.8.** `ChatSerializer` is nested inside `IChatBaseComponent` on 1.8, so the
+  top-level reflection lookup threw and was silently swallowed — action bars did nothing. It now
+  resolves the nested class first.
+- **Coloured GUI icons on 1.8.** Tag-menu and player-profile dye icons rendered as plain black ink
+  sacs because the modern split-dye materials carry no colour on the 1.8 API. They now use the legacy
+  `INK_SACK` + data-value dyes; the unused `MAT_*_DYE` constants were removed.
+
+### Changed
+- **Command spy** now shows every player's commands (staff included) to anyone with the spy enabled
+  by default (`staff-tools.command-spy.hide-staff-commands: false`). Viewers still need
+  `evaulx.commandspy`, and sensitive auth commands stay hidden for everyone.
+- **Tag menu redesigned:** cleaner lore, colour-matched dye icons, and a "currently equipped" marker.
+- **Reload safety:** content-creator particle trails and the wither boss bar are disposed on plugin
+  disable, so a disable/enable no longer leaks the boss-bar follow task.
+
+### Documentation
+- Rewrote `docs/DISCORD_ANNOUNCEMENT.md` to list player-facing features only.
+- Documented the role panels in `docs/COMMANDS.md`, `docs/PERMISSIONS.md`, and `README.md`; corrected
+  the command count (201 → 205).
+
 ## Unreleased (branch `port/modern-1.21`)
 
 ### Platform
