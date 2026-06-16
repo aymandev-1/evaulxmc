@@ -542,6 +542,18 @@ commands:
   ownerpanel:
     description: Open the owner control-panel GUI
     aliases: [opanel, ownergui]
+  creatorpanel:
+    description: Open the content creator control-panel GUI
+    aliases: [ccpanel, creatorgui]
+  builderpanel:
+    description: Open the builder control-panel GUI
+    aliases: [buildpanel, buildergui]
+  developerpanel:
+    description: Open the developer control-panel GUI
+    aliases: [devpanel, devgui]
+  modpanel:
+    description: Open the moderator control-panel GUI
+    aliases: [modgui, modtools]
 
 permissions:
   evaulx.*:
@@ -1821,4 +1833,16 @@ permissions:
     default: op
   evaulx.owner.panel:
     description: Open the owner control panel with /ownerpanel
+    default: op
+  evaulx.panel.creator:
+    description: Open the content creator control panel with /creatorpanel
+    default: op
+  evaulx.panel.builder:
+    description: Open the builder control panel with /builderpanel
+    default: op
+  evaulx.panel.developer:
+    description: Open the developer control panel with /developerpanel
+    default: op
+  evaulx.panel.mod:
+    description: Open the moderator control panel with /modpanel
     default: op

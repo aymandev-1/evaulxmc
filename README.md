@@ -262,7 +262,22 @@ All integrations are detected at runtime; none of them are required to run.
 | [`docs/COMMANDS.md`](docs/COMMANDS.md) | Every command, alias and description |
 | [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) | Every permission node and default |
 | [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md) | Section-by-section `config.yml` guide |
+| [`docs/staff/`](docs/staff/README.md) | **Staff handbook** — onboarding + per-role feature guides |
 | [`CHANGELOG.md`](CHANGELOG.md) | Version history |
+
+### Staff handbook
+
+Onboarding and role-specific feature guides for your team, in [`docs/staff/`](docs/staff/README.md):
+
+| Guide | Audience |
+|-------|----------|
+| [Staff Intro](docs/staff/STAFF_INTRO.md) | Everyone — shared baseline, start here |
+| [Moderator](docs/staff/MODERATOR.md) | Punishments, investigations, chat control |
+| [Admin](docs/staff/ADMIN.md) | Ranks, grants, server controls, oversight |
+| [Builder](docs/staff/BUILDER.md) | Build & world tools |
+| [Developer](docs/staff/DEVELOPER.md) | Diagnostics & debugging |
+| [Content Creator](docs/staff/CONTENT_CREATOR.md) | Streaming, giveaways, shoutouts |
+| [Changelog](docs/staff/CHANGELOG.md) | Short, player-facing feature list |
 
 ---
 

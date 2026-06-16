@@ -69,7 +69,10 @@ public final class ContentCreatorListener implements Listener {
 
         if (!plugin.getContentCreatorManager().isCreator(player.getUniqueId())) return;
 
-        // Delay so the player is visible to everyone and their profile is confirmed loaded.
+        // Grant CC command permissions immediately so they work from the moment of join.
+        plugin.getContentCreatorManager().applyCreatorPermissions(player);
+
+        // Delay the visible effects so the player is visible to everyone and their profile is confirmed loaded.
         TaskUtil.syncLater(() -> {
             if (!player.isOnline()) return;
             plugin.getContentCreatorManager().onCreatorJoin(player);

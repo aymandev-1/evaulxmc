@@ -14,6 +14,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
@@ -24,12 +25,31 @@ import java.util.stream.Collectors;
 
 public final class ContentCreatorManager {
 
+    /**
+     * Permission nodes auto-granted to a player for the duration they are an online
+     * content creator. These are declared {@code default: false} in plugin.yml so they
+     * are not handed out by operator status — CC status is the only thing that grants them.
+     */
+    private static final String[] CREATOR_PERMISSIONS = {
+            "evaulx.creator.self",
+            "evaulx.golive",
+            "evaulx.shoutout",
+            "evaulx.cchat",
+            "evaulx.ccgiveaway",
+            "evaulx.milestone",
+            "evaulx.socials",
+            "evaulx.ccannounce",
+            "evaulx.watchparty",
+            "evaulx.tag.creator"
+    };
+
     private final EvaulxCore plugin;
     private final File dataFile;
     private YamlConfiguration yaml;
 
     private final Map<UUID, ContentCreatorProfile> profiles = new ConcurrentHashMap<>();
     private final Map<String, UUID> codeIndex = new ConcurrentHashMap<>();
+    private final Map<UUID, PermissionAttachment> permissionAttachments = new ConcurrentHashMap<>();
 
     // Feature state
     private final Set<UUID> liveCreators = ConcurrentHashMap.newKeySet();
@@ -81,6 +101,11 @@ public final class ContentCreatorManager {
                 if (!p.getRewardCode().isEmpty()) codeIndex.put(p.getRewardCode(), uuid);
             } catch (IllegalArgumentException ignored) {}
         }
+        // Re-sync permissions for anyone online (e.g. after /creator reload).
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (isCreator(online.getUniqueId())) applyCreatorPermissions(online);
+            else removeCreatorPermissions(online);
+        }
     }
 
     private void write(ContentCreatorProfile p) {
@@ -116,6 +141,8 @@ public final class ContentCreatorManager {
         ContentCreatorProfile p = profiles.computeIfAbsent(uuid, ContentCreatorProfile::new);
         if (name != null && !name.isEmpty()) p.setName(name);
         write(p);
+        Player online = Bukkit.getPlayer(uuid);
+        if (online != null) applyCreatorPermissions(online);
         return p;
     }
 
@@ -124,9 +151,42 @@ public final class ContentCreatorManager {
         if (p != null && !p.getRewardCode().isEmpty()) codeIndex.remove(p.getRewardCode());
         liveCreators.remove(uuid);
         stopTrail(uuid);
+        Player online = Bukkit.getPlayer(uuid);
+        if (online != null) removeCreatorPermissions(online);
         yaml.set("creators." + uuid, null);
         flush();
         updateBossBar();
+    }
+
+    // ── Permission auto-grant ─────────────────────────────────────────────────
+
+    /**
+     * Attaches the content-creator permission nodes to an online creator. These nodes
+     * are {@code default: false}, so this attachment is the only thing that lets a creator
+     * run /golive, /shoutout, /cchat, /ccgiveaway, /milestone, /socials, /ccannounce and
+     * /watchparty. The attachment is cleared on revoke or quit.
+     */
+    public void applyCreatorPermissions(Player player) {
+        if (player == null || !player.isOnline()) return;
+        if (!isCreator(player.getUniqueId())) return;
+        // Drop any stale attachment before re-applying.
+        removeCreatorPermissions(player);
+        PermissionAttachment attachment = player.addAttachment(plugin);
+        for (String node : CREATOR_PERMISSIONS) attachment.setPermission(node, true);
+        permissionAttachments.put(player.getUniqueId(), attachment);
+        player.recalculatePermissions();
+    }
+
+    public void removeCreatorPermissions(Player player) {
+        if (player == null) return;
+        PermissionAttachment attachment = permissionAttachments.remove(player.getUniqueId());
+        if (attachment == null) return;
+        try {
+            player.removeAttachment(attachment);
+            player.recalculatePermissions();
+        } catch (IllegalArgumentException ignored) {
+            // Attachment already gone (e.g. player relogged); nothing to remove.
+        }
     }
 
     public void updateProfile(ContentCreatorProfile profile) {
@@ -225,11 +285,13 @@ public final class ContentCreatorManager {
     // ── Join / Quit handling ──────────────────────────────────────────────────
 
     public void onCreatorJoin(Player player) {
+        applyCreatorPermissions(player);
         updateBossBar();
         startTrail(player);
     }
 
     public void onCreatorQuit(Player player) {
+        removeCreatorPermissions(player);
         liveCreators.remove(player.getUniqueId());
         stopTrail(player.getUniqueId());
         updateBossBar();

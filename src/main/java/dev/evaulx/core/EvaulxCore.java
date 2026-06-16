@@ -690,6 +690,12 @@ public class EvaulxCore extends JavaPlugin {
         // Admin & Owner control panels
         getCommand("adminpanel").setExecutor(new AdminPanelCommand(this));
         getCommand("ownerpanel").setExecutor(new OwnerPanelCommand(this));
+
+        // Role control panels
+        getCommand("creatorpanel").setExecutor(new CreatorPanelCommand(this));
+        getCommand("builderpanel").setExecutor(new BuilderPanelCommand(this));
+        getCommand("developerpanel").setExecutor(new DeveloperPanelCommand(this));
+        getCommand("modpanel").setExecutor(new ModPanelCommand(this));
     }
 
     private void registerRankCommand(RankCommand executor, String name) {

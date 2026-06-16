@@ -64,12 +64,6 @@ public class GuiManager implements Listener {
         try { Material m = Material.valueOf(legacy);  if (m != null) return m; } catch (Throwable e) {}
         return Material.STONE;
     }
-    private static final Material MAT_GRAY_DYE              = mat("GRAY_DYE",                     "INK_SACK");
-    private static final Material MAT_LIME_DYE               = mat("LIME_DYE",                     "INK_SACK");
-    private static final Material MAT_RED_DYE                = mat("RED_DYE",                      "INK_SACK");
-    private static final Material MAT_YELLOW_DYE             = mat("YELLOW_DYE",                   "INK_SACK");
-    private static final Material MAT_GREEN_DYE              = mat("GREEN_DYE",                    "INK_SACK");
-    private static final Material MAT_MAGENTA_DYE            = mat("MAGENTA_DYE",                  "INK_SACK");
     private static final Material MAT_LIME_GLASS_PANE        = mat("LIME_STAINED_GLASS_PANE",      "STAINED_GLASS_PANE");
     private static final Material MAT_REDSTONE_TORCH         = mat("REDSTONE_TORCH",               "REDSTONE_TORCH_ON");
     private static final Material MAT_INK_SAC                = mat("INK_SAC",                      "INK_SACK");
@@ -285,7 +279,7 @@ public class GuiManager implements Listener {
             Arrays.asList("&7Removes &f" + world + " &7from the protected world list.", "&cClick to remove.")));
         inv.setItem(14, item(Material.COMPASS, "&e&lProtect All Worlds",
             Arrays.asList("&7Clears the world list so every world is protected.", "&aClick to apply.")));
-        inv.setItem(15, item(plugin.getConfig().getBoolean("lobby-protection.notify-on-deny", true) ? MAT_GREEN_DYE : MAT_GRAY_DYE,
+        inv.setItem(15, item(dye(plugin.getConfig().getBoolean("lobby-protection.notify-on-deny", true) ? 10 : 8),
             "&7&lDeny Notifications", Arrays.asList(
                 "&7Notify players when an action is denied.",
                 "&7Current: " + enabledText(plugin.getConfig().getBoolean("lobby-protection.notify-on-deny", true)),
@@ -365,7 +359,7 @@ public class GuiManager implements Listener {
             if (slot > 43) break;
             if (slot == 35) slot = 37;
             if (slot > 43) break;
-            inv.setItem(slot++, item(actionMaterial(action.getAction()), "&7" + action.getAction(),
+            inv.setItem(slot++, item(actionIcon(action.getAction()), "&7" + action.getAction(),
                 Arrays.asList(
                     "&7Actor: &f" + action.getActor(),
                     "&7Target: &f" + (action.getTarget() == null ? "none" : action.getTarget()),
@@ -560,14 +554,14 @@ public class GuiManager implements Listener {
             Arrays.asList("&7Grant a rank to this player.", "&aClick to open grant GUI.")));
         inv.setItem(20, item(Material.DIAMOND_SWORD, "&c&lPunish",
             Arrays.asList("&7Open the punishment preset menu.", "&aClick to punish.")));
-        inv.setItem(21, item(online ? Material.FEATHER : MAT_GRAY_DYE, online ? "&e&lKick" : "&8Kick",
+        inv.setItem(21, item(online ? new ItemStack(Material.FEATHER) : dye(8), online ? "&e&lKick" : "&8Kick",
             Arrays.asList(online ? "&7Kick this player from the server." : "&7Player is offline.",
                 online ? "&aClick to kick." : "&cUnavailable.")));
         inv.setItem(22, item(activeBans > 0 ? Material.EMERALD_BLOCK : Material.REDSTONE_BLOCK,
             activeBans > 0 ? "&a&lUnban" : "&c&lBan",
             Arrays.asList(activeBans > 0 ? "&7Remove the active ban." : "&7Permanently ban this player.",
                 "&aClick to " + (activeBans > 0 ? "unban." : "ban."))));
-        inv.setItem(23, item(activeMutes > 0 ? MAT_LIME_DYE : MAT_RED_DYE,
+        inv.setItem(23, item(dye(activeMutes > 0 ? 10 : 1),
             activeMutes > 0 ? "&a&lUnmute" : "&c&lMute",
             Arrays.asList(activeMutes > 0 ? "&7Remove the active mute." : "&7Permanently mute this player.",
                 "&aClick to " + (activeMutes > 0 ? "unmute." : "mute."))));
@@ -575,7 +569,7 @@ public class GuiManager implements Listener {
             frozen ? "&a&lUnfreeze" : "&b&lFreeze",
             Arrays.asList(frozen ? "&7Remove freeze on this player." : "&7Freeze this player in place.",
                 online ? "&aClick to " + (frozen ? "unfreeze." : "freeze.") : "&cPlayer is offline.")));
-        inv.setItem(25, item(online ? Material.CHEST : MAT_GRAY_DYE,
+        inv.setItem(25, item(online ? new ItemStack(Material.CHEST) : dye(8),
             online ? "&6&lInspect Inventory" : "&8Inspect Inventory",
             Arrays.asList(online ? "&7View this player's inventory." : "&7Player is offline.",
                 online ? "&aClick to inspect." : "&cUnavailable.")));
@@ -589,7 +583,7 @@ public class GuiManager implements Listener {
             Arrays.asList("&7View IP address and online alts.", "&aClick to run.")));
         inv.setItem(31, item(MAT_SPYGLASS, "&f&lWhois",
             Arrays.asList("&7Full info output to your chat.", "&aClick to run.")));
-        inv.setItem(32, item(online ? Material.ENDER_PEARL : MAT_GRAY_DYE,
+        inv.setItem(32, item(online ? new ItemStack(Material.ENDER_PEARL) : dye(8),
             online ? "&b&lTeleport To" : "&8Teleport To",
             Arrays.asList(online ? "&7Teleport to this player's location." : "&7Player is offline.",
                 online ? "&aClick to teleport." : "&cUnavailable.")));
@@ -623,11 +617,11 @@ public class GuiManager implements Listener {
         for (int i = 0; i < CONTENT_SLOTS_54.length && from + i < history.size(); i++) {
             Punishment pun = history.get(from + i);
             boolean active = pun.isActive();
-            Material mat;
-            if (!active) mat = MAT_GRAY_DYE;
-            else if (pun.getType().isBan()) mat = Material.BARRIER;
-            else if (pun.getType().isMute()) mat = MAT_YELLOW_DYE;
-            else mat = Material.PAPER;
+            ItemStack mat;
+            if (!active) mat = dye(8);                                    // gray
+            else if (pun.getType().isBan()) mat = new ItemStack(Material.BARRIER);
+            else if (pun.getType().isMute()) mat = dye(11);              // yellow
+            else mat = new ItemStack(Material.PAPER);
 
             List<String> lore = new ArrayList<>();
             lore.add("&7Type: &f" + pun.getType().name());
@@ -883,41 +877,95 @@ public class GuiManager implements Listener {
 
         PlayerProfile profile = plugin.getPlayerManager().getProfile(player);
         String current = profile == null || profile.getTag() == null || profile.getTag().isEmpty() ? "&7None" : profile.getTag();
+        String currentId = profile == null || profile.getTag() == null ? "" : normalizeTag(profile.getTag());
         int unlocked   = unlockedTagCount(player, entries);
 
         inv.setItem(4, item(Material.NETHER_STAR, "&d&lYour Tags",
             Arrays.asList(
                 "&7Current: " + current,
-                "&7Unlocked: &f" + unlocked + " &8/ &f" + entries.size(),
-                "&7Page: &f" + page + " &8/ &f" + pages)));
+                "&7Unlocked: &a" + unlocked + " &8/ &f" + entries.size(),
+                "&7Page: &f" + page + " &8/ &f" + pages,
+                "",
+                "&7Each tag is shown as a dye in its own colour.")));
 
         // Navigation slots: 45=prev, 47=random, 49=clear, 51=close, 53=next
-        if (page > 1)   inv.setItem(45, item(Material.ARROW, "&ePrevious", Collections.singletonList("&7Page " + (page - 1))));
-        inv.setItem(47, item(Material.ENDER_CHEST, "&dRandom Tag", Collections.singletonList("&7Equip a random unlocked tag.")));
-        inv.setItem(49, item(Material.BARRIER, "&cClear Tag", Collections.singletonList("&7Remove your current tag.")));
-        inv.setItem(51, item(Material.ARROW, "&cClose", Collections.singletonList("&7Close this menu.")));
-        if (page < pages) inv.setItem(53, item(Material.ARROW, "&eNext", Collections.singletonList("&7Page " + (page + 1))));
+        if (page > 1)   inv.setItem(45, item(Material.ARROW, "&ePrevious Page", Collections.singletonList("&7Page " + (page - 1))));
+        inv.setItem(47, item(Material.ENDER_CHEST, "&d&lRandom Tag", Collections.singletonList("&7Equip a random unlocked tag.")));
+        inv.setItem(49, item(Material.BARRIER, "&c&lClear Tag", Collections.singletonList("&7Remove your current tag.")));
+        inv.setItem(51, item(Material.ARROW, "&c&lClose", Collections.singletonList("&7Close this menu.")));
+        if (page < pages) inv.setItem(53, item(Material.ARROW, "&eNext Page", Collections.singletonList("&7Page " + (page + 1))));
 
         int from = (page - 1) * perPage;
         Map<Integer, TagGuiEntry> pageSlots = new HashMap<>();
         for (int i = 0; i < CONTENT_SLOTS_54.length && from + i < entries.size(); i++) {
-            TagGuiEntry tag   = entries.get(from + i);
-            boolean canUse    = canUseTag(player, tag);
-            List<String> lore = new ArrayList<>();
-            lore.add("&7ID: &f" + tag.id);
-            lore.add("&7Category: &f" + tag.category);
-            lore.add("&7Rarity: &f" + tag.rarity);
-            if (!tag.ranks.isEmpty()) lore.add("&7Rank unlocks: &f" + joinText(tag.ranks));
+            TagGuiEntry tag    = entries.get(from + i);
+            boolean canUse     = canUseTag(player, tag);
+            boolean equipped   = !currentId.isEmpty() && currentId.equals(tag.id);
+            List<String> lore  = new ArrayList<>();
+            lore.add("&7Preview: " + tag.display);
+            if (tag.rarity != null && !tag.rarity.isEmpty()) lore.add("&7Rarity: &f" + tag.rarity);
             if (!tag.description.isEmpty()) { lore.add(""); lore.add("&7" + tag.description); }
             lore.add("");
-            lore.add(canUse ? "&aLeft-click &7to equip." : "&cLocked: &f" + requiredTagPermission(tag));
-            lore.add("&eRight-click &7to preview.");
+            if (equipped)      lore.add("&a✔ Currently equipped");
+            else if (canUse)   lore.add("&aLeft-click &7to equip");
+            else               lore.add("&c✖ Locked &8— &7requires &f" + requiredTagPermission(tag));
+            lore.add("&eRight-click &7to preview in chat");
             pageSlots.put(CONTENT_SLOTS_54[i], tag);
-            inv.setItem(CONTENT_SLOTS_54[i], item(canUse ? Material.NAME_TAG : MAT_INK_SAC,
-                tag.display + (canUse ? "" : " &8(Locked)"), lore));
+            inv.setItem(CONTENT_SLOTS_54[i], item(tagDye(tag.display, canUse),
+                (equipped ? "&a✔ " : "") + tag.display, lore));
         }
         tagSlots.put(player.getUniqueId(), pageSlots);
         player.openInventory(inv);
+    }
+
+    /**
+     * Builds the icon for a tag: a dye coloured to match the tag's leading colour code.
+     * Uses the legacy {@code INK_SACK} + data-value dye system the 1.8 API provides
+     * (the modern split-dye materials do not carry colour on this API). Locked tags use gray.
+     */
+    private ItemStack tagDye(String display, boolean canUse) {
+        short data = canUse ? dyeData(firstColorChar(display)) : (short) 8; // 8 = gray for locked
+        return new ItemStack(MAT_INK_SAC, 1, data);
+    }
+
+    /** A legacy coloured dye (INK_SACK + data value) — colours correctly on the 1.8 API. */
+    private ItemStack dye(int data) {
+        return new ItemStack(MAT_INK_SAC, 1, (short) data);
+    }
+
+    private char firstColorChar(String s) {
+        if (s == null) return 'f';
+        for (int i = 0; i + 1 < s.length(); i++) {
+            char marker = s.charAt(i);
+            if (marker == '&' || marker == '§') {
+                char code = Character.toLowerCase(s.charAt(i + 1));
+                if ("0123456789abcdef".indexOf(code) >= 0) return code;
+            }
+        }
+        return 'f';
+    }
+
+    /** Maps a chat colour code to the closest 1.8 dye (INK_SACK) data value. */
+    private short dyeData(char color) {
+        switch (color) {
+            case '0': return 0;   // black        -> ink sac
+            case '1': return 4;   // dark blue     -> lapis
+            case '2': return 2;   // dark green    -> cactus green
+            case '3': return 6;   // dark aqua     -> cyan
+            case '4': return 1;   // dark red      -> red
+            case '5': return 5;   // dark purple   -> purple
+            case '6': return 14;  // gold          -> orange
+            case '7': return 7;   // gray          -> light gray
+            case '8': return 8;   // dark gray     -> gray
+            case '9': return 12;  // blue          -> light blue
+            case 'a': return 10;  // green         -> lime
+            case 'b': return 12;  // aqua          -> light blue
+            case 'c': return 1;   // red           -> red
+            case 'd': return 13;  // light purple  -> magenta
+            case 'e': return 11;  // yellow        -> dandelion yellow
+            case 'f': return 15;  // white         -> bone meal
+            default:  return 15;
+        }
     }
 
     public void openNotes(Player viewer, OfflinePlayer target) {
@@ -1016,13 +1064,13 @@ public class GuiManager implements Listener {
                 "&7Staff: &f" + rank.isStaff() + " &8| Hidden: &f" + rank.isHidden() + " &8| Default: &f" + rank.isDefault(),
                 "&7Permissions: &f" + rank.getPermissions().size())));
 
-        inv.setItem(10, item(rank.isDefault() ? Material.NETHER_STAR : MAT_GRAY_DYE,
+        inv.setItem(10, item(rank.isDefault() ? new ItemStack(Material.NETHER_STAR) : dye(8),
             rank.isDefault() ? "&a&lDefault &8(ON)" : "&7Default &8(OFF)",
             Collections.singletonList("&7Click to set this as the default rank.")));
-        inv.setItem(11, item(rank.isStaff() ? Material.IRON_SWORD : MAT_GRAY_DYE,
+        inv.setItem(11, item(rank.isStaff() ? new ItemStack(Material.IRON_SWORD) : dye(8),
             rank.isStaff() ? "&a&lStaff &8(ON)" : "&7Staff &8(OFF)",
             Collections.singletonList("&7Click to toggle staff status.")));
-        inv.setItem(12, item(rank.isHidden() ? MAT_INK_SAC : MAT_GRAY_DYE,
+        inv.setItem(12, item(rank.isHidden() ? new ItemStack(MAT_INK_SAC) : dye(8),
             rank.isHidden() ? "&7Hidden &8(ON)" : "&7Hidden &8(OFF)",
             Collections.singletonList("&7Click to toggle visibility.")));
         inv.setItem(14, item(Material.PAPER, "&7&lCategory",
@@ -1052,19 +1100,19 @@ public class GuiManager implements Listener {
                 "&7Hides your real name in chat and tab.",
                 "&7Staff can always see your real name.")));
 
-        inv.setItem(10, item(enabled ? MAT_GRAY_DYE : MAT_LIME_DYE,
+        inv.setItem(10, item(enabled ? dye(8) : dye(10),
             enabled ? "&8Enable &8(already on)" : "&a&lEnable Streamer Mode",
             Arrays.asList("&7Assigns you a random alias.",
                 enabled ? "&7Already active." : "&aClick to enable.")));
-        inv.setItem(11, item(enabled ? MAT_RED_DYE : MAT_GRAY_DYE,
+        inv.setItem(11, item(enabled ? dye(1) : dye(8),
             enabled ? "&c&lDisable Streamer Mode" : "&8Disable &8(already off)",
             Arrays.asList("&7Reveals your real name again.",
                 enabled ? "&cClick to disable." : "&7Already inactive.")));
-        inv.setItem(14, item(enabled ? Material.ENDER_PEARL : MAT_GRAY_DYE,
+        inv.setItem(14, item(enabled ? new ItemStack(Material.ENDER_PEARL) : dye(8),
             enabled ? "&e&lNew Random Alias" : "&8New Random Alias",
             Arrays.asList("&7Replaces your alias with a new random one.",
                 enabled ? "&eClick to randomize." : "&7Enable streamer mode first.")));
-        inv.setItem(15, item(enabled ? Material.NAME_TAG : MAT_GRAY_DYE,
+        inv.setItem(15, item(enabled ? new ItemStack(Material.NAME_TAG) : dye(8),
             enabled ? "&b&lSet Custom Alias" : "&8Set Custom Alias",
             Arrays.asList("&7Set your own alias (3-16 chars).",
                 enabled ? "&7Close and type: &f/streamermode alias <name>" : "&7Enable streamer mode first.")));
@@ -1147,7 +1195,7 @@ public class GuiManager implements Listener {
                 "&7Version: &f" + Bukkit.getVersion())));
 
         // Row 2 — broadcasts & alerts (10-16)
-        inv.setItem(10, item(MAT_RED_DYE, "&4&lOwner Alert",
+        inv.setItem(10, item(dye(1), "&4&lOwner Alert",
             Arrays.asList("&7Send a full-screen owner alert.", "&aClick for the command.")));
         inv.setItem(11, item(Material.PAPER, "&c&lOwner Broadcast",
             Arrays.asList("&7Send a styled owner broadcast.", "&aClick for the command.")));
@@ -1181,6 +1229,217 @@ public class GuiManager implements Listener {
 
         inv.setItem(49, item(Material.BARRIER, "&c&lClose", Collections.singletonList("&7Close this menu.")));
         player.openInventory(inv);
+    }
+
+    public void openCreatorPanel(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 54, creatorPanelTitle());
+        fillBorder(inv, MAT_MAGENTA_GLASS_PANE);
+
+        boolean isCreator = plugin.getContentCreatorManager().isCreator(player.getUniqueId());
+        boolean live      = isCreator && plugin.getContentCreatorManager().isLive(player.getUniqueId());
+
+        inv.setItem(4, item(Material.NETHER_STAR, "&d&lContent Creator Panel",
+            Arrays.asList(
+                "&7Status: " + (isCreator ? "&aContent Creator" : "&cNot a creator"),
+                "&7Live: " + (live ? "&c[LIVE]" : "&7No"),
+                "&7Creators online: &f" + onlineCreatorCount(),
+                "",
+                "&7All your creator tools in one place.")));
+
+        // Row 2 — broadcasting (10-16)
+        inv.setItem(10, item(MAT_RED_CONCRETE, "&c&lGo Live",
+            Arrays.asList("&7Announce you are streaming live.", "&aClick to run /golive.")));
+        inv.setItem(11, item(MAT_GRAY_WOOL, "&7&lOff Air",
+            Arrays.asList("&7End your live broadcast.", "&aClick to run /offair.")));
+        inv.setItem(12, item(Material.NOTE_BLOCK, "&6&lShoutout",
+            Arrays.asList("&7Shoutout a viewer server-wide.", "&aClick for the command.")));
+        inv.setItem(13, item(Material.BOOK, "&b&lBroadcast Socials",
+            Arrays.asList("&7Share your social links with the server.", "&aClick to run /socials.")));
+        inv.setItem(14, item(Material.DIAMOND, "&d&lMilestone",
+            Arrays.asList("&7Announce a milestone to the server.", "&aClick for the command.")));
+        inv.setItem(15, item(Material.CHEST, "&6&lRun Giveaway",
+            Arrays.asList("&7Run a rank giveaway for viewers.", "&aClick to run /ccgiveaway.")));
+        inv.setItem(16, item(MAT_WRITABLE_BOOK, "&e&lCreator Chat",
+            Arrays.asList("&7Message the private creator channel.", "&aClick for the command.")));
+
+        // Row 3 — engagement & profile (19-25)
+        inv.setItem(19, item(Material.JUKEBOX, "&a&lRecording Toggle",
+            Arrays.asList("&7Toggle your recording status.", "&aClick to run /recording.")));
+        inv.setItem(20, item(Material.PAINTING, "&5&lWatch Party",
+            Arrays.asList("&7Start or end a watch party event.", "&aClick for the command.")));
+        inv.setItem(21, item(Material.GLOWSTONE, "&e&lSpotlight",
+            Arrays.asList("&7Shine a spotlight on a player.", "&aClick for the command.")));
+        inv.setItem(22, item(Material.PAPER, "&f&lCreator Announce",
+            Arrays.asList("&7Send a creator-styled announcement.", "&aClick for the command.")));
+        inv.setItem(23, item(MAT_PLAYER_HEAD, "&6&lEdit My Profile",
+            Arrays.asList("&7Set your socials, code and bio.", "&aClick for the command.")));
+        inv.setItem(24, item(Material.ITEM_FRAME, "&b&lMy Profile",
+            Arrays.asList("&7View your creator profile.", "&aClick to run /creator profile.")));
+        inv.setItem(25, item(Material.NAME_TAG, "&e&lCreator List",
+            Arrays.asList("&7List all registered creators.", "&aClick to run /creator list.")));
+
+        inv.setItem(49, item(Material.BARRIER, "&c&lClose", Collections.singletonList("&7Close this menu.")));
+        player.openInventory(inv);
+    }
+
+    public void openBuilderPanel(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 54, builderPanelTitle());
+        fillBorder(inv, MAT_GREEN_GLASS_PANE);
+
+        inv.setItem(4, item(Material.GOLD_PICKAXE, "&a&lBuilder Panel",
+            Arrays.asList(
+                "&7World: &f" + player.getWorld().getName(),
+                "&7Gamemode: &f" + player.getGameMode().name(),
+                "",
+                "&7Quick tools for builders.")));
+
+        // Row 2 — modes & movement (10-16)
+        inv.setItem(10, item(Material.GRASS, "&a&lCreative Mode",
+            Arrays.asList("&7Switch to creative mode.", "&aClick to run /gamemode creative.")));
+        inv.setItem(11, item(Material.IRON_SWORD, "&c&lSurvival Mode",
+            Arrays.asList("&7Switch to survival mode.", "&aClick to run /gamemode survival.")));
+        inv.setItem(12, item(Material.FEATHER, "&b&lToggle Fly",
+            Arrays.asList("&7Toggle flight on or off.", "&aClick to run /fly.")));
+        inv.setItem(13, item(Material.DIAMOND_PICKAXE, "&6&lBuild Mode",
+            Arrays.asList("&7Toggle lobby build bypass.", "&aClick to run /buildmode.")));
+        inv.setItem(14, item(MAT_PLAYER_HEAD, "&e&lWear Hat",
+            Arrays.asList("&7Wear your held item as a hat.", "&aClick to run /hat.")));
+        inv.setItem(15, item(Material.ARROW, "&f&lTeleport Up",
+            Arrays.asList("&7Ascend to a platform above you.", "&aClick to run /up.")));
+        inv.setItem(16, item(Material.LADDER, "&f&lTeleport Top",
+            Arrays.asList("&7Teleport to the highest block.", "&aClick to run /top.")));
+
+        // Row 3 — world & utility (19-25)
+        inv.setItem(19, item(MAT_CLOCK, "&e&lTime: Day",
+            Arrays.asList("&7Set the world time to day.", "&aClick to run /time day.")));
+        inv.setItem(20, item(MAT_BLACK_GLASS_PANE, "&9&lTime: Night",
+            Arrays.asList("&7Set the world time to night.", "&aClick to run /time night.")));
+        inv.setItem(21, item(Material.WATER_BUCKET, "&b&lClear Weather",
+            Arrays.asList("&7Clear the world weather.", "&aClick to run /weather clear.")));
+        inv.setItem(22, item(Material.SUGAR, "&f&lSet Speed",
+            Arrays.asList("&7Set your fly or walk speed.", "&aClick for the command.")));
+        inv.setItem(23, item(Material.POTION, "&5&lNight Vision",
+            Arrays.asList("&7Toggle night vision.", "&aClick to run /nightvision.")));
+        inv.setItem(24, item(Material.WORKBENCH, "&6&lWorkbench",
+            Arrays.asList("&7Open a crafting table anywhere.", "&aClick to run /craft.")));
+        inv.setItem(25, item(Material.PAPER, "&a&lBuilder Announce",
+            Arrays.asList("&7Send a builder-styled announcement.", "&aClick for the command.")));
+
+        inv.setItem(49, item(Material.BARRIER, "&c&lClose", Collections.singletonList("&7Close this menu.")));
+        player.openInventory(inv);
+    }
+
+    public void openDeveloperPanel(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 54, developerPanelTitle());
+        fillBorder(inv, MAT_CYAN_GLASS_PANE);
+
+        Runtime rt = Runtime.getRuntime();
+        long mb = 1024L * 1024L;
+        long usedMem = (rt.totalMemory() - rt.freeMemory()) / mb;
+        long maxMem = rt.maxMemory() / mb;
+
+        inv.setItem(4, item(Material.COMMAND, "&3&lDeveloper Panel",
+            Arrays.asList(
+                "&7Memory: &f" + usedMem + " &8/ &f" + maxMem + " MB",
+                "&7Version: &f" + Bukkit.getVersion(),
+                "",
+                "&7Diagnostics and developer tooling.")));
+
+        // Row 2 — diagnostics (10-16)
+        inv.setItem(10, item(Material.REDSTONE_BLOCK, "&d&lServer TPS",
+            Arrays.asList("&7View current server TPS.", "&aClick to run /tps.")));
+        inv.setItem(11, item(MAT_CLOCK, "&b&lServer Info",
+            Arrays.asList("&7View detailed server information.", "&aClick to run /serverinfo.")));
+        inv.setItem(12, item(Material.HOPPER, "&6&lRun GC",
+            Arrays.asList("&7Run garbage collection & report memory.", "&aClick to run /gc.")));
+        inv.setItem(13, item(Material.STRING, "&e&lThread Stats",
+            Arrays.asList("&7View JVM thread statistics.", "&aClick to run /threads.")));
+        inv.setItem(14, item(Material.BOOKSHELF, "&a&lPlugin Info",
+            Arrays.asList("&7List plugins and inspect one.", "&aClick to run /plugininfo.")));
+        inv.setItem(15, item(MAT_SPAWN_EGG, "&e&lEntity Count",
+            Arrays.asList("&7Per-world entity diagnostics.", "&aClick to run /entitycount.")));
+        inv.setItem(16, item(MAT_GRASS_BLOCK, "&f&lChunk Info",
+            Arrays.asList("&7Diagnostics for your current chunk.", "&aClick to run /chunkinfo.")));
+
+        // Row 3 — dev actions (19-25)
+        inv.setItem(19, item(Material.DIAMOND_PICKAXE, "&3&lDev Mode",
+            Arrays.asList("&7Toggle developer creative mode.", "&aClick to run /devmode.")));
+        inv.setItem(20, item(Material.POTION, "&5&lTest Effect",
+            Arrays.asList("&7Apply a potion effect for testing.", "&aClick for the command.")));
+        inv.setItem(21, item(Material.PAPER, "&f&lDev Broadcast",
+            Arrays.asList("&7Broadcast a developer announcement.", "&aClick for the command.")));
+        inv.setItem(22, item(MAT_FIRE_CHARGE, "&6&lClear Lag",
+            Arrays.asList("&7Remove ground items & stray entities.", "&aClick to run /clearlag.")));
+        inv.setItem(23, item(Material.GOLD_INGOT, "&e&lGod Mode",
+            Arrays.asList("&7Toggle invulnerability.", "&aClick to run /god.")));
+        inv.setItem(24, item(MAT_ENDER_EYE, "&a&lNight Vision",
+            Arrays.asList("&7Toggle night vision.", "&aClick to run /nightvision.")));
+        inv.setItem(25, item(Material.COMMAND, "&5&lReload Plugin",
+            Arrays.asList("&7Reload EvaulxMC configuration.", "&cUse with care.", "&aClick to run /reloadplugin.")));
+
+        inv.setItem(49, item(Material.BARRIER, "&c&lClose", Collections.singletonList("&7Close this menu.")));
+        player.openInventory(inv);
+    }
+
+    public void openModPanel(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 54, modPanelTitle());
+        fillBorder(inv, MAT_RED_GLASS_PANE);
+
+        inv.setItem(4, item(Material.NETHER_STAR, "&c&lModerator Panel",
+            Arrays.asList(
+                "&7Online: &f" + Bukkit.getOnlinePlayers().size() + " &8/ &f" + Bukkit.getMaxPlayers(),
+                "&7Staff online: &f" + onlineStaffCount(),
+                "&7Open reports: &f" + plugin.getStaffRequestManager().getReports().size(),
+                "&7HelpOP queue: &f" + plugin.getStaffRequestManager().getHelpOps().size(),
+                "&7Frozen: &f" + plugin.getStaffRequestManager().getFrozenCount())));
+
+        // Row 2 — player moderation (10-16)
+        inv.setItem(10, badge(Material.BOOK, "&c&lReports",
+            plugin.getStaffRequestManager().getReports().size(), "&7Claim and close player reports."));
+        inv.setItem(11, badge(Material.PAPER, "&e&lHelpOP",
+            plugin.getStaffRequestManager().getHelpOps().size(), "&7View and handle help requests."));
+        inv.setItem(12, item(Material.DIAMOND_SWORD, "&c&lPunish Player",
+            Arrays.asList("&7Select a player and punishment preset.", "&aClick to open.")));
+        inv.setItem(13, badge(Material.PACKED_ICE, "&b&lFreeze Player",
+            plugin.getStaffRequestManager().getFrozenCount(), "&7Freeze or unfreeze a player."));
+        inv.setItem(14, item(Material.CHEST, "&6&lInspect Inventory",
+            Arrays.asList("&7View a player's inventory.", "&aClick to open.")));
+        inv.setItem(15, item(MAT_WRITABLE_BOOK, "&e&lPlayer Notes",
+            Arrays.asList("&7View or add staff notes for a player.", "&aClick to open.")));
+        inv.setItem(16, item(MAT_CLOCK, "&7&lMod Logs",
+            Arrays.asList("&7View the moderation action log.", "&aClick to open.")));
+
+        // Row 3 — staff tools (19-25)
+        inv.setItem(19, item(MAT_ENDER_EYE, "&7&lToggle Vanish",
+            Arrays.asList("&7Disappear from other players' view.", "&aClick to toggle.")));
+        inv.setItem(20, item(Material.COMPASS, "&a&lStaff Mode",
+            Arrays.asList("&7Equip staff tools.", "&aClick to toggle.")));
+        inv.setItem(21, item(Material.WRITTEN_BOOK, "&b&lStaff Chat",
+            Arrays.asList("&7Message the staff channel.", "&aClick for the command.")));
+        inv.setItem(22, item(MAT_PLAYER_HEAD, "&f&lPlayer Profile",
+            Arrays.asList("&7Inspect a player's full profile.", "&aClick to select player.")));
+        inv.setItem(23, item(MAT_SPYGLASS, "&f&lWhois Lookup",
+            Arrays.asList("&7Full info output for any player.", "&aClick to select player.")));
+        inv.setItem(24, item(Material.COMPASS, "&c&lIP Check",
+            Arrays.asList("&7View IP and online alt accounts.", "&aClick to select player.")));
+        inv.setItem(25, item(Material.EMERALD, "&a&lStaff List",
+            Arrays.asList("&7Show online staff members.", "&aClick to run /stafflist.")));
+
+        // Row 4 — chat moderation (28-29)
+        inv.setItem(28, item(Material.PAPER, "&6&lMute Chat",
+            Arrays.asList("&7Toggle the global chat mute.", "&aClick to run /mutechat.")));
+        inv.setItem(29, item(MAT_INK_SAC, "&e&lClear Chat",
+            Arrays.asList("&7Clear the global chat.", "&aClick to run /clearchat.")));
+
+        inv.setItem(49, item(Material.BARRIER, "&c&lClose", Collections.singletonList("&7Close this menu.")));
+        player.openInventory(inv);
+    }
+
+    private int onlineCreatorCount() {
+        int count = 0;
+        for (Player p : Bukkit.getOnlinePlayers())
+            if (plugin.getContentCreatorManager().isCreator(p.getUniqueId())) count++;
+        return count;
     }
 
     /** Closes the menu and tells the player which command to type for actions that need arguments. */
@@ -1231,6 +1490,18 @@ public class GuiManager implements Listener {
         }
         if (title.equals(ownerPanelTitle())) {
             event.setCancelled(true); handleOwnerPanelClick(player, event.getSlot()); return;
+        }
+        if (title.equals(creatorPanelTitle())) {
+            event.setCancelled(true); handleCreatorPanelClick(player, event.getSlot()); return;
+        }
+        if (title.equals(builderPanelTitle())) {
+            event.setCancelled(true); handleBuilderPanelClick(player, event.getSlot()); return;
+        }
+        if (title.equals(developerPanelTitle())) {
+            event.setCancelled(true); handleDeveloperPanelClick(player, event.getSlot()); return;
+        }
+        if (title.equals(modPanelTitle())) {
+            event.setCancelled(true); handleModPanelClick(player, event.getSlot()); return;
         }
         if (title.equals(maintenanceTitle())) {
             event.setCancelled(true); handleMaintenanceClick(player, event.getSlot()); return;
@@ -1347,6 +1618,92 @@ public class GuiManager implements Listener {
             case 23: player.closeInventory(); Bukkit.dispatchCommand(player, "reloadplugin"); break;
             case 24: promptCommand(player, "/kickall [reason]"); break;
             case 25: player.closeInventory(); Bukkit.dispatchCommand(player, "serverinfo"); break;
+            case 49: player.closeInventory(); break;
+            default: break;
+        }
+    }
+
+    private void handleCreatorPanelClick(Player player, int slot) {
+        switch (slot) {
+            case 10: player.closeInventory(); Bukkit.dispatchCommand(player, "golive"); break;
+            case 11: player.closeInventory(); Bukkit.dispatchCommand(player, "offair"); break;
+            case 12: promptCommand(player, "/shoutout <player>"); break;
+            case 13: player.closeInventory(); Bukkit.dispatchCommand(player, "socials"); break;
+            case 14: promptCommand(player, "/milestone <message>"); break;
+            case 15: player.closeInventory(); Bukkit.dispatchCommand(player, "ccgiveaway"); break;
+            case 16: promptCommand(player, "/cchat <message>"); break;
+            case 19: player.closeInventory(); Bukkit.dispatchCommand(player, "recording"); break;
+            case 20: promptCommand(player, "/watchparty <start|end>"); break;
+            case 21: promptCommand(player, "/spotlight <player>"); break;
+            case 22: promptCommand(player, "/ccannounce <message>"); break;
+            case 23: promptCommand(player, "/creator set <field> <value>"); break;
+            case 24: player.closeInventory(); Bukkit.dispatchCommand(player, "creator profile"); break;
+            case 25: player.closeInventory(); Bukkit.dispatchCommand(player, "creator list"); break;
+            case 49: player.closeInventory(); break;
+            default: break;
+        }
+    }
+
+    private void handleBuilderPanelClick(Player player, int slot) {
+        switch (slot) {
+            case 10: player.closeInventory(); Bukkit.dispatchCommand(player, "gamemode creative"); break;
+            case 11: player.closeInventory(); Bukkit.dispatchCommand(player, "gamemode survival"); break;
+            case 12: player.closeInventory(); Bukkit.dispatchCommand(player, "fly"); break;
+            case 13: player.closeInventory(); Bukkit.dispatchCommand(player, "buildmode"); break;
+            case 14: player.closeInventory(); Bukkit.dispatchCommand(player, "hat"); break;
+            case 15: player.closeInventory(); Bukkit.dispatchCommand(player, "up"); break;
+            case 16: player.closeInventory(); Bukkit.dispatchCommand(player, "top"); break;
+            case 19: player.closeInventory(); Bukkit.dispatchCommand(player, "time day"); break;
+            case 20: player.closeInventory(); Bukkit.dispatchCommand(player, "time night"); break;
+            case 21: player.closeInventory(); Bukkit.dispatchCommand(player, "weather clear"); break;
+            case 22: promptCommand(player, "/speed <1-10>"); break;
+            case 23: player.closeInventory(); Bukkit.dispatchCommand(player, "nightvision"); break;
+            case 24: player.closeInventory(); Bukkit.dispatchCommand(player, "craft"); break;
+            case 25: promptCommand(player, "/builderannounce <message>"); break;
+            case 49: player.closeInventory(); break;
+            default: break;
+        }
+    }
+
+    private void handleDeveloperPanelClick(Player player, int slot) {
+        switch (slot) {
+            case 10: player.closeInventory(); Bukkit.dispatchCommand(player, "tps"); break;
+            case 11: player.closeInventory(); Bukkit.dispatchCommand(player, "serverinfo"); break;
+            case 12: player.closeInventory(); Bukkit.dispatchCommand(player, "gc"); break;
+            case 13: player.closeInventory(); Bukkit.dispatchCommand(player, "threads"); break;
+            case 14: player.closeInventory(); Bukkit.dispatchCommand(player, "plugininfo"); break;
+            case 15: player.closeInventory(); Bukkit.dispatchCommand(player, "entitycount"); break;
+            case 16: player.closeInventory(); Bukkit.dispatchCommand(player, "chunkinfo"); break;
+            case 19: player.closeInventory(); Bukkit.dispatchCommand(player, "devmode"); break;
+            case 20: promptCommand(player, "/testeffect <effect> [duration] [amplifier]"); break;
+            case 21: promptCommand(player, "/devbroadcast <message>"); break;
+            case 22: player.closeInventory(); Bukkit.dispatchCommand(player, "clearlag"); break;
+            case 23: player.closeInventory(); Bukkit.dispatchCommand(player, "god"); break;
+            case 24: player.closeInventory(); Bukkit.dispatchCommand(player, "nightvision"); break;
+            case 25: player.closeInventory(); Bukkit.dispatchCommand(player, "reloadplugin"); break;
+            case 49: player.closeInventory(); break;
+            default: break;
+        }
+    }
+
+    private void handleModPanelClick(Player player, int slot) {
+        switch (slot) {
+            case 10: openReports(player, false); break;
+            case 11: openReports(player, true); break;
+            case 12: openPlayerPicker(player, PlayerAction.PUNISH); break;
+            case 13: openPlayerPicker(player, PlayerAction.FREEZE); break;
+            case 14: openPlayerPicker(player, PlayerAction.INSPECT); break;
+            case 15: openPlayerPicker(player, PlayerAction.NOTES); break;
+            case 16: openPlayerPicker(player, PlayerAction.MODLOGS); break;
+            case 19: player.closeInventory(); Bukkit.dispatchCommand(player, "vanish"); break;
+            case 20: player.closeInventory(); Bukkit.dispatchCommand(player, "staffmode"); break;
+            case 21: promptCommand(player, "/staffchat <message>"); break;
+            case 22: openPlayerPicker(player, PlayerAction.PROFILE); break;
+            case 23: openPlayerPicker(player, PlayerAction.WHOIS); break;
+            case 24: openPlayerPicker(player, PlayerAction.IPCHECK); break;
+            case 25: player.closeInventory(); Bukkit.dispatchCommand(player, "stafflist"); break;
+            case 28: player.closeInventory(); Bukkit.dispatchCommand(player, "mutechat"); break;
+            case 29: player.closeInventory(); Bukkit.dispatchCommand(player, "clearchat"); break;
             case 49: player.closeInventory(); break;
             default: break;
         }
@@ -1889,8 +2246,11 @@ public class GuiManager implements Listener {
     }
 
     private ItemStack item(Material material, String name, List<String> lore) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta  = item.getItemMeta();
+        return item(new ItemStack(material), name, lore);
+    }
+
+    private ItemStack item(ItemStack item, String name, List<String> lore) {
+        ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(CC.color(name));
         List<String> coloredLore = new ArrayList<>();
         for (String line : lore) coloredLore.add(CC.color(line));
@@ -2104,20 +2464,20 @@ public class GuiManager implements Listener {
         return count;
     }
 
-    private Material actionMaterial(String action) {
-        if (action == null) return Material.PAPER;
+    private ItemStack actionIcon(String action) {
+        if (action == null) return new ItemStack(Material.PAPER);
         String u = action.toUpperCase(Locale.ENGLISH);
-        if (u.contains("BAN"))      return Material.BARRIER;
-        if (u.contains("MUTE"))     return MAT_RED_DYE;
-        if (u.contains("KICK"))     return Material.FEATHER;
-        if (u.contains("WARN"))     return MAT_YELLOW_DYE;
-        if (u.contains("GRANT"))    return Material.GOLD_INGOT;
-        if (u.contains("FREEZE"))   return Material.PACKED_ICE;
-        if (u.contains("STAFF"))    return Material.COMPASS;
-        if (u.contains("STREAMER")) return MAT_MAGENTA_DYE;
-        if (u.contains("VANISH"))   return MAT_ENDER_EYE;
-        if (u.contains("NOTE"))     return MAT_WRITABLE_BOOK;
-        return Material.PAPER;
+        if (u.contains("BAN"))      return new ItemStack(Material.BARRIER);
+        if (u.contains("MUTE"))     return dye(1);                       // red
+        if (u.contains("KICK"))     return new ItemStack(Material.FEATHER);
+        if (u.contains("WARN"))     return dye(11);                      // yellow
+        if (u.contains("GRANT"))    return new ItemStack(Material.GOLD_INGOT);
+        if (u.contains("FREEZE"))   return new ItemStack(Material.PACKED_ICE);
+        if (u.contains("STAFF"))    return new ItemStack(Material.COMPASS);
+        if (u.contains("STREAMER")) return dye(13);                      // magenta
+        if (u.contains("VANISH"))   return new ItemStack(MAT_ENDER_EYE);
+        if (u.contains("NOTE"))     return new ItemStack(MAT_WRITABLE_BOOK);
+        return new ItemStack(Material.PAPER);
     }
 
     // =====================================================================
@@ -2160,6 +2520,10 @@ public class GuiManager implements Listener {
     private String staffDashboardTitle()  { return CC.color(plugin.getConfig().getString("gui.staff-dashboard.title", "&8Staff Dashboard")); }
     private String adminPanelTitle()      { return CC.color(plugin.getConfig().getString("gui.admin-panel.title", "&8Admin Panel")); }
     private String ownerPanelTitle()      { return CC.color(plugin.getConfig().getString("gui.owner-panel.title", "&8Owner Panel")); }
+    private String creatorPanelTitle()    { return CC.color(plugin.getConfig().getString("gui.creator-panel.title", "&8Creator Panel")); }
+    private String builderPanelTitle()    { return CC.color(plugin.getConfig().getString("gui.builder-panel.title", "&8Builder Panel")); }
+    private String developerPanelTitle()  { return CC.color(plugin.getConfig().getString("gui.developer-panel.title", "&8Developer Panel")); }
+    private String modPanelTitle()        { return CC.color(plugin.getConfig().getString("gui.mod-panel.title", "&8Mod Panel")); }
     private String maintenanceTitle()     { return CC.color(plugin.getConfig().getString("gui.maintenance.title", "&8Maintenance")); }
     private String staffSessionsTitle()   { return CC.color(plugin.getConfig().getString("gui.staff-sessions.title", "&8Staff Sessions")); }
     private String pendingGrantsTitle()   { return CC.color(plugin.getConfig().getString("gui.pending-grants.title", "&8Pending Grants")); }
