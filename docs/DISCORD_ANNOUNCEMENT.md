@@ -1,44 +1,39 @@
-# 📢 EvaulxMC — Big Rank Perks Update!
+# 📢 EvaulxMC — Discord Announcement
 
 > Paste this straight into a Discord announcement channel. Discord renders `#`/`##` headers, **bold**, and `code` formatting.
+> Only player-facing features are listed here — staff/admin/dev tooling is intentionally left out.
 
 ---
 
-# 🚀 EvaulxMC Update — New Rank Perks & Power Tools!
+# 🎉 What's New on the Server!
 
-We've just shipped a **huge batch of new commands** for every rank on the server — from Moderators all the way up to Owners, plus fresh perks for **Content Creators** and **Store ranks**. Here's everything new 👇
-
-## 🛡️ Staff / Mod
-- `/clearlag` — instantly clear dropped items & stray entities to reduce lag
-- `/slowchat <seconds|off>` — put global chat into slow mode (with a bypass perm for staff)
-
-## ⚙️ Admin
-- `/entitycount` — per-world entity report for lag diagnostics
-- `/killentities <monsters|animals|items|all>` — purge entities by category
-- `/chunkinfo` — detailed stats for the chunk you're standing in
-
-## 🏗️ Builder
-- `/top` — teleport to the highest block above you
-- `/up [blocks]` — shoot straight up with a glass platform placed beneath you
-
-## 💻 Developer
-- `/gc` — run garbage collection & view live memory usage
-- `/threads` — JVM thread statistics
-- `/plugininfo [plugin]` — list plugins or inspect one in detail
-
-## 👑 Owner
-- `/shutdown <seconds|cancel> [reason]` — schedule a graceful restart with a live countdown
+A fresh batch of features that change how **you** play. Jump in and try them 👇
 
 ## 🎥 Content Creators
-- `/spotlight <player>` — shine a server-wide spotlight on a player
-- `/recording` — toggle your recording status and let everyone know you're live
+- When a creator goes **live**, the whole server gets an alert with their stream link.
+- **Shoutouts** & **giveaways** — creators can hype you up and hand out real ranks to random players.
+- Got a creator's **code**? Run `/redeemcode <code>` for free rewards.
 
-## 💎 Store Ranks
-- `/firework` — launch a colourful firework wherever you stand
-- `/launch [power]` — rocket yourself into the air
+## 🏷️ Cosmetic Tags
+- Open `/tag` for a cleaner menu where every tag shows in its own colour.
+- Pick, preview, and equip a tag that shows next to your name in chat.
+
+## 💰 Economy & Rewards
+- Earn coins, send them with `/pay`, and claim your `/daily` reward.
+
+## 🏠 Get Around
+- `/sethome` + `/home`, `/warp`, and `/tpa` to teleport to friends.
+
+## 👥 Play Together
+- `/friend` list, `/party` up, `/msg` privately, and `/mail` offline players.
+
+## 🛟 Stay Safe
+- `/report` rule-breakers and `/helpop` when you need staff.
+- Banned or muted unfairly? `/appeal` it.
 
 ---
 
-**⚡ Every command is permission-gated** and integrates with the existing rank system, mod logs, and tab-completion. Grab your rank to unlock these perks!
+> ⚠️ **Heads up:** the server is currently **in testing** — features may change, reset,
+> or briefly go offline while we polish things. Thanks for helping us test! 🙏
 
 `Questions? Drop them in` <#support> `— see you in-game!` 🎮

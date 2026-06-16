@@ -1206,7 +1206,10 @@ staff-tools:
   staff-chat-format: "&8[&bS&8] &8[&f{server}&8] &f{player} &8: &7{message}"
   command-spy:
     enabled: true
-    hide-staff-commands: true
+    # When false, commands from all players (including staff) are shown to anyone with
+    # commandspy enabled. Players without the evaulx.commandspy permission never receive
+    # spy output regardless. Sensitive commands below are still hidden for everyone.
+    hide-staff-commands: false
     blocked-commands:
       - "login"
       - "register"

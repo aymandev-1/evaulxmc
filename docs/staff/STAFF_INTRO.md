@@ -1,5 +1,9 @@
 # Staff Introduction — Start Here
 
+> ⚠️ **The server is currently in testing.** Things may break, change, or be wiped while we
+> build it out. Expect rough edges, report bugs to the dev team, and don't promise players
+> that progress/data is permanent yet.
+
 Welcome to the team. This is the shared baseline every staff member should know,
 regardless of rank. Your specific role guide (Mod / Admin / Builder / Developer /
 Content Creator) builds on top of this.

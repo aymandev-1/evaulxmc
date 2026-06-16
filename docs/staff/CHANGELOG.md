@@ -1,5 +1,8 @@
 # Server Changelog (Staff Copy)
 
+> ⚠️ **The server is in testing.** Features may change, reset, or go offline without notice
+> while we polish things. Don't treat anything here as final, and warn players that data may be wiped.
+
 A short, curated list of the features that actually change what players experience.
 Keep this handy so you can answer "what's new?" in chat. Internal/technical changes are left out on purpose.
 

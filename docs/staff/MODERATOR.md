@@ -27,6 +27,14 @@ vanish, staff mode, profiles, whois, IP check, and chat moderation.
 - `/alts <player>` / `/ipcheck <player>` — find linked accounts (handle privately).
 - `/note <player> <text>` — leave context for other staff.
 
+## Spy tools (how they actually work)
+- `/commandspy` — see **other players'** commands, staff included (commands are only hidden from people
+  who lack the `evaulx.commandspy` permission). You still won't see your *own* commands. Sensitive auth
+  commands (`/login`, `/register`, `/password`…) stay hidden for everyone. To go back to hiding staff
+  commands, set `staff-tools.command-spy.hide-staff-commands: true`.
+- `/socialspy` — see **other players'** private `/msg`s. You won't see a conversation you're part of;
+  a **third** person with socialspy on has to be online to read it.
+
 ## Chat control
 - `/mutechat` — freeze global chat during spam/raids.
 - `/clearchat` — wipe the chat.
